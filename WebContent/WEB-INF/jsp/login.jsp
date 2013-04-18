@@ -15,12 +15,9 @@
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
 <script src="js/login.js"></script>
 
-<link rel="stylesheet" href="css/reset.css" type="text/css"
-	media="screen">
-<link rel="stylesheet" href="css/style.css" type="text/css"
-	media="screen">
-<link rel="stylesheet" href="css/layout.css" type="text/css"
-	media="screen">
+<link rel="stylesheet" href="css/reset.css" type="text/css"	media="screen">
+<link rel="stylesheet" href="css/style.css" type="text/css"	media="screen">
+<link rel="stylesheet" href="css/layout.css" type="text/css" media="screen">
 <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
 <script src="js/cufon-yui.js" type="text/javascript"></script>
 <script src="js/cufon-replace.js" type="text/javascript"></script>
@@ -69,7 +66,7 @@
 										</fieldset>
 										<input type="submit" id="login" value="Sign in" />
 									</fieldset>
-									<span><a href="signup.html#">Sign up</a></span>
+									<span><a href="registrationform.do#">Sign up</a></span>
 								</form:form>
 							</div>
 						</div>

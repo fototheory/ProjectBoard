@@ -1,3 +1,4 @@
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -8,8 +9,7 @@
 </head>
 <body>
 
-<form:form method="Post" action="registrationform.html"
-commandName="registration">
+<form:form method="Post" action="registrationform.do" commandName="registration">
 <table>
 <tr>
 <td>First Name:<FONT color="red"><form:errors
