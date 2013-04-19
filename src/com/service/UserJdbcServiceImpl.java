@@ -44,5 +44,14 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 		//get user with matching email and password
 		return userJdbcDao.loginCheck(email, password);
 	}
+	/**
+	 * check session user's authenticity 
+	 * @param id user_id of session variable
+	 * @return returns count of user found
+	 */
+	public int sessoionCheck(int id) {
+		//get user with matching email and password
+		return userJdbcDao.countById(id);
+	}
 	
 }

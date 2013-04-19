@@ -29,5 +29,4 @@
   </constructor-arg>
    <aop:scoped-proxy proxy-target-class="false" />
 </bean>
-
 </beans>

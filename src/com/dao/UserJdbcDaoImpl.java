@@ -81,6 +81,16 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 	}
 	
 	/**
+	 * return the record count of the user found in database (select by id)
+	 * @param id user_id of user table
+	 * @return record count
+	 */
+	public int countById(int id) {
+		String query = "SELECT COUNT(user_id) FROM user WHERE user_id=?";
+		return this.template.queryForInt(query, new Object[]{id});
+	}
+	
+	/**
 	 * from the list, fetch the first record
 	 * @param userInfo a list of records retrieved from database
 	 * @return returns empty user object if the list is empty, otherwise, returns a user in the list

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 import com.beans.User;
+import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
 
 /**
