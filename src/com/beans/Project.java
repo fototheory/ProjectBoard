@@ -7,11 +7,14 @@ public class Project {
 	private int id;
 	private String title;
 	private String desc;
-	private boolean isArchived;
+	private int isArchived;
 	private String status;
 	private int manHours;
 	private Date due;
-	private int reqId;
+	private Date dateStarted;
+	private Date dateCompleted;
+	private Date dateCreated;
+	private int statusId;
 	private int dispId;
 	private int groupId;
 	private int forumId;
@@ -20,8 +23,11 @@ public class Project {
 	private int capId;
 	private int sponsorId;
 	
-	public Project(int id, String title, String desc, boolean isArchived,
-			String status, int manHours, Date due, int reqId, int dispId,
+	public Project() { }
+	
+	public Project(int id, String title, String desc, int isArchived,
+			String status, int manHours, Date due, Date dataStarted,
+			Date dataCompleted, Date dataCreated, int reqId, int dispId,
 			int groupId, int forumId, int leadId, int negId, int capId,
 			int sponsorId) {
 		super();
@@ -32,7 +38,10 @@ public class Project {
 		this.status = status;
 		this.manHours = manHours;
 		this.due = due;
-		this.reqId = reqId;
+		this.dateStarted = dataStarted;
+		this.dateCompleted = dataCompleted;
+		this.dateCreated = dataCreated;
+		this.statusId = reqId;
 		this.dispId = dispId;
 		this.groupId = groupId;
 		this.forumId = forumId;
@@ -44,6 +53,30 @@ public class Project {
 
 	public int getId() {
 		return id;
+	}
+
+	public Date getDateStarted() {
+		return dateStarted;
+	}
+
+	public void setDateStarted(Date dataStarted) {
+		this.dateStarted = dataStarted;
+	}
+
+	public Date getDateCompleted() {
+		return dateCompleted;
+	}
+
+	public void setDateCompleted(Date dataCompleted) {
+		this.dateCompleted = dataCompleted;
+	}
+
+	public Date getDateCreated() {
+		return dateCreated;
+	}
+
+	public void setDateCreated(Date dataCreated) {
+		this.dateCreated = dataCreated;
 	}
 
 	public void setId(int id) {
@@ -66,11 +99,11 @@ public class Project {
 		this.desc = desc;
 	}
 
-	public boolean isArchived() {
+	public int isArchived() {
 		return isArchived;
 	}
 
-	public void setArchived(boolean isArchived) {
+	public void setArchived(int isArchived) {
 		this.isArchived = isArchived;
 	}
 
@@ -98,12 +131,12 @@ public class Project {
 		this.due = due;
 	}
 
-	public int getReqId() {
-		return reqId;
+	public int getStatusId() {
+		return statusId;
 	}
 
-	public void setReqId(int reqId) {
-		this.reqId = reqId;
+	public void setStatusId(int reqId) {
+		this.statusId = reqId;
 	}
 
 	public int getDispId() {
@@ -167,7 +200,7 @@ public class Project {
 		return "Project [id=" + id + ", title=" + title + ", desc=" + desc
 				+ ", isArchived=" + isArchived + ", status=" + status
 				+ ", manHours=" + manHours + ", due=" + due + ", reqId="
-				+ reqId + ", dispId=" + dispId + ", groupId=" + groupId
+				+ statusId + ", dispId=" + dispId + ", groupId=" + groupId
 				+ ", forumId=" + forumId + ", leadId=" + leadId + ", negId="
 				+ negId + ", capId=" + capId + ", sponsorId=" + sponsorId + "]";
 	}

@@ -71,8 +71,14 @@ public class LoginController {
 						//redirect a user to student/index.jsp
 						mav = new ModelAndView(new RedirectView("student/index.do"));
 					}
+					else if(roleName.equals("Sponsor")){
+						//set session with the user record
+						sessionscopehellodata.setUserInfo(regUser);
+						//redirect a user to sponsor/index.jsp
+						mav = new ModelAndView("redirect:/sponsor.do");
+					}
 					else {
-						//error: role doesn' match
+						//error: role doesn't match
 						mav.addObject("status", "cannot find a user type, contact admininstrator");
 					}
 				}
