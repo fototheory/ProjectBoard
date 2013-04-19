@@ -72,7 +72,7 @@ public class LoginController {
 						mav = new ModelAndView(new RedirectView("student/index.do"));
 					}
 					else {
-						//error: role doesn' match
+						//error: role doesn't match
 						mav.addObject("status", "cannot find a user type, contact admininstrator");
 					}
 				}

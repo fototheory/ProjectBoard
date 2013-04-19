@@ -57,5 +57,18 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		//return empty user if not user found in database
 		return new Role();
 	}
+	
+	public List<Role> selectAllRoles() {
+		String query = "select * from role order by role_id;";
+		List<Role> roles = this.template.query(query, new RowMapper<Role>(){
+			public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Role temp = new Role();
+				temp.setId(rs.getInt("role_id"));
+				temp.setName(rs.getString("role_name"));
+				return temp;
+			}
+		});
+		return roles;
+	}
 }
 

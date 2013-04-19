@@ -119,6 +119,22 @@ input,label {
 										<tr>
 											<td><form:input path="email" /></td>
 										</tr>
+
+<!-- Added by DET: This displays the various roles from the database. -->
+										<tr>
+											<td>You are a:
+										</tr>
+										<tr>
+											<td>
+												<c:forEach items="${roles}" var="role">
+													<input type="radio" name="userrole" value="${role.name}"
+														id="${role.id}">
+													<c:out value="${role.name}" />
+													<br />
+												</c:forEach>
+											</td>
+										</tr>
+<!-- done -->
 										<tr>
 											<td><input type="submit" value="Submit" /></td>
 										</tr>

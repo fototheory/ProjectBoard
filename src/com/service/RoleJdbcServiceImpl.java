@@ -2,6 +2,7 @@ package com.service;
 
 import com.beans.Role;
 import com.dao.RoleJdbcDaoImpl;
+import java.util.List;
 
 /**
  * <code>RoleJdbcServiceImpl</code> implements <code>SpringJdbcService</code>
@@ -31,6 +32,9 @@ public class RoleJdbcServiceImpl implements SpringJdbcService<Role> {
 	@Override
 	public Role selectById(int id) {
 		return roleJdbcDao.selectById(id);
-
-	}	
+	}
+	
+	public List<Role> selectAllRoles() {
+		return roleJdbcDao.selectAllRoles();
+	}
 }
