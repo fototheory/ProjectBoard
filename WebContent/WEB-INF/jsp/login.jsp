@@ -82,7 +82,7 @@
 				<div class="row-2">
 					<nav>
 						<ul class="menu">
-							<li><a class="active" href="index.html">Home</a></li>
+							<li><a class="active" href="login.do">Home</a></li>
 							<li><a href="services.html">Services</a></li>
 							<li><a href="resources.html">Resources</a></li>
 							<li><a href="projects.html">Projects</a></li>
