@@ -20,21 +20,22 @@ public class Registration {
 	//@Email
 	private String email;
 	private int role;
+	private int discipline;
 
 
-	public void setfname(String fname) {
+	public void setFname(String fname) {
 		this.fname = fname;
 	}
 
-	public String getfname() {
+	public String getFname() {
 		return fname;
 	}
 
-	public void setlname(String lname) {
+	public void setLname(String lname) {
 		this.lname = lname;
 	}
 
-	public String getlname() {
+	public String getLname() {
 		return lname;
 	}
 
@@ -68,6 +69,14 @@ public class Registration {
 
 	public void setRole(int role) {
 		this.role = role;
+	}
+
+	public int getDiscipline() {
+		return discipline;
+	}
+
+	public void setDiscipline(int discipline) {
+		this.discipline = discipline;
 	}
 
 }

@@ -127,8 +127,7 @@ input,label {
 										<tr>
 											<td>
 												<c:forEach items="${discipline}" var="discipline">
-													<input type="radio" name="discipline" value="${discipline.name}"
-														id="${discipline.id}">
+													<input type="radio" name="discipline" value="${discipline.name}" id="${discipline.id}">
 													<c:out value="${discipline.name}" />
 													<br />
 												</c:forEach>
@@ -142,8 +141,7 @@ input,label {
 										<tr>
 											<td>
 												<c:forEach items="${roles}" var="role">
-													<input type="radio" name="userrole" value="${role.name}"
-														id="${role.id}">
+													<input type="radio" name="userrole" value="${role.name}" id="${role.id}">
 													<c:out value="${role.name}" />
 													<br />
 												</c:forEach>

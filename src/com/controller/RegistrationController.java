@@ -3,6 +3,8 @@ package com.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,8 @@ import com.beans.User;
 
 
 public class RegistrationController {
+	protected final Log logger = LogFactory.getLog(getClass());
+	
 	//instantiates UserJdbcServiceImpl for user related activities
 	UserJdbcServiceImpl  LoginService = new UserJdbcServiceImpl();
 	//instantiates RoleJdbcServiceImpl for role related activities
@@ -61,13 +65,26 @@ public class RegistrationController {
 
     // Process the form.
     @RequestMapping(method = RequestMethod.POST)
-    public String processRegistration( Registration registration,
-                    BindingResult result) {
+    public String processRegistration( Registration registration, BindingResult result) {
+    	User temp = new User();
+    	temp.setFname(registration.getFname());
+    	temp.setLname(registration.getLname());
+    	temp.setEmail(registration.getEmail());
+    	temp.setPassword(registration.getPassword());
+    	temp.setRoleId(registration.getRole());
+    	temp.setDisciplineId(registration.getDiscipline());
+    	
+    	logger.info("processRegistration: "+temp);
+    	
             // set custom Validation by user
             registrationValidation.validate(registration, result);
             if (result.hasErrors()) {
                     return "registrationform";
             }
+
+        LoginService.addNewUser(temp);
+            
+            
             return "registrationsuccess";
     }
 

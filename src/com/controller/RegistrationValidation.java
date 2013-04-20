@@ -17,12 +17,12 @@ public class RegistrationValidation {
 		Registration registration = (Registration) target;
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "fname",
-				"NotEmpty.registration.fname", "User Name must not be Empty.");
-		String fname = registration.getfname();
+				"NotEmpty.registration.fname", "First Name must not be Empty.");
+		String fname = registration.getFname();
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lname",
-				"NotEmpty.registration.lname", "User Name must not be Empty.");
-		String lname = registration.getlname();
+				"NotEmpty.registration.lname", "Last Name must not be Empty.");
+		String lname = registration.getLname();
 
 		if ((fname.length()) > 50) {
 			errors.rejectValue("fname", "lengthOfUser.registration.fname",
@@ -40,6 +40,19 @@ public class RegistrationValidation {
 					"matchingPassword.registration.password",
 					"Password and Confirm Password Not match.");
 		}
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password",
+				"NotEmpty.registration.password", "Password must not be Empty.");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword",
+				"NotEmpty.registration.confirmPassword", "Password must not be Empty.");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
+				"NotEmpty.registration.email", "Email must not be Empty.");
+
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "discipline", "NotEmpty.registration.discipline", "A discipline is required");
+
+		//ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userrole", "A role is required");
 	}
 
 }

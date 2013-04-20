@@ -3,6 +3,9 @@ package com.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import com.beans.User;
@@ -15,6 +18,8 @@ import com.beans.User;
  * @version 1.0
  */
 public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
+	protected final Log logger = LogFactory.getLog(getClass());
+
 	//attributes
 	//data source
 	private JdbcDataSource ds = new SpringJdbcDataSource();
@@ -103,4 +108,27 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		//return empty user if not user found in database
 		return new User();
 	}
+
+	public int getIdByEmail(String email) {
+		String query = "select user_id from user where user_email = ?";
+		
+		int id = this.template.queryForInt(query,email);
+		
+		return id;
+	}
+	
+	public int addNewUser(User user){
+		logger.info("adding user "+user.getFname());
+		
+		String query = "insert into user (user_email,user_password,user_fname,user_lname,role_id,discipline_id) " +
+				"values (?, ?, ?, ?, ?, ?)";
+		
+		this.template.update(query,user.getEmail(),user.getPassword(),
+				user.getFname(),user.getLname(),
+				//user.getRoleId(),user.getDisciplineId());
+				1,1); // set role to Student and disciple to CompSci for now.
+
+		return getIdByEmail(user.getEmail());
+	}
+				
 }

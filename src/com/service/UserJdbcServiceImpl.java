@@ -1,5 +1,8 @@
 package com.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.beans.User;
 import com.dao.UserJdbcDaoImpl;
 
@@ -12,6 +15,8 @@ import com.dao.UserJdbcDaoImpl;
  * @version 1.0
  */
 public class UserJdbcServiceImpl implements SpringJdbcService<User> {
+	protected final Log logger = LogFactory.getLog(getClass());
+
 	//instantiates UserJdbcDaoImpl user related database transaction
 	UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
 	//getter/setter for the attribute
@@ -54,4 +59,11 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 		return userJdbcDao.countById(id);
 	}
 	
+	public int getIdByEmail(String email){
+		return userJdbcDao.getIdByEmail(email);
+	}
+	
+	public void addNewUser(User user) {
+		userJdbcDao.addNewUser(user);
+	}
 }
