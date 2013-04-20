@@ -9,6 +9,10 @@ public class Discipline {
 		this.name = name;
 	}
 	
+	public Discipline(){
+		
+	}
+	
 	//setter/getter
 	public int getId() {
 		return id;

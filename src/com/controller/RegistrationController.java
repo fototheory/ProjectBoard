@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.form.Registration;
+import com.service.DisciplineJdbcServiceImpl;
 import com.service.RoleJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
+import com.beans.Discipline;
 import com.beans.Role;
 import com.beans.User;
 
@@ -26,6 +28,8 @@ public class RegistrationController {
 	UserJdbcServiceImpl  LoginService = new UserJdbcServiceImpl();
 	//instantiates RoleJdbcServiceImpl for role related activities
 	RoleJdbcServiceImpl  RoleService = new RoleJdbcServiceImpl();
+	
+	DisciplineJdbcServiceImpl DisciplineService = new DisciplineJdbcServiceImpl();
 
 	
 	@Autowired
@@ -44,10 +48,14 @@ public class RegistrationController {
 			ModelAndView mav = new ModelAndView("registrationform");
 			
 			List<Role> roles = RoleService.selectAllRoles();
+			List<Discipline> disciplines = DisciplineService.selectAllDisciplines();
 		
             Registration registration = new Registration();
             model.put("registration", registration);
+
             mav.addObject("roles",roles);
+            mav.addObject("discipline",disciplines);
+            
             return mav;
     }
 

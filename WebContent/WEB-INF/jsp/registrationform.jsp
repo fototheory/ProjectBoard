@@ -120,7 +120,22 @@ input,label {
 											<td><form:input path="email" /></td>
 										</tr>
 
-<!-- Added by DET: This displays the various roles from the database. -->
+										<!-- This displays the various disciplines from the database. -->
+										<tr>
+											<td>Subject area:
+										</tr>
+										<tr>
+											<td>
+												<c:forEach items="${discipline}" var="discipline">
+													<input type="radio" name="discipline" value="${discipline.name}"
+														id="${discipline.id}">
+													<c:out value="${discipline.name}" />
+													<br />
+												</c:forEach>
+											</td>
+										</tr>
+							
+										<!-- This displays the various roles from the database. -->
 										<tr>
 											<td>You are a:
 										</tr>
@@ -134,7 +149,7 @@ input,label {
 												</c:forEach>
 											</td>
 										</tr>
-<!-- done -->
+
 										<tr>
 											<td><input type="submit" value="Submit" /></td>
 										</tr>
@@ -146,9 +161,9 @@ input,label {
 					</div>
 				</div>
 			</section>
+		</div>
+	</div>
 </body>
-
-
 
 <!-- footer -->
 <footer>
