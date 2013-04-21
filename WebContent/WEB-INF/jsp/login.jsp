@@ -1,7 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -35,9 +35,7 @@
 <![endif]-->
 
 </head>
-<c:if test="${not empty status}">
-	<font color="red">${status}</font><br /><br />
-</c:if>
+
 <body id="page1">
 	<!-- header -->
 	<div class="bg">
@@ -46,27 +44,26 @@
 				<div id="bar">
 					<div id="container">
 						<!-- Login Starts Here -->
+						<c:if test="${not empty status}">
+							<font color="red">${status}</font>
+						</c:if>
 						<div id="loginContainer">
 							<a href="#" id="loginButton"><span>Login</span><em></em></a>
 							<div style="clear: both"></div>
 							<div id="loginBox">
-
-								<form:form modelAttribute="loginUser" method="POST"
-									action="login.do" id="userdetailsid">
+								<form:form modelAttribute="loginUser" method="POST"	action="login.do" id="userdetailsid">
 									<fieldset id="body">
 										<fieldset>
 											<label for="email">Email Address</label>
-
 											<form:input path="email" type="text" required="true" />
 										</fieldset>
 										<fieldset>
 											<label for="password">Password</label>
-
 											<form:input path="password" type="password" required="true" />
 										</fieldset>
 										<input type="submit" id="login" value="Sign in" />
 									</fieldset>
-									<span><a href="registrationform.do#">Sign up</a></span>
+									<span><a href="registrationform.html#">Sign up</a></span>
 								</form:form>
 							</div>
 						</div>
@@ -75,14 +72,14 @@
 				</div>
 				<div class="row-1">
 					<h1>
-						<a class="logo" href="index.html">The Capstone Portal @ NU</a> <strong
+						<a class="logo" href="login.html">The Capstone Portal @ NU</a> <strong
 							class="slog">Ideas into action</strong>
 					</h1>
 				</div>
 				<div class="row-2">
 					<nav>
 						<ul class="menu">
-							<li><a class="active" href="login.do">Home</a></li>
+							<li><a class="active" href="login.html">Home</a></li>
 							<li><a href="services.html">Services</a></li>
 							<li><a href="resources.html">Resources</a></li>
 							<li><a href="projects.html">Projects</a></li>

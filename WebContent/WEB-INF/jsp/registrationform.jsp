@@ -60,7 +60,7 @@ input,label {
 				<div class="row-2">
 					<nav>
 						<ul class="menu">
-							<li><a href="login.do">Home</a></li>
+							<li><a href="login.html">Home</a></li>
 							<li><a href="services.html">Services</a></li>
 							<li><a href="resources.html">Resources</a></li>
 							<li><a href="projects.html">Projects</a></li>
@@ -77,7 +77,9 @@ input,label {
 						<div class="col-3">
 							<div class="indent">
 								<h2 class="p0">Sign up form</h2>
-
+								<c:if test="${not empty status}">
+									<font color="red">${status}</font>
+								</c:if>
 								<form:form method="Post" action="registrationform.do"
 									commandName="registration">
 									<table>
@@ -87,7 +89,7 @@ input,label {
 										</tr>
 
 										<tr>
-											<td><form:input path="fname" /></td>
+											<td><form:input path="fname" type="text" required="true" /></td>
 										</tr>
 
 										<tr>
@@ -96,28 +98,28 @@ input,label {
 										</tr>
 
 										<tr>
-											<td><form:input path="lname" /></td>
+											<td><form:input path="lname" type="text" required="true" /></td>
 										</tr>
 										<tr>
 											<td>Password:<FONT color="red">
 											<form:errors path="password" /></FONT></td>
 										</tr>
 										<tr>
-											<td><form:password path="password" /></td>
+											<td><form:input path="password" type="password" required="true" /></td>
 										</tr>
 										<tr>
 											<td>Confirm Password:<FONT color="red">
 											<form:errors path="confirmPassword" /></FONT></td>
 										</tr>
 										<tr>
-											<td><form:password path="confirmPassword" /></td>
+											<td><form:input path="confirmPassword" type="confirmPassword" required="true" /></td>
 										</tr>
 										<tr>
 											<td>Email:<FONT color="red">
 											<form:errors path="email" /></FONT></td>
 										</tr>
 										<tr>
-											<td><form:input path="email" /></td>
+											<td><form:input path="email" type="text" required="true" /></td>
 										</tr>
 
 										<!-- This displays the various disciplines from the database. -->
@@ -127,7 +129,7 @@ input,label {
 										<tr>
 											<td>
 												<c:forEach items="${discipline}" var="discipline">
-													<input type="radio" name="discipline" value="${discipline.name}" id="${discipline.id}">
+													<input type="radio" name="discipline" value="${discipline.name}" id="${discipline.id}" required="true" >
 													<c:out value="${discipline.name}" />
 													<br />
 												</c:forEach>
@@ -141,7 +143,7 @@ input,label {
 										<tr>
 											<td>
 												<c:forEach items="${roles}" var="role">
-													<input type="radio" name="userrole" value="${role.name}" id="${role.id}">
+													<input type="radio" name="userrole" value="${role.name}" id="${role.id}" required="true" >
 													<c:out value="${role.name}" />
 													<br />
 												</c:forEach>
