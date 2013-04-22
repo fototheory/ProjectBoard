@@ -1,11 +1,22 @@
 package com.service;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
+import com.beans.Discipline;
 import com.beans.Project;
 import com.beans.Role;
+import com.beans.Status;
+import com.beans.User;
+import com.dao.DisciplineJdbcDaoImpl;
 import com.dao.ProjectJdbcDaoImpl;
 import com.dao.RoleJdbcDaoImpl;
+import com.dao.StatusJdbcDaoImpl;
+import com.dao.UserJdbcDaoImpl;
 
 /**
  * <code>ProjectJdbcServiceImpl</code> implements <code>SpringJdbcService</code>
@@ -69,11 +80,106 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	 * @param id user_id of session variable
 	 * @return returns count of user found
 	 */
-	public List<Project> selectByRole(int id, int roleId) {
+	public Collection<Map<String, String>> selectByRole(int id, int roleId) {
 		//get role name
 		Role role = roleJdbcDao.selectById(roleId);
 		//get user with matching email and password
-		return projectJdbcDao.selectByRole(id, projectFldByRole(role.getName()));
+		List<Project> projList = projectJdbcDao.selectByRole(id, projectFldByRole(role.getName()));
+		//based on status fetch and format related data
+		//loop through each project object
+		
+		Collection<Map<String, String>> projectList = new HashSet<Map<String, String>>();
+		for (int i = 0; i < projList.size(); i++) {
+			projectList.add(formatProjectItem(projList.get(i)));
+		}
+		return projectList;
+	}
+	
+	protected Map<String, String> formatProjectItem(Project proj) {
+		Map<String, String> projItem = new LinkedHashMap<String, String>();
+		//set information required for any status
+		projItem.put("Title",proj.getTitle());
+		projItem.put("Description",proj.getDesc());
+		if(proj.getDue()!= null) {
+			projItem.put("Due Date",proj.getDue().toString());
+		}
+		projItem.put("Date Created",proj.getDateCreated().toString());
+		//instantiates UserJdbcDaoImpl user related database transaction
+		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
+		User sponsor = userJdbcDao.selectById(proj.getSponsorId());
+		projItem.put("Sponsor",sponsor.getFname()+" "+sponsor.getLname());
+		//instantiates DisciplineJdbcDaoImpl user related database transaction
+		DisciplineJdbcDaoImpl dispJdbcDao = new DisciplineJdbcDaoImpl();
+		Discipline disp = dispJdbcDao.selectById(proj.getDispId());
+		projItem.put("Discipline",disp.getName());
+		//check status
+		//instantiates StatusJdbcDaoImpl status related database transaction
+		StatusJdbcDaoImpl statusJdbcDao = new StatusJdbcDaoImpl();
+		Status stat = statusJdbcDao.selectById(proj.getStatusId());
+		projItem.put("Status",stat.getName());
+		int proiority = proiorityStatus(stat.getName());
+		//set additional fields
+		if(proiority > 4) {
+			//project completed
+			projItem.put("Date Completed",proj.getDateCompleted().toString());
+			String archivedMsg = (proj.isArchived()>0)?"Yes":"No";
+			projItem.put("Archived", archivedMsg);
+		}
+		if(proiority > 3) {
+			//project in progress
+			//for now just ID
+			projItem.put("Group",Integer.toString(proj.getGroupId()));
+		}
+		if(proiority > 2) {
+			//project assigned
+			projItem.put("Date Started",proj.getDateStarted().toString());
+		}
+		if(proiority > 1) {
+			//project posted
+			if(proj.getCapId()>0) {
+				User capstone = userJdbcDao.selectById(proj.getCapId());
+				projItem.put("Capstone Faculty",capstone.getFname()+" "+capstone.getLname());
+			}
+			User neg = userJdbcDao.selectById(proj.getNegId());
+			projItem.put("Negotiating Faculty",neg.getFname()+" "+neg.getLname());
+		}
+		if(proiority > 0) {
+			//project submitted
+			User lead = userJdbcDao.selectById(proj.getLeadId());
+			projItem.put("Lead Faculty",lead.getFname()+" "+lead.getLname());
+			projItem.put("Man Hours",Integer.toString(proj.getManHours()));
+		}
+		return projItem;
+	}
+	
+	/**
+	 * Set number for status that higher number can contain
+	 * lower number elements in map
+	 * @param roleName of the user
+	 * @return returns count of user found
+	 */
+	protected int proiorityStatus(String stat) {
+		int priority = 0;
+		switch(stat) {
+		 case "Completed": 
+			 	priority = 5;
+	        	break;
+	        case "In Progress": 
+	        	priority = 4;
+	        	break;
+	        case "Assigned": 
+	        	priority = 3;
+	        	break;
+	        case "Posted": 
+	        	priority = 2;
+	        	break;
+	        case "Submitted": 
+	        	priority = 1;
+	        	break;
+	        default:
+	        	break;
+		}
+		return priority;
 	}
 	
 	/**

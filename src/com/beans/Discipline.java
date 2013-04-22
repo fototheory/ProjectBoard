@@ -4,13 +4,11 @@ public class Discipline {
 	private int id;
 	private String name;
 	
+	public Discipline() {}
+			
 	public Discipline(int id, String name) {
 		this.id = id;
 		this.name = name;
-	}
-	
-	public Discipline(){
-		
 	}
 	
 	//setter/getter

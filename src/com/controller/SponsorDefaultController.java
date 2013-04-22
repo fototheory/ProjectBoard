@@ -1,6 +1,8 @@
 package com.controller;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -56,7 +58,7 @@ public class SponsorDefaultController {
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
 			//check sponsor has a project already
-			List<Project> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
+			Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
 			//send session variable to view 
 			mav.addObject("sessionUserInfo", user);	
 			//send session variable to view 
