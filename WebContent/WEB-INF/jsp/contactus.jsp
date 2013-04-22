@@ -46,26 +46,27 @@
 				<a href="#" id="loginButton"><span>Login</span><em></em></a>
 				<div style="clear: both"></div>
 				<div id="loginBox">
-					<form:form modelAttribute="loginUser" method="POST"	action="login.do" id="userdetailsid">
-						<fieldset id="body">
-							<fieldset>
-								<label for="email">Email Address</label>
-								<form:input path="email" type="text" required="true" />
+					<div id="loginForm">
+						<form:form modelAttribute="loginUser" method="POST"	action="login.do" id="userdetailsid">
+							<fieldset id="body">
+								<fieldset>
+									<label for="email">Email Address</label>
+									<form:input id="email" path="email" type="text" required="true" />
+								</fieldset>
+								<fieldset>
+									<label for="password">Password</label>
+									<form:input id="password" path="password" type="password" required="true" />
+								</fieldset>
+								<input type="submit" id="login" value="Sign in" />
 							</fieldset>
-							<fieldset>
-								<label for="password">Password</label>
-								<form:input path="password" type="password" required="true" />
-							</fieldset>
-							<input type="submit" id="login" value="Sign in" />
-						</fieldset>
-						<span><a href="registrationform.html#">Sign up</a></span>
-					</form:form>
+							<span><a href="registrationform.html#">Sign up</a></span>
+						</form:form>
+					</div>
 				</div>
 			</div>
 			<!-- Login Ends Here -->
         </div>
     </div>
-	
 	
       <div class="row-1">
         <h1> <a class="logo" href="login.html">The Capstone Portal @ NU</a> <strong class="slog">Ideas into action</strong> </h1>
