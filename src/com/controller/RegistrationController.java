@@ -47,7 +47,9 @@ public class RegistrationController {
 
 		Registration registration = new Registration();
 		model.put("registration", registration);
-
+		model.addAttribute("roles",roles);
+		model.addAttribute("disciplines", disciplines);
+		
 		mav.addObject("roles",roles);
 		mav.addObject("disciplines",disciplines);
 
@@ -56,7 +58,7 @@ public class RegistrationController {
 
 	// Process the form.
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processRegistration( Registration registration, BindingResult result) {
+	public ModelAndView processRegistration( Registration registration, BindingResult result, ModelMap model) {
 		ModelAndView mav = new ModelAndView("registrationsuccess");
 		User tempUser = new User();
 		tempUser.setFname(registration.getFname());
@@ -71,9 +73,15 @@ public class RegistrationController {
 		// set custom Validation by user
 		registrationValidation.validate(registration, result);
 		if (result.hasErrors()) {
-			logger.info("Registration form had erorr.");
+			logger.info("Registration form has missing information: "+result.getFieldError());
+			
+			List<Role> roles = roleService.selectAllRoles();
+			List<Discipline> disciplines = disciplineService.selectAllDisciplines();
 			
 			mav.setViewName("registrationform");
+			mav.addObject("roles",roles);
+			mav.addObject("disciplines",disciplines);
+
 			return mav;
 		}
 

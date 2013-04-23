@@ -2,11 +2,10 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
-<!-- resources http://jqueryui.com/dialog/#modal -->
 
 <html lang="en">
 <head>
-<title>The Capstone Portal @ NU | Projects</title>
+<title>The Capstone Portal @ NU | Registration</title>
 <meta charset="utf-8">
 <link rel="stylesheet" href="css/reset.css" type="text/css"	media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css"	media="screen">
@@ -113,7 +112,7 @@ input,label {
 											<form:errors path="confirmPassword" /></FONT></td>
 										</tr>
 										<tr>
-											<td><form:input path="confirmPassword" type="confirmPassword" required="true" /></td>
+											<td><form:input path="confirmPassword" type="password" required="true" /></td>
 										</tr>
 										<tr>
 											<td>Email:<FONT color="red">
@@ -126,37 +125,37 @@ input,label {
 										<!-- This displays the various disciplines from the database. -->
 										<tr>
 											<td>Subject area:
+											<FONT color="red"><form:errors path="discipline" required="true" /></FONT></td>
 										</tr>
 										<tr>
 											<td>
+												<!-- Display disciplines from the database -->
 												<c:forEach items="${disciplines}" var="discipline">
-													<form:radiobutton path="discipline" name="discipline" value="${discipline.id}" required="true" />
-													<c:out value="${discipline.name}" />
+													<form:radiobutton path="discipline" name="discipline" 
+														value="${discipline.id}" label="${discipline.name}" required="true" />
 													<br />
 												</c:forEach>
 											</td>
 										</tr>
-							
-										<!-- This displays the various roles from the database. -->
 										<tr>
 											<td>You are a:
+											<FONT color="red"><form:errors path="role" /></FONT></td>
 										</tr>
 										<tr>
 											<td>
+												<!-- Display roles from the database -->
 												<c:forEach items="${roles}" var="role">
-													<form:radiobutton path="role" name="userrole" value="${role.id}" required="true" />
-													<c:out value="${role.name}" />
+													<form:radiobutton path="role" name="userrole" 
+														value="${role.id}" label="${role.name}" required="true" />
 													<br />
 												</c:forEach>
 											</td>
 										</tr>
-
 										<tr>
 											<td><input type="submit" value="Submit" /></td>
 										</tr>
 									</table>
 								</form:form>
-
 							</div>
 						</div>
 					</div>

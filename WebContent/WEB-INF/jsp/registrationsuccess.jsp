@@ -9,7 +9,8 @@
 </head>
 <body>
 
-	<h3>Welcome Registration Successfully.</h3>
+	<h2>Welcome <c:out value="${registration.fname}" /> <c:out value="${registration.lname}" />. Thank you for registering.</h2>
+	<h3>You should receive an email from the system administrator when your account is ready.</h3>
 	<table>
 		<tr>
 			<td>User Name :</td>
