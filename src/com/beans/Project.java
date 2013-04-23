@@ -135,8 +135,8 @@ public class Project {
 		return statusId;
 	}
 
-	public void setStatusId(int reqId) {
-		this.statusId = reqId;
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
 	}
 
 	public int getDispId() {

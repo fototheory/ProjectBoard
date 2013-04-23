@@ -9,16 +9,14 @@
 </head>
 <body>
 <c:if test="${not empty sessionUserInfo}">
-	<font color="red">${sessionUserInfo.getId()}</font><br /><br />
+	<font color="red">${sessionUserInfo.getFname()} ${sessionUserInfo.getLname()}</font><br /><br />
 </c:if>
 <c:if test="${not empty projectList}">
-<c:forEach items="${projectList}" var="element">    
-  <tr>
-    <td>`${element.getStatus()}`</td>
-    <td>${element.getTitle()}</td>
-    <td>${element.getDesc()}</td>
-    <td>${element.getManHours()}</td>
-  </tr>
+<c:forEach items="${projectList}" var="map">   
+	<c:forEach items="${map}" var="entry"> 
+		<p>${entry.key}: ${entry.value}</p>
+	</c:forEach>
+	<hr />
 </c:forEach>
 </c:if>
 </body>

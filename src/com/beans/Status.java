@@ -4,6 +4,8 @@ public class Status {
 	private int id;
 	private String name;
 	
+	public Status() { }
+	
 	public Status(int id, String name) {
 		super();
 		this.id = id;
