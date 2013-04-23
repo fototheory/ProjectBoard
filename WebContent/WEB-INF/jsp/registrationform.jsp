@@ -1,5 +1,6 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <!-- resources http://jqueryui.com/dialog/#modal -->
 
@@ -128,8 +129,8 @@ input,label {
 										</tr>
 										<tr>
 											<td>
-												<c:forEach items="${discipline}" var="discipline">
-													<input type="radio" name="discipline" value="${discipline.name}" id="${discipline.id}" required="true" >
+												<c:forEach items="${disciplines}" var="discipline">
+													<form:radiobutton path="discipline" name="discipline" value="${discipline.id}" required="true" />
 													<c:out value="${discipline.name}" />
 													<br />
 												</c:forEach>
@@ -143,7 +144,7 @@ input,label {
 										<tr>
 											<td>
 												<c:forEach items="${roles}" var="role">
-													<input type="radio" name="userrole" value="${role.name}" id="${role.id}" required="true" >
+													<form:radiobutton path="role" name="userrole" value="${role.id}" required="true" />
 													<c:out value="${role.name}" />
 													<br />
 												</c:forEach>
