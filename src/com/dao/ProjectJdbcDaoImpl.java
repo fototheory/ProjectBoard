@@ -37,21 +37,32 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	 */
 	@Override
 	public Project selectById(int id) {
-		String query = "SELECT * FROM user WHERE user_id=?";
-		List<Project> userInfo = this.template.query(query,
+		String query = "SELECT * FROM project WHERE project_id=?";
+		List<Project> projInfo = this.template.query(query,
 		        new Object[]{id},
 		        new RowMapper<Project>() {
 		            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
 	            	   	Project temp = new Project();
-	            		temp.setId(rs.getInt("user_id"));
-		            	/*temp.setFname(rs.getString("user_fname"));
-		            	temp.setLname(rs.getString("user_lname"));
-		            	temp.setRoleId(rs.getInt("role_id"));
-		            	temp.setVerified(rs.getInt("user_isverified"));*/
+	            		temp.setId(rs.getInt("project_id"));
+	            	   	temp.setTitle(rs.getString("project_title"));
+	                	temp.setDesc(rs.getString("project_description"));
+	                	temp.setArchived(rs.getInt("project_isarchived"));
+	                	temp.setManHours(rs.getInt("project_manhours"));
+	                	temp.setDue(rs.getDate("project_date_due"));
+	                	temp.setDateStarted(rs.getDate("project_date_started"));
+	                	temp.setDateCompleted(rs.getDate("project_date_completed"));
+	                	temp.setDateCreated(rs.getDate("project_date_created"));
+	                	temp.setStatusId(rs.getInt("status_id"));
+	                	temp.setDispId(rs.getInt("discipline_id"));
+	                	temp.setGroupId(rs.getInt("group_id"));
+	                	temp.setSponsorId(rs.getInt("project_sponsor"));
+	                	temp.setLeadId(rs.getInt("project_lead_faculty"));
+	                	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+	                	temp.setCapId(rs.getInt("project_capstone_faculty"));
 		                return temp;
 		            }
 		        });
-		return this.fetchOneProject(userInfo);	
+		return this.fetchOneProject(projInfo);	
 	}
 	/**
 	 * select by email and password
@@ -120,6 +131,12 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
                 return temp;
             }
         });
+	}
+	
+	public int update(Project proj) {
+		String query = "UPDATE project SET project_title=?, project_description=?, " +
+				"project_date_due=? WHERE project_id=?";
+		return this.template.update(query, new Object[]{proj.getTitle(), proj.getDesc(), proj.getDue(),proj.getId()});
 	}
 	
 	/**

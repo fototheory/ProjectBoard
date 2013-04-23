@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -90,6 +91,20 @@ public class SponsorDefaultController {
 		}
 	}
 
+	@RequestMapping(params = {"logout"})
+	public ModelAndView logout(@RequestParam(value = "logout") String logoutVal) {
+		ModelAndView mav;
+		if(logoutVal.equals("yes")) {
+			sessionScopeUserData.setUserInfo(new User());
+			mav = new ModelAndView(new RedirectView("login.do"), "status", "You successfully logout");
+			//mav.addObject("status", "success");
+		}
+		else {
+			mav = new ModelAndView("redirect:/sponsor.do");
+		}
+		return mav;
+	}
+	
 	protected boolean sessionCheck(SessionScopeData sessionData) {		
 		if(sessionScopeUserData!=null) {
 			if(sessionService.sessoionCheck(sessionData.getUserInfo().getId())>0) {

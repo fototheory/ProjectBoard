@@ -95,15 +95,23 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	public int updateProjectInfo(Project project) {
+		//get user with matching email and password
+		return projectJdbcDao.update(project);
+	}
+	
 	protected Map<String, String> formatProjectItem(Project proj) {
 		Map<String, String> projItem = new LinkedHashMap<String, String>();
 		//set information required for any status
+		projItem.put("ID",Integer.toString(proj.getId()));
 		projItem.put("Title",proj.getTitle());
 		projItem.put("Description",proj.getDesc());
 		if(proj.getDue()!= null) {
 			projItem.put("Due Date",proj.getDue().toString());
 		}
-		projItem.put("Date Created",proj.getDateCreated().toString());
+		if(proj.getDateCreated()!= null) {
+			projItem.put("Date Created",proj.getDateCreated().toString());
+		}
 		//instantiates UserJdbcDaoImpl user related database transaction
 		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
 		User sponsor = userJdbcDao.selectById(proj.getSponsorId());
