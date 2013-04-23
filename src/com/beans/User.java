@@ -20,6 +20,7 @@ public class User {
 	private int roleId;
 	private int profileId;
 	private int disciplineId;
+	private int groupId;
 	
 	/**
 	 * default constructor
@@ -33,7 +34,7 @@ public class User {
 	 * @param all the values for the attributes
 	 */
 	public User(int id, String fname, String lname, String email, String password, 
-			int isVerified, int hasProfile, int roleId, int profileId, int disciplineId) {
+			int isVerified, int hasProfile, int roleId, int profileId, int disciplineId, int groupId) {
 		super();
 		this.id = id;
 		this.fname = fname;
@@ -45,6 +46,7 @@ public class User {
 		this.roleId = roleId;
 		this.profileId = profileId;
 		this.disciplineId = disciplineId;
+		this.groupId = groupId;
 	}
 	
 	//setter/getter
@@ -124,13 +126,22 @@ public class User {
 		this.disciplineId = disciplineId;
 	}
 
+	public int getGroupId() {
+		return groupId;
+	}
+
+	public void setGroupId(int groupId) {
+		this.groupId = groupId;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", fname=" + fname + ", lname=" + lname
 				+ ", email=" + email + ", password=" + password
-				+ ", isVerified=" + isVerified + ", hasProfile="
-				+ hasProfile + ", roleId=" + roleId + ", profileId="
-				+ profileId + ", disciplineId=" + disciplineId + "]";
+				+ ", isVerified=" + isVerified + ", hasProfile=" + hasProfile
+				+ ", roleId=" + roleId + ", profileId=" + profileId
+				+ ", disciplineId=" + disciplineId + ", groupId=" + groupId
+				+ "]";
 	}
 
 }

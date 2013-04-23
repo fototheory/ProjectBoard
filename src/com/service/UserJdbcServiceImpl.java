@@ -66,4 +66,8 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	public void addNewUser(User user) {
 		userJdbcDao.addNewUser(user);
 	}
+	
+	public User getUserByEmail(String email) {
+		return userJdbcDao.getUserByEmail(email);
+	}
 }

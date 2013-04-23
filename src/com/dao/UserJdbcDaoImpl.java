@@ -117,18 +117,36 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		return id;
 	}
 	
-	public int addNewUser(User user){
-		logger.info("adding user "+user.getFname());
+	public int addNewUser(User user) {
+		logger.info("adding user "+user.getEmail()+","+user.getPassword()+","+user.getFname()+
+				","+user.getLname()+","+user.getRoleId()+","+user.getDisciplineId());
+
 		
 		String query = "insert into user (user_email,user_password,user_fname,user_lname,role_id,discipline_id) " +
 				"values (?, ?, ?, ?, ?, ?)";
 		
 		this.template.update(query,user.getEmail(),user.getPassword(),
 				user.getFname(),user.getLname(),
-				//user.getRoleId(),user.getDisciplineId());
-				1,1); // set role to Student and disciple to CompSci for now.
+				user.getRoleId(),user.getDisciplineId());
 
 		return getIdByEmail(user.getEmail());
 	}
-				
+
+	public User getUserByEmail(String email) {
+		String query = "select * from user where user_email = ?";
+		
+		List<User> userInfo = this.template.query(query,
+		        new Object[]{email},
+		        new RowMapper<User>() {
+		            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+	            	   	User temp = new User(rs.getInt("user_id"),rs.getString("user_fname"),rs.getString("user_lname"),
+	            	   			rs.getString("user_email"),rs.getString("user_password"),rs.getInt("user_isverified"),
+	            	   			rs.getInt("user_hasProfile"),rs.getInt("role_Id"),rs.getInt("profile_Id"),
+	            	   			rs.getInt("discipline_Id"),rs.getInt("group_id"));
+	            	   	
+		                return temp;
+		            }
+		        });
+		return this.fetchOneUser(userInfo);	
+	}
 }
