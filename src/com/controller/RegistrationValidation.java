@@ -26,22 +26,30 @@ public class RegistrationValidation implements Validator{
 				"NotEmpty.registration.lname", "Last Name must not be Empty.");
 		String lname = registration.getLname();
 
-		if ((fname.length()) > 50) {
+		if ((fname.length()) < 5 ||(fname.length()) > 20) {
 			errors.rejectValue("fname", "lengthOfUser.registration.fname",
-					"User Name must not more than 50 characters.");
+					"First Name must be between 4 and 20 characters.");
 		}
 
-		if ((lname.length()) > 50) {
+		if ((lname.length()) < 5 ||(lname.length()) > 20) {
 			errors.rejectValue("lname", "lengthOfUser.registration.lname",
-					"User Name must not more than 50 characters.");
+					"Last Name must be between 4 and 20 characters.");
 		}
 
 		//Check password fields
 //Still need to check whether the password conforms to our password rules (i.e. >4 <20 characters)
+		
 		if (!(registration.getPassword()).equals(registration.getConfirmPassword())) {
 			errors.rejectValue("password",
 					"matchingPassword.registration.password",
 					"Password and Confirm Password do not match.");
+		}
+		
+		String password = registration.getPassword();
+		
+		if ((password.length()) < 5 ||(password.length()) > 20) {
+			errors.rejectValue("password", "lengthOfUser.registration.password",
+					"Password must be between 4 and 20 characters.");
 		}
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password",
@@ -54,6 +62,12 @@ public class RegistrationValidation implements Validator{
 //Still need to check whether the email is in a valid format
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
 				"NotEmpty.registration.email", "Email must not be Empty.");
+		
+//e mail validation codes
+		
+		
+		
+		
 		
 		//Check discipline and roles to make sure one is selected
 		if (registration.getRole() == 0) {

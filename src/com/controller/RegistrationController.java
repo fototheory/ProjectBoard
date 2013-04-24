@@ -23,17 +23,18 @@ import com.beans.User;
 public class RegistrationController {
 	protected final Log logger = LogFactory.getLog(getClass());
 
-	//instantiates UserJdbcServiceImpl for user related activities
-	UserJdbcServiceImpl  userService = new UserJdbcServiceImpl();
-	//instantiates RoleJdbcServiceImpl for role related activities
-	RoleJdbcServiceImpl  roleService = new RoleJdbcServiceImpl();
-	//instantiates DisciplineJdbcServiceImpl for role related activities
+	// instantiates UserJdbcServiceImpl for user related activities
+	UserJdbcServiceImpl userService = new UserJdbcServiceImpl();
+	// instantiates RoleJdbcServiceImpl for role related activities
+	RoleJdbcServiceImpl roleService = new RoleJdbcServiceImpl();
+	// instantiates DisciplineJdbcServiceImpl for role related activities
 	DisciplineJdbcServiceImpl disciplineService = new DisciplineJdbcServiceImpl();
 
 	@Autowired
 	private RegistrationValidation registrationValidation;
 
-	public void setRegistrationValidation(RegistrationValidation registrationValidation) {
+	public void setRegistrationValidation(
+			RegistrationValidation registrationValidation) {
 		this.registrationValidation = registrationValidation;
 	}
 
@@ -47,18 +48,19 @@ public class RegistrationController {
 
 		Registration registration = new Registration();
 		model.put("registration", registration);
-		model.addAttribute("roles",roles);
+		model.addAttribute("roles", roles);
 		model.addAttribute("disciplines", disciplines);
-		
-		mav.addObject("roles",roles);
-		mav.addObject("disciplines",disciplines);
+
+		mav.addObject("roles", roles);
+		mav.addObject("disciplines", disciplines);
 
 		return mav;
 	}
 
 	// Process the form.
 	@RequestMapping(method = RequestMethod.POST)
-	public ModelAndView processRegistration( Registration registration, BindingResult result, ModelMap model) {
+	public ModelAndView processRegistration(Registration registration,
+			BindingResult result, ModelMap model) {
 		ModelAndView mav = new ModelAndView("registrationsuccess");
 		User tempUser = new User();
 		tempUser.setFname(registration.getFname());
@@ -68,31 +70,38 @@ public class RegistrationController {
 		tempUser.setRoleId(registration.getRole());
 		tempUser.setDisciplineId(registration.getDiscipline());
 
-		logger.info("processRegistration: "+tempUser);
+		logger.info("processRegistration: " + tempUser);
 
 		// set custom Validation by user
 		registrationValidation.validate(registration, result);
 		if (result.hasErrors()) {
-			logger.info("Registration form has missing information: "+result.getFieldError());
-			
+			logger.info("Registration form has missing information: "
+					+ result.getFieldError());
+
 			List<Role> roles = roleService.selectAllRoles();
-			List<Discipline> disciplines = disciplineService.selectAllDisciplines();
-			
+			List<Discipline> disciplines = disciplineService
+					.selectAllDisciplines();
+
 			mav.setViewName("registrationform");
-			mav.addObject("roles",roles);
-			mav.addObject("disciplines",disciplines);
+			mav.addObject("roles", roles);
+			mav.addObject("disciplines", disciplines);
 
 			return mav;
 		}
 
 		userService.addNewUser(tempUser);
 
-		mav.addObject("role",roleService.getSpringJdbcDao().selectById(registration.getRole()).getName());
-		mav.addObject("discipline",disciplineService.getSpringJdbcDao().selectById(registration.getDiscipline()).getName());
+		mav.addObject(
+				"role",
+				roleService.getSpringJdbcDao()
+						.selectById(registration.getRole()).getName());
+		mav.addObject("discipline", disciplineService.getSpringJdbcDao()
+				.selectById(registration.getDiscipline()).getName());
 
-		//Log output to show that the data was written to the database.
-		logger.info("Registration successfully written to the database."+userService.getUserByEmail(registration.getEmail()));
-				
+		// Log output to show that the data was written to the database.
+		logger.info("Registration successfully written to the database."
+				+ userService.getUserByEmail(registration.getEmail()));
+
 		return mav;
 	}
 }
