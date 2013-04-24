@@ -1,6 +1,9 @@
 package com.service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -100,10 +103,36 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectJdbcDao.update(project);
 	}
 	
+	public int updateProjectStatusWithFac(int projId, String stat, int dispId) {
+		int statId = 0; 
+		statId = fetchStatusId(stat);
+		if(statId>0) {
+			//get lead faculty id
+			int leadId = fetchLeadId(dispId);
+			if(leadId>0) {
+				return projectJdbcDao.updateStatusWithFac(projId, statId, "project_lead_faculty",leadId);
+			}
+		}
+		return 0;
+	}
+	
+	protected int fetchLeadId(int dispId) {
+		//instantiates StatusJdbcDaoImpl user related database transaction
+		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
+		return userJdbcDao.getLeadId(dispId);
+	}
+	
+	protected int fetchStatusId(String stat) {
+		//instantiates StatusJdbcDaoImpl user related database transaction
+		StatusJdbcDaoImpl statJdbcDao = new StatusJdbcDaoImpl();
+		return statJdbcDao.selectIdByName(stat);
+	}
+	
 	protected Map<String, String> formatProjectItem(Project proj) {
 		Map<String, String> projItem = new LinkedHashMap<String, String>();
 		//set information required for any status
 		projItem.put("ID",Integer.toString(proj.getId()));
+		projItem.put("DispID",Integer.toString(proj.getDispId()));
 		projItem.put("Title",proj.getTitle());
 		projItem.put("Description",proj.getDesc());
 		if(proj.getDue()!= null) {

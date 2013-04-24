@@ -1,26 +1,31 @@
 package com.form;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ProjectInfo {
 	private int projectId;
 	private String title;
 	private String desc;
-	private Date due;
+	private int disp;
+	private String due;
 	private String action;
 	
 	public ProjectInfo() {
 		
 	}
-	public ProjectInfo(int projectId, String title, String desc, Date due,
-			String action) {
+	
+	public ProjectInfo(int projectId, String title, String desc, int disp,
+			String due, String action) {
 		super();
 		this.projectId = projectId;
 		this.title = title;
 		this.desc = desc;
+		this.disp = disp;
 		this.due = due;
 		this.action = action;
 	}
+
 	public int getProjectId() {
 		return projectId;
 	}
@@ -39,10 +44,16 @@ public class ProjectInfo {
 	public void setDesc(String desc) {
 		this.desc = desc;
 	}
-	public Date getDue() {
+	public int getDisp() {
+		return disp;
+	}
+	public void setDisp(int disp) {
+		this.disp = disp;
+	}
+	public String getDue() {
 		return due;
 	}
-	public void setDue(Date due) {
+	public void setDue(String due) {
 		this.due = due;
 	}
 	public String getAction() {

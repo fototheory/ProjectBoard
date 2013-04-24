@@ -23,14 +23,16 @@
 					<div>
 						<p>						
 						<c:forEach items="${map}" var="entry"> 
-							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date'}">
+							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date'&& entry.key != 'DispID'}">
 							${entry.key}: ${entry.value}<br />
 							</c:if>
 						</c:forEach>	
 						<br />
+						<c:if test="${map.get('Status') eq 'New'}">
 						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:200px;"> | Edit project | </a>	
 						<br /><br />
-						<a href="#" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>				
+						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
+						</c:if>				
 						</p>
 					</div>
 					</c:forEach>

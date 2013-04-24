@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.beans.User;
+import com.dao.StatusJdbcDaoImpl;
 import com.dao.UserJdbcDaoImpl;
 
 /**
@@ -69,5 +70,9 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	
 	public User getUserByEmail(String email) {
 		return userJdbcDao.getUserByEmail(email);
+	}
+	
+	public int getLeadId(int dispId) {
+		return userJdbcDao.getLeadId(dispId);
 	}
 }

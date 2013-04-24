@@ -2,6 +2,8 @@ package com.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -134,9 +136,36 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	}
 	
 	public int update(Project proj) {
+		java.sql.Date sqlDate = null;
+		if(proj.getDue()!=null) {
+			sqlDate = changetoSqlDate(proj.getDue());
+		}
 		String query = "UPDATE project SET project_title=?, project_description=?, " +
 				"project_date_due=? WHERE project_id=?";
-		return this.template.update(query, new Object[]{proj.getTitle(), proj.getDesc(), proj.getDue(),proj.getId()});
+		return this.template.update(query, new Object[]{proj.getTitle(), proj.getDesc(), sqlDate, proj.getId()});
+	}
+	
+	public int updateStatus(int projId, int statId) {
+		String query = "UPDATE project SET status_id=? WHERE project_id=?";
+		return this.template.update(query, new Object[]{statId, projId});
+	}
+	
+	public int updateStatusWithFac(int projId, int statId, String facFld, int facId) {
+		String query = "UPDATE project SET status_id=?, "+ facFld+"=? WHERE project_id=?";
+		return this.template.update(query, new Object[]{statId, facId, projId});
+	}
+	
+	protected java.sql.Date changetoSqlDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
+		String formattedDate = sdf.format(date);
+		java.sql.Date sqlDate = null;
+		try {
+			sqlDate = new java.sql.Date(sdf.parse(formattedDate).getTime());
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return sqlDate;
 	}
 	
 	/**

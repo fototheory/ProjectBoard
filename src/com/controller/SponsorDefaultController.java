@@ -54,7 +54,7 @@ public class SponsorDefaultController {
 	}
 	
 	@RequestMapping(value = "/projectList", method = RequestMethod.GET)
-	public ModelAndView projectList() {
+	public ModelAndView projectList(@RequestParam(value = "status", required=false) String stat) {
 		ModelAndView mav = new ModelAndView("/sponsor/projectList");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
@@ -64,6 +64,7 @@ public class SponsorDefaultController {
 			mav.addObject("sessionUserInfo", user);	
 			//send session variable to view 
 			mav.addObject("projectList", projList);	
+			mav.addObject("status", stat);
 			return mav;
 		}
 		else {

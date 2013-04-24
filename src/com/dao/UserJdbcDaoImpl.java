@@ -132,6 +132,12 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		return getIdByEmail(user.getEmail());
 	}
 
+	public int getLeadId(int dispId) {
+		String query = "SELECT u.user_id FROM user u, role r " +
+				"WHERE u.role_id=r.role_id AND u.discipline_id=? AND r.role_name=?";
+		return this.template.queryForInt(query, new Object[]{dispId,"Leadfaculty"});
+	}
+	
 	public User getUserByEmail(String email) {
 		String query = "select * from user where user_email = ?";
 		

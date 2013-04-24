@@ -1,10 +1,14 @@
 package com.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,12 +51,12 @@ public class SponsorProjectFormController {
 		if(actionVal.equals("edit")) {
 			//fetch project information based on id
 			Project proj = projService.selectById(projId);
-			Date dueDate = null;
+			String dueDate = null;
 			if(proj.getDue()!=null) {
-				dueDate = proj.getDue();
+				dueDate = changetoSqlDate(proj.getDue());
 			}
 			ProjectInfo ProjData = new ProjectInfo(proj.getId(),proj.getTitle(),
-					proj.getDesc(),dueDate,actionVal);
+					proj.getDesc(),proj.getDispId(), dueDate,actionVal);
 			mav.addObject("ProjData", ProjData);
 		}
 		else {
@@ -60,6 +64,11 @@ public class SponsorProjectFormController {
 		}
 		return mav;
 	}	
+	
+	protected String changetoSqlDate(Date date) {
+		DateFormat df =  new SimpleDateFormat("MM/dd/yyyy");
+		return df.format(date);
+	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView projectSubmit(@ModelAttribute("ProjData") ProjectInfo ProjData) {
@@ -69,7 +78,14 @@ public class SponsorProjectFormController {
 			proj.setId(ProjData.getProjectId());
 			proj.setTitle(ProjData.getTitle());
 			proj.setDesc(ProjData.getDesc());
-			proj.setDue(ProjData.getDue());			
+			proj.setDispId(ProjData.getDisp());	
+			try {
+				Date date = new SimpleDateFormat("MM/dd/yyyy").parse(ProjData.getDue());
+				proj.setDue(date);		
+			}
+			catch(Exception e) {
+				System.out.println(e.toString());
+			}
 			if(projService.updateProjectInfo(proj)>0) {
 				status="project successfully updated";
 			}
