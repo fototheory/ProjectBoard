@@ -49,10 +49,9 @@ public class RegistrationValidation implements Validator {
 			}
 		}
 
-		// Check password fields
+		
 		// Still need to check whether the password conforms to our password
-		// rules (i.e. >4 <20 characters)
-
+		
 		if (!(registration.getPassword()).equals(registration
 				.getConfirmPassword())) {
 			errors.rejectValue("password",
@@ -62,11 +61,14 @@ public class RegistrationValidation implements Validator {
 
 		String password = registration.getPassword();
 
+		// checking the field is non empty
 		
 		if (!((password.length()) == 0))
 			
 		{
 		
+			// rules (i.e. >4 <20 characters)
+
 		if ((password.length()) < 5 || (password.length()) > 20) {
 			errors.rejectValue("password",
 					"lengthOfUser.registration.password",

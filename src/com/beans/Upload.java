@@ -2,6 +2,8 @@ package com.beans;
 
 import java.util.Date;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 public class Upload {
 	//attributes
 	private int id;
