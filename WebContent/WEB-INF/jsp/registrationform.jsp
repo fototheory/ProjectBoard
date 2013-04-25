@@ -76,7 +76,7 @@ input,label {
 					<div class="wrapper margin-bot">
 						<div class="col-3">
 							<div class="indent">
-								<h2 class="p0">Sign up form</h2>
+								<h2 class="p0">Registration Form</h2>
 								<c:if test="${not empty status}">
 									<font color="red">${status}</font>
 								</c:if>
