@@ -84,7 +84,7 @@ input,label {
 									commandName="registration">
 									<table>
 										<tr>
-											<td>First Name:<FONT color="red">
+											<td>First Name:<br /><FONT color="red">
 											<form:errors path="fname" /></FONT></td>
 										</tr>
 
@@ -93,7 +93,7 @@ input,label {
 										</tr>
 
 										<tr>
-											<td>Last Name:<FONT color="red">
+											<td>Last Name:<br /><FONT color="red">
 											<form:errors path="lname" /></FONT></td>
 										</tr>
 
@@ -101,21 +101,21 @@ input,label {
 											<td><form:input path="lname" type="text" required="true" /></td>
 										</tr>
 										<tr>
-											<td>Password:<FONT color="red">
+											<td>Password:<br /><FONT color="red">
 											<form:errors path="password" /></FONT></td>
 										</tr>
 										<tr>
 											<td><form:input path="password" type="password" required="true" /></td>
 										</tr>
 										<tr>
-											<td>Confirm Password:<FONT color="red">
+											<td>Confirm Password:<br /><FONT color="red">
 											<form:errors path="confirmPassword" /></FONT></td>
 										</tr>
 										<tr>
 											<td><form:input path="confirmPassword" type="password" required="true" /></td>
 										</tr>
 										<tr>
-											<td>Email:<FONT color="red">
+											<td>Email:<br /><FONT color="red">
 											<form:errors path="email" /></FONT></td>
 										</tr>
 										<tr>
@@ -124,7 +124,7 @@ input,label {
 
 										<!-- This displays the various disciplines from the database. -->
 										<tr>
-											<td>Subject area:
+											<td>Subject area:<br />
 											<FONT color="red"><form:errors path="discipline" required="true" /></FONT></td>
 										</tr>
 										<tr>
@@ -138,7 +138,7 @@ input,label {
 											</td>
 										</tr>
 										<tr>
-											<td>You are a:
+											<td>You are a:<br />
 											<FONT color="red"><form:errors path="role" /></FONT></td>
 										</tr>
 										<tr>

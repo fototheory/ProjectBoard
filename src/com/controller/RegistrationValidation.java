@@ -1,16 +1,22 @@
 package com.controller;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import org.springframework.validation.annotation.Validated;
-
 import com.form.Registration;
 
 @Component("registrationValidator")
 public class RegistrationValidation implements Validator {
 
+	//EMAIL_PATTERN taken from:
+	//http://www.mkyong.com/regular-expressions/how-to-validate-email-address-with-regular-expression/
+	private static final String EMAIL_PATTERN = 
+			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+	
 	public boolean supports(Class<?> klass) {
 		return Registration.class.isAssignableFrom(klass);
 	}
@@ -22,80 +28,70 @@ public class RegistrationValidation implements Validator {
 		// Check first name & last name fields
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "fname",
 				"NotEmpty.registration.fname", "First Name must not be Empty.");
-		String fname = registration.getFname();
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lname",
 				"NotEmpty.registration.lname", "Last Name must not be Empty.");
+
+		String fname = registration.getFname();
 		String lname = registration.getLname();
 
-		if (!((fname.length()) == 0))
-
-		{
-
-			if ((fname.length()) < 5 || (fname.length()) > 20) {
+		if (fname.length() > 0) {
+			if (fname.length() < 1 || fname.length() > 40) {
 				errors.rejectValue("fname", "lengthOfUser.registration.fname",
-						"First Name must be between 4 and 20 characters.");
+						"First name must be not be greater than 40 characters.");
 			}
-
 		}
 
-		if (!((lname.length()) == 0))
-
-		{
-
-			if ((lname.length()) < 5 || (lname.length()) > 20) {
+		if (lname.length() > 0) {
+			if (lname.length() <1 || lname.length() > 40) {
 				errors.rejectValue("lname", "lengthOfUser.registration.lname",
-						"Last Name must be between 4 and 20 characters.");
+						"Last name must not be greater than 40 characters.");
 			}
 		}
 
-		
-		// Still need to check whether the password conforms to our password
-		
-		if (!(registration.getPassword()).equals(registration
-				.getConfirmPassword())) {
+		// Check password fields
+		if (!(registration.getPassword()).equals(registration.getConfirmPassword())) {
 			errors.rejectValue("password",
 					"matchingPassword.registration.password",
 					"Password and Confirm Password do not match.");
 		}
 
 		String password = registration.getPassword();
-
-		// checking the field is non empty
 		
-		if (!((password.length()) == 0))
-			
-		{
-		
-			// rules (i.e. >4 <20 characters)
-
-		if ((password.length()) < 5 || (password.length()) > 20) {
-			errors.rejectValue("password",
-					"lengthOfUser.registration.password",
-					"Password must be between 4 and 20 characters.");
+		if (password.length() > 0) {
+			if (password.length() < 4 || password.length() > 40) {
+				errors.rejectValue("password",
+						"lengthOfUser.registration.password",
+						"Password must be between 4 and 40 characters.");
+			}
 		}
-
-		
-		}
-		
 			
-			
-		ValidationUtils
-				.rejectIfEmptyOrWhitespace(errors, "password",
-						"NotEmpty.registration.password",
-						"Password must not be Empty.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password",
+				"NotEmpty.registration.password",
+				"Password must not be Empty.");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "confirmPassword",
 				"NotEmpty.registration.confirmPassword",
 				"Confirm Password must not be Empty.");
 
 		// Check email field
-		// Still need to check whether the email is in a valid format
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email",
 				"NotEmpty.registration.email", "Email must not be Empty.");
 
-		// e mail validation codes
-
+		String email = registration.getEmail();
+		
+		if (email.length() > 0) {
+			if (!validateEmail(email)) {
+				errors.rejectValue("email","NotValid.registration.email",
+						"Not a valid email address.");
+			}
+			
+			if (email.length() > 40) {
+				errors.rejectValue("email","NotValid.registration.email",
+						"Email address cannot be longer than 40 characters.");
+			}
+		}
+		
 		// Check discipline and roles to make sure one is selected
 		if (registration.getRole() == 0) {
 			errors.rejectValue("role", "NotEmpty.registration.role",
@@ -107,5 +103,12 @@ public class RegistrationValidation implements Validator {
 					"NotEmpty.registration.discipline",
 					"A Discipline must be selected.");
 		}
+	}
+
+	public boolean validateEmail(final String emailAddress){
+		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+		Matcher matcher = pattern.matcher(emailAddress);
+		
+		return matcher.matches();
 	}
 }
