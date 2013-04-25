@@ -106,7 +106,7 @@
             </div>            
 						<!-- Dialog box -->
 						<div id="dialog-modal" title="Dialog box">
-							<p>Hi. You'll need to sign in as a sponsor to be able to post a project.</p>
+							<p>Hi. You'll need to sign in as a faculty member to be able to manage a project.</p>
 						</div>
           </div>
 		  <div class="col-4">         
