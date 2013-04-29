@@ -57,30 +57,49 @@ public class LoginController {
 			//retrieve a user record based on email and password
 			User regUser = LoginService.loginCheck(user.getEmail(), user.getPassword());
 			//check user found in database
-			if (regUser!=null)
+			if (regUser.getEmail() != null)
 			{
 				// user exists				
 				if(regUser.isVerified()==1) {
+					//set session with the user record
+					sessionscopehellodata.setUserInfo(regUser);
+					
+					//Check if verified user has a profile
+					if (regUser.getHasProfile() == 0){
+						//mav = new ModelAndView("redirect:/profilepage.do");
+						mav.setViewName("redirect:/profilepage.do");
+						return mav;
+					}
+					
 					//get role
 					Role rl = RoleService.selectById(regUser.getRoleId());
 	            	String roleName = rl.getName();
-	            	//if role name matches, forward a user to a user specific area
-					if(roleName.equals("Student")){
-						//set session with the user record
-						sessionscopehellodata.setUserInfo(regUser);
+
+	            	switch (roleName) {
+	            	case "Student":
 						//redirect a user to student/index.jsp
-						mav = new ModelAndView(new RedirectView("student/index.do"));
-					}
-					else if(roleName.equals("Sponsor")){
-						//set session with the user record
-						sessionscopehellodata.setUserInfo(regUser);
+						//mav = new ModelAndView(new RedirectView("student/index.do"));
+	            		mav.setViewName("redirect:/student/index.do");
+						break;
+	            	case "Sponsor":
+	            		System.out.println("User is a sponsor.");
 						//redirect a user to sponsor/index.jsp
 						mav = new ModelAndView("redirect:/sponsor.do");
-					}
-					else {
-						//error: role doesn't match
+						break;
+	            	case "Lead faculty":
+	            		System.out.println("Lead fauculty - not yet implemented.");
+	            		break;
+	            	case "Capstone faculty":
+	            		System.out.println("Captstone fauculty - not yet implemented.");
+	            		break;
+	            	case "Negotiating faculty":
+	            		System.out.println("Negotiating fauculty - not yet implemented.");
+	            		break;
+	            	default:
+	            		System.out.println("No user role found.");	            		
 						mav.addObject("status", "cannot find a user type, contact admininstrator");
-					}
+						break;
+	            	}
 				}
 				else {
 					//error: user has not been verified

@@ -230,13 +230,13 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
         case "Sponsor": 
         	fld = "project_sponsor";
         	break;
-        case "Leadfaculty": 
+        case "Lead faculty": 
         	fld = "project_lead_faculty";
         	break;
-        case "Negotiatingfaculty": 
+        case "Negotiating faculty": 
         	fld = "project_negotiating_faculty";
         	break;
-        case "Capstonefaculty": 
+        case "Capstone faculty": 
         	fld = "project_capstone_faculty";
         	break;
         default:

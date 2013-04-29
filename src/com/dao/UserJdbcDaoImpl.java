@@ -49,10 +49,16 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 	            	   	User temp = new User();
 	            		temp.setId(rs.getInt("user_id"));
+	            		temp.setEmail(rs.getString("user_email"));
+	            		temp.setPassword(rs.getString("user_password"));
 		            	temp.setFname(rs.getString("user_fname"));
 		            	temp.setLname(rs.getString("user_lname"));
 		            	temp.setRoleId(rs.getInt("role_id"));
 		            	temp.setVerified(rs.getInt("user_isverified"));
+		            	temp.setHasProfile(rs.getInt("user_hasprofile"));
+		            	temp.setProfileId(rs.getInt("profile_id"));
+		            	temp.setDisciplineId(rs.getInt("discipline_id"));
+		            	temp.setGroupId(rs.getInt("group_id"));
 		                return temp;
 		            }
 		        });
@@ -75,11 +81,17 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		            public User mapRow(ResultSet rs, int rowNum) throws SQLException {
 	            	   	User temp = new User();
 	            	   	temp.setId(rs.getInt("user_id"));
+	            		temp.setEmail(rs.getString("user_email"));
+	            		temp.setPassword(rs.getString("user_password"));
 		            	temp.setFname(rs.getString("user_fname"));
 		            	temp.setLname(rs.getString("user_lname"));
 		            	temp.setRoleId(rs.getInt("role_id"));
 		            	temp.setVerified(rs.getInt("user_isverified"));
-		                return temp;
+		            	temp.setHasProfile(rs.getInt("user_hasprofile"));
+		            	temp.setProfileId(rs.getInt("profile_id"));
+		            	temp.setDisciplineId(rs.getInt("discipline_id"));
+		            	temp.setGroupId(rs.getInt("group_id"));
+		            	return temp;
 		            }
 		        });
 		return this.fetchOneUser(userInfo);		
@@ -154,5 +166,11 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		            }
 		        });
 		return this.fetchOneUser(userInfo);	
+	}
+	
+	public int updateProfileId(User user,int profileId) {
+		String query = "update user set user_hasprofile=?,profile_id=? where user_id=?";
+		
+		return this.template.update(query, new Object[]{true,profileId,user.getId()});
 	}
 }
