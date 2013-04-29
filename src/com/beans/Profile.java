@@ -7,6 +7,8 @@ public class Profile {
 	private String skills;
 	private String phone;
 	
+	public Profile(){}
+	
 	public Profile(int id, String company, String skills, String phone) {
 		super();
 		this.id = id;

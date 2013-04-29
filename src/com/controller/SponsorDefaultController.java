@@ -108,7 +108,7 @@ public class SponsorDefaultController {
 	
 	protected boolean sessionCheck(SessionScopeData sessionData) {		
 		if(sessionScopeUserData!=null) {
-			if(sessionService.sessoionCheck(sessionData.getUserInfo().getId())>0) {
+			if(sessionService.sessionCheck(sessionData.getUserInfo().getId())>0) {
 				return true;
 			}				
 		}

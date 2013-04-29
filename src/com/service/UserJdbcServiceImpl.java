@@ -55,7 +55,7 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	 * @param id user_id of session variable
 	 * @return returns count of user found
 	 */
-	public int sessoionCheck(int id) {
+	public int sessionCheck(int id) {
 		//get user with matching email and password
 		return userJdbcDao.countById(id);
 	}
@@ -75,4 +75,9 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	public int getLeadId(int dispId) {
 		return userJdbcDao.getLeadId(dispId);
 	}
+	
+	public int updateProfileId(User user, int profileId) {
+		return userJdbcDao.updateProfileId(user, profileId);
+	}
+
 }
