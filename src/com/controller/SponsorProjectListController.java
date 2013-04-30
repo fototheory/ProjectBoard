@@ -65,6 +65,16 @@ public class SponsorProjectListController {
 			mav.addObject("action", "edit");
 			mav.addObject("id", projId);		
 		}
+		else if(actionVal.equals("delete")) {
+			if(projectService.delete(projId)>0) {
+				status="project successfully deleted";
+			}
+			else {
+				status="project deletion failed";
+			}
+			mav = new ModelAndView(new RedirectView("projectList.do"),"status",status);
+			//mav.addObject("status", status);	
+		}
 		else {
 			mav = new ModelAndView("sponsor/project");
 		}

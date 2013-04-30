@@ -33,5 +33,10 @@ public class StatusJdbcServiceImpl implements SpringJdbcService<Status> {
 		return statusJdbcDao.selectById(id);
 
 	}	
+	
+	public int selectIdByName(String stat) {
+		return statusJdbcDao.selectIdByName(stat);
+
+	}	
 }
 

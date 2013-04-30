@@ -85,6 +85,8 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 	            		temp.setPassword(rs.getString("user_password"));
 		            	temp.setFname(rs.getString("user_fname"));
 		            	temp.setLname(rs.getString("user_lname"));
+		            	temp.setEmail(rs.getString("user_email"));
+		            	temp.setDisciplineId(rs.getInt("discipline_id"));
 		            	temp.setRoleId(rs.getInt("role_id"));
 		            	temp.setVerified(rs.getInt("user_isverified"));
 		            	temp.setHasProfile(rs.getInt("user_hasprofile"));
@@ -147,7 +149,7 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 	public int getLeadId(int dispId) {
 		String query = "SELECT u.user_id FROM user u, role r " +
 				"WHERE u.role_id=r.role_id AND u.discipline_id=? AND r.role_name=?";
-		return this.template.queryForInt(query, new Object[]{dispId,"Leadfaculty"});
+		return this.template.queryForInt(query, new Object[]{dispId,"Lead faculty"});
 	}
 	
 	public User getUserByEmail(String email) {

@@ -66,6 +66,24 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		        });
 		return this.fetchOneProject(projInfo);	
 	}
+	
+	public int insert(Project proj) {
+		String query = "insert into project (project_title,project_description,project_date_due," +
+				"project_date_created,status_id,discipline_id,project_sponsor) " +
+				"values (?, ?, ?,now(),?, ?, ?)";
+		java.sql.Date sqlDate = null;
+		if(proj.getDue()!=null) {
+			sqlDate = changetoSqlDate(proj.getDue());
+		}
+		return this.template.update(query,new Object[]{proj.getTitle(),proj.getDesc(),sqlDate,proj.getStatusId(),
+				proj.getDispId(),proj.getSponsorId()});
+	}
+	
+	public int delete(int projId) {
+		String query = "DELETE FROM project WHERE project_id=? ";
+		return this.template.update(query,new Object[]{projId});
+	}
+	
 	/**
 	 * select by email and password
 	 * @param email is passed from <code>ProjectJdbcServiceImpl</code>
@@ -111,6 +129,33 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	public List<Project> selectByRole(int id, String roleFld) {
 		String query = "SELECT * FROM project WHERE "+roleFld+"=?";
 		return this.template.query(query, new Object[]{id},
+				new RowMapper<Project>() {
+            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
+        	   	Project temp = new Project();
+        	   	temp.setId(rs.getInt("project_id"));
+        	   	temp.setTitle(rs.getString("project_title"));
+            	temp.setDesc(rs.getString("project_description"));
+            	temp.setArchived(rs.getInt("project_isarchived"));
+            	temp.setManHours(rs.getInt("project_manhours"));
+            	temp.setDue(rs.getDate("project_date_due"));
+            	temp.setDateStarted(rs.getDate("project_date_started"));
+            	temp.setDateCompleted(rs.getDate("project_date_completed"));
+            	temp.setDateCreated(rs.getDate("project_date_created"));
+            	temp.setStatusId(rs.getInt("status_id"));
+            	temp.setDispId(rs.getInt("discipline_id"));
+            	temp.setGroupId(rs.getInt("group_id"));
+            	temp.setSponsorId(rs.getInt("project_sponsor"));
+            	temp.setLeadId(rs.getInt("project_lead_faculty"));
+            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+            	temp.setCapId(rs.getInt("project_capstone_faculty"));
+                return temp;
+            }
+        });
+	}
+	
+	public List<Project> selectAll() {
+		String query = "SELECT * FROM project";
+		return this.template.query(query, new Object[]{},
 				new RowMapper<Project>() {
             public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
         	   	Project temp = new Project();

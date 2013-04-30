@@ -29,4 +29,15 @@
   </constructor-arg>
    <aop:scoped-proxy proxy-target-class="false" />
 </bean>
+
+<!--  for testing -->
+<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+    <property name="scopes">
+        <map>
+            <entry key="globalSession">
+                <bean class="org.springframework.context.support.SimpleThreadScope"/>
+            </entry>
+        </map>
+    </property>
+</bean>
 </beans>

@@ -15,7 +15,7 @@
               <p class="color-4">Each year organizations from the private, government, and non-profit sectors come to NU to assist them in turning ideas into action. Highly talented students work in accordance to the organization’s business and technical requirements while also following strict academic requirements..</p>
               <div class="wrapper p2">
               </div>
-			  	<h3> Available Projects</h3>
+			  	<h3 style="padding-bottom:10px;"> Available Projects <span style="float:right;"><a class="button-2" href="projectForm.do?action=add&id=0" id="addProj">Add Project</a></span></h3>
 			  	<div id="accordion">
 			  	<c:if test="${not empty projectList}">
 					<c:forEach items="${projectList}" var="map"> 
@@ -29,7 +29,8 @@
 						</c:forEach>	
 						<br />
 						<c:if test="${map.get('Status') eq 'New'}">
-						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:200px;"> | Edit project | </a>	
+						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:135px;"> | Edit project | </a>	
+						<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;"> | Delete project | </a>
 						<br /><br />
 						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
 						</c:if>				
@@ -68,5 +69,6 @@
 			 <a class="button-2" href="#">Previous Years</a>
 		  </div>
           </div>
+       </div>
 	</section>
 	<c:import url="template/footer.jsp" />

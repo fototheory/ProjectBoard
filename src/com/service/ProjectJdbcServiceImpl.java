@@ -43,6 +43,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	public void setSpringJdbcDao(ProjectJdbcDaoImpl springJdbcDao) {
 		this.projectJdbcDao = springJdbcDao;
 	}
+	
     /**
 	 * generic select by id
 	 * @param id user_id of user table
@@ -54,6 +55,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		//select user by user_id
 		return projectJdbcDao.selectById(id);
 	}
+	
+	public int add(Project proj) {
+		return projectJdbcDao.insert(proj);
+	}
+	
     /**
 	 * check user's authenticity
 	 * @param email is passed from <code>LoginController</code> through login.jsp
@@ -98,9 +104,27 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	public Collection<Map<String, String>> selectAll() {
+		//get role name
+		List<Project> projList = projectJdbcDao.selectAll();
+		//based on status fetch and format related data
+		//loop through each project object
+		
+		Collection<Map<String, String>> projectList = new HashSet<Map<String, String>>();
+		for (int i = 0; i < projList.size(); i++) {
+			projectList.add(formatProjectItem(projList.get(i)));
+		}
+		return projectList;
+	}
+	
 	public int updateProjectInfo(Project project) {
 		//get user with matching email and password
 		return projectJdbcDao.update(project);
+	}
+	
+	public int delete(int projId) {
+		//delete project with matching project id
+		return projectJdbcDao.delete(projId);
 	}
 	
 	public int updateProjectStatusWithFac(int projId, String stat, int dispId) {

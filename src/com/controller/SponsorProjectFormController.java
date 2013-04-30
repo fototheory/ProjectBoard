@@ -23,7 +23,9 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.beans.Project;
 import com.beans.User;
 import com.form.ProjectInfo;
+import com.service.DisciplineJdbcServiceImpl;
 import com.service.ProjectJdbcServiceImpl;
+import com.service.StatusJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
 
@@ -37,7 +39,15 @@ import com.session.SessionScopeData;
 @Controller
 @RequestMapping("/sponsor/projectForm")
 public class SponsorProjectFormController {
+	//instantiates service classes for service related activities
+	UserJdbcServiceImpl  sessionService = new UserJdbcServiceImpl();
 	ProjectJdbcServiceImpl projService  = new ProjectJdbcServiceImpl();
+	StatusJdbcServiceImpl statService  = new StatusJdbcServiceImpl();
+	DisciplineJdbcServiceImpl dispService  = new DisciplineJdbcServiceImpl();
+	//autowire session variable User
+	@Autowired
+	private SessionScopeData sessionScopeUserData;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView projectDefForm() {
 		return new ModelAndView("sponsor/projectForm");
@@ -48,19 +58,32 @@ public class SponsorProjectFormController {
 			@RequestParam(value = "id") int projId) {
 		ModelAndView mav = new ModelAndView("sponsor/projectForm");
 		mav.addObject("action", actionVal);
-		if(actionVal.equals("edit")) {
-			//fetch project information based on id
-			Project proj = projService.selectById(projId);
-			String dueDate = null;
-			if(proj.getDue()!=null) {
-				dueDate = changetoSqlDate(proj.getDue());
+		//get all disciplines
+		mav.addObject("disciplines",dispService.selectAllDisciplines());
+		if(this.sessionCheck(sessionScopeUserData)) {
+			if(actionVal.equals("edit")) {
+				//fetch project information based on id
+				Project proj = projService.selectById(projId);
+				String dueDate = null;
+				if(proj.getDue()!=null) {
+					dueDate = changetoSqlDate(proj.getDue());
+				}
+				ProjectInfo ProjData = new ProjectInfo(proj.getId(),proj.getTitle(),
+						proj.getDesc(),proj.getDispId(), dueDate, proj.getSponsorId(), actionVal);
+				mav.addObject("ProjData", ProjData);
 			}
-			ProjectInfo ProjData = new ProjectInfo(proj.getId(),proj.getTitle(),
-					proj.getDesc(),proj.getDispId(), dueDate,actionVal);
-			mav.addObject("ProjData", ProjData);
+			else if(actionVal.equals("add")) {
+				ProjectInfo ProjData = new ProjectInfo(0,"", "",0, null,
+							sessionScopeUserData.getUserInfo().getId(),actionVal);
+				mav.addObject("ProjData", ProjData);
+			}
+			else {
+				mav.addObject("ProjData", new Project());
+			}
 		}
 		else {
-			mav.addObject("ProjData", new Project());
+			//session check failed
+			mav = new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
 		}
 		return mav;
 	}	
@@ -72,36 +95,87 @@ public class SponsorProjectFormController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public ModelAndView projectSubmit(@ModelAttribute("ProjData") ProjectInfo ProjData) {
-		String status = "";
-		if(ProjData.getAction().equals("edit")) {
+		if(this.sessionCheck(sessionScopeUserData)) {
+			String status = "";
+			Map<String, String> errors = new HashMap<String, String>();
 			Project proj = new Project();
-			proj.setId(ProjData.getProjectId());
-			proj.setTitle(ProjData.getTitle());
-			proj.setDesc(ProjData.getDesc());
-			proj.setDispId(ProjData.getDisp());	
-			try {
-				Date date = new SimpleDateFormat("MM/dd/yyyy").parse(ProjData.getDue());
-				proj.setDue(date);		
-			}
-			catch(Exception e) {
-				System.out.println(e.toString());
-			}
-			if(projService.updateProjectInfo(proj)>0) {
-				status="project successfully updated";
+			//check project title is not empty
+			if(ProjData.getTitle().length()>0) {
+				proj.setTitle(ProjData.getTitle());
 			}
 			else {
-				status="project update failed";
+				errors.put("title", "Title is required");
 			}
-			
+			//check project description is not empty
+			if(ProjData.getDesc().length()>0) {
+				proj.setDesc(ProjData.getDesc());
+			}
+			else {
+				errors.put("desc", "Project Description is required");
+			}
+			//check date is not empty
+			if(ProjData.getDue().length()>0) {
+				try {					
+					Date date = new SimpleDateFormat("MM/dd/yyyy").parse(ProjData.getDue());
+					proj.setDue(date);		
+				}
+				catch(Exception e) {
+					System.out.println(e.toString());
+				}
+			}
+			else {
+				errors.put("due", "Due Date is required");
+			}	
+			//check discipline is selected
+			if(ProjData.getDisp()>0) {
+				proj.setDispId(ProjData.getDisp());	
+			}
+			else {
+				errors.put("disp", "Disciplinen is required");
+			}
+			//check there is no error
+			if(errors.isEmpty()) {
+				if(ProjData.getAction().equals("edit")) {
+					proj.setId(ProjData.getProjectId());
+					if(projService.updateProjectInfo(proj)>0) {
+						status="project successfully updated";
+					}
+					else {
+						status="project update failed";
+					}	
+				}
+				else if(ProjData.getAction().equals("add")) {
+					//set sponsor id and discipline
+					proj.setSponsorId(sessionScopeUserData.getUserInfo().getId());
+					proj.setDispId(sessionScopeUserData.getUserInfo().getDisciplineId());
+					//get status 'new'
+					proj.setStatusId(statService.selectIdByName("New"));
+					if(projService.add(proj)>0) {
+						status="project successfully added";
+					}
+					else {
+						status="project addition failed";
+					}
+				}			
+			}
+			else {
+				ModelAndView mav = new ModelAndView("sponsor/projectForm");
+				mav.addObject("ProjData", ProjData);
+				mav.addObject("errors", errors);
+				return mav;
+			}
+					
+			return new ModelAndView(new RedirectView("projectList.do"),"status",status);
 		}
-		/*mav.addObject("action", actionVal);
-		if(actionVal.equals("edit")) {
-			//fetch project information based on id
-			mav.addObject("ProjData", projService.selectById(projId));
-		}
-		else {
-			mav.addObject("ProjData", new Project());
-		}*/
-		return new ModelAndView(new RedirectView("projectList.do"),"status",status);
+		return new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
 	}	
+	
+	protected boolean sessionCheck(SessionScopeData sessionData) {		
+		if(sessionScopeUserData!=null) {
+			if(sessionService.sessionCheck(sessionData.getUserInfo().getId())>0) {
+				return true;
+			}				
+		}
+		return false;
+	}
 }

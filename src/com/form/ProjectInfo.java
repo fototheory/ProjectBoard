@@ -9,6 +9,7 @@ public class ProjectInfo {
 	private String desc;
 	private int disp;
 	private String due;
+	private int sponsorId;
 	private String action;
 	
 	public ProjectInfo() {
@@ -16,13 +17,14 @@ public class ProjectInfo {
 	}
 	
 	public ProjectInfo(int projectId, String title, String desc, int disp,
-			String due, String action) {
+			String due, int sponsorId, String action) {
 		super();
 		this.projectId = projectId;
 		this.title = title;
 		this.desc = desc;
 		this.disp = disp;
 		this.due = due;
+		this.sponsorId = sponsorId;
 		this.action = action;
 	}
 
@@ -61,5 +63,11 @@ public class ProjectInfo {
 	}
 	public void setAction(String action) {
 		this.action = action;
-	}		
+	}
+	public int getSponsorId() {
+		return sponsorId;
+	}
+	public void setSponsorId(int sponsorId) {
+		this.sponsorId = sponsorId;
+	}
 }

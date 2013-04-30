@@ -45,7 +45,9 @@
 						</table>
 					</form:form>
 					<c:if test="${not empty successMsg}">
-						<font color="red">${successMsg}</font>
+						<br />
+						<font color="red">${successMsg}</font><br /><br /><br />
+						<a class="button-2" href="sponsor/projectForm.do?action=add&id=0" id="addProj">Add Project</a>
 					</c:if>
 				</div>
 			</div>
