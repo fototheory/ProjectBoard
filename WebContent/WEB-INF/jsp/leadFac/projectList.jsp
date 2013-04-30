@@ -19,6 +19,7 @@
 			  	<div id="accordion">
 			  	<c:if test="${not empty projectList}">
 					<c:forEach items="${projectList}" var="map"> 
+					<c:if test="${map.get('Status') != 'New'}">
 					<p>${map.get("Sponsor")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
 					<div>
 						<p>						
@@ -28,13 +29,14 @@
 							</c:if>
 						</c:forEach>	
 						<br />
-						<c:if test="${map.get('Status') eq 'New'}">
+						<c:if test="${map.get('Status') eq 'Submitted'}">
 						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:200px;"> | Edit project | </a>	
 						<br /><br />
 						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
 						</c:if>				
 						</p>
 					</div>
+					</c:if>
 					</c:forEach>
 				</c:if>
 				</div>			   
