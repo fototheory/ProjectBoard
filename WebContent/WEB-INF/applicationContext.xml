@@ -30,7 +30,7 @@
    <aop:scoped-proxy proxy-target-class="false" />
 </bean>
 
-<!--  for testing -->
+<!--  for testing 
 <bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
     <property name="scopes">
         <map>
@@ -39,5 +39,5 @@
             </entry>
         </map>
     </property>
-</bean>
+</bean> -->
 </beans>
