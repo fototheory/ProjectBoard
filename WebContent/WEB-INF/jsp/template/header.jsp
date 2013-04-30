@@ -71,15 +71,16 @@
     <header>	
 	<div id="bar">
         <div id="container">
+        </div>
+        <c:if test="${not empty sessionUserInfo}">
+			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} ${sessionUserInfo.getLname()}</font></b>
 			<!-- Login Starts Here -->
 			<div id="loginContainer">
 				<a href="login.do" id="LogoutButton"><span>Logout</span><em></em></a>
 				<div style="clear: both"></div>			
 			</div>
 			<!-- Login Ends Here -->
-        </div>
-        <c:if test="${not empty sessionUserInfo}">
-			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} ${sessionUserInfo.getLname()}</font></b>
+
 		</c:if>
     </div>
 	

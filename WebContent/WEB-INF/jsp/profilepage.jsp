@@ -40,7 +40,9 @@
 								<td><form:textarea path="skills" type="text" rows="5" cols="40"/></td>
 							</tr>
 							<tr>
-								<td><input type="submit" value="Submit" /></td>
+							<c:if test="${empty successMsg}">
+								<td><input class="button-2" type="submit" value="Submit" /></td>
+							</c:if>
 							</tr>
 						</table>
 					</form:form>
