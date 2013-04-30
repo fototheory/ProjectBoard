@@ -83,7 +83,10 @@ public class SponsorDefaultController {
 				return new ModelAndView ( new RedirectView("sponsor/projectList.do"));
 			}
 			else {
-				return new ModelAndView ( new RedirectView("sponsor/projectForm.do"));
+				ModelAndView mav = new ModelAndView ( new RedirectView("sponsor/projectForm.do"));
+				mav.addObject("action","add");
+				mav.addObject("id",0);
+				return mav;
 			}
 		}
 		else {
