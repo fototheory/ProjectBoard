@@ -1,13 +1,21 @@
 package com.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
 import com.beans.Project;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 
 /**
  * <code>ProjectJdbcDaoImpl</code> implements <code>SpringJdbcDao</code>
@@ -67,16 +75,32 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		return this.fetchOneProject(projInfo);	
 	}
 	
-	public int insert(Project proj) {
-		String query = "insert into project (project_title,project_description,project_date_due," +
+	public int insert(final Project proj) {
+		final String query = "insert into project (project_title,project_description,project_date_due," +
 				"project_date_created,status_id,discipline_id,project_sponsor) " +
 				"values (?, ?, ?,now(),?, ?, ?)";
-		java.sql.Date sqlDate = null;
 		if(proj.getDue()!=null) {
-			sqlDate = changetoSqlDate(proj.getDue());
+			final java.sql.Date sqlDate = changetoSqlDate(proj.getDue());
+			KeyHolder keyHolder = new GeneratedKeyHolder();
+			
+			this.template.update(new PreparedStatementCreator() {           
+	            @Override
+	            public PreparedStatement createPreparedStatement(Connection connection)
+	                    throws SQLException {
+	                PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+	                ps.setString(1, proj.getTitle());
+	                ps.setString(2, proj.getDesc());
+	                ps.setDate(3, sqlDate);
+	                ps.setInt(4, proj.getStatusId());
+	                ps.setInt(5, proj.getDispId());
+	                ps.setInt(6, proj.getSponsorId());
+	                return ps;
+	            }
+	        }, keyHolder);
+			
+			return keyHolder.getKey().intValue();
 		}
-		return this.template.update(query,new Object[]{proj.getTitle(),proj.getDesc(),sqlDate,proj.getStatusId(),
-				proj.getDispId(),proj.getSponsorId()});
+		return 0;
 	}
 	
 	public int delete(int projId) {
