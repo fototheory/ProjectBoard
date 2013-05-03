@@ -136,7 +136,7 @@
 											</div>
 										</div>
 										<div class="wrapper">
-											<a class="button img-indent-r" href="newprojform.html#">>></a>
+											<a class="button img-indent-r" href="#">>></a>
 
 											<div class="extra-wrap">As a project sponsor, we
 												welcome you to post a project for our students to undertake

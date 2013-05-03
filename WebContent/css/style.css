@@ -191,7 +191,7 @@ header {
 }
 .row-2 {
 	width:100%;
-	min-height:70px;
+	min-height:80px;
 	position:relative;
 	z-index:1
 }
@@ -202,14 +202,14 @@ header {
 	z-index:2
 }
 h1 {
-	padding:0px 0 0 40px;
+	padding:0px 0 0 10px;
 	position:relative;
 	float:left
 }
 .logo {
 	display:block;
-	width:500px;
-	height:80px;
+	width:700px;
+	height:60px;
 	text-indent:-5000px;
 	background:url(../images/logo.png) 0 0 no-repeat;
 	margin:0px 0 8px 0
@@ -217,7 +217,7 @@ h1 {
 }
 .slog {
 	display:block;
-	font-size:18px;
+	font-size:20px;
 	line-height:1.2em;
 	color:#003C78;
 	text-transform:uppercase;
@@ -619,7 +619,7 @@ footer {
 }
 .row-top {
 	width:100%;
-	padding:33px 0 42px;
+	padding:33px 0 10px;
 	background:#000
 }
 .row-padding {
@@ -627,9 +627,9 @@ footer {
 }
 .row-bot {
 	width:100%;
-	padding:35px 0;
+	padding:10px 0;
 	font-size:12px;
-	line-height:20px
+	line-height:10px
 }
 .list-services li {
 	line-height:24px;
@@ -716,7 +716,7 @@ footer {
 /* Login Box */
 #loginBox {
     position:absolute;
-    top:20px;
+    top:2px;
     right:0;
     display:none;
     z-index:29;
@@ -742,7 +742,7 @@ footer {
 
 /* Login Form */
 #loginForm {
-    width:200px; 
+    width:230px; 
     border:1px solid #003C78;
     border-radius:3px 0 3px 3px;
     -moz-border-radius:3px 0 3px 3px;
@@ -752,7 +752,7 @@ footer {
 }
 
 #loginForm fieldset {
-    margin:0 0 12px 0;
+    margin:0 0 2px 0;
     display:block;
     border:0;
     padding:0;
@@ -762,7 +762,7 @@ fieldset#body {
     background:#fff;
     border-radius:3px;
     -moz-border-radius:3px;
-    padding:10px 13px;
+    padding:4px 5px;
     margin:0;
 }
 
@@ -809,28 +809,28 @@ fieldset#body {
     float:center;
     background:#003C78;
     color:#fff;
-    padding:7px 10px 8px 5px;
+    padding:5px 5px 5px 5px;
     text-shadow:0px -1px #278db8;
-    border:1px solid #003C78;
+    border:0px solid #003C78;
     box-shadow:none;
     -moz-box-shadow:none;
     -webkit-box-shadow:none;
-    margin:0 12px 0 0;
+    margin:2 12px 0 0;
     cursor:pointer;
     *padding:7px 2px 8px 2px; /* IE7 Fix */
 }
 
-/* Forgot your password */
+/* Sign up link */
 #loginForm span {
     text-align:center;
     display:block;
-    padding:7px 0 4px 0;
+    padding:1px 0 1px 0;
 }
 
 #loginForm span a {
     color:#003C78;
    
-    font-size:12px;
+    font-size:14px;
 }
 
 input:focus {

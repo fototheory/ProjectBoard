@@ -135,12 +135,10 @@
           <div class="col-4">
               <h3 class="color-4 p2">Presentations Coming up:</h3>
               <div class="wrapper indent-bot">
-
 			  </div>
-
-             	<div id="datepicker"></div>
-
-
+             	             	
+             	<iframe src="https://www.google.com/calendar/embed?title=Upcoming%20Capstone%20Presentations&amp;showTitle=0&amp;showDate=0&amp;showTabs=0&amp;showTz=0&amp;mode=AGENDA&amp;height=400&amp;wkst=2&amp;bgcolor=%23FFFFFF&amp;src=nu.capstone.board%40gmail.com&amp;color=%23875509&amp;ctz=America%2FLos_Angeles" style=" border:solid 1px #777 " width="250" height="400" frameborder="0" scrolling="no"></iframe>
+             	
           </div>
         </div>
         
@@ -148,8 +146,7 @@
     </section>
     <!-- footer -->
     <footer>
-      
-      <div class="row-bot">
+            <div class="row-bot">
         <div class="aligncenter">
           <p class="p0">Copyright &copy; <a href="#">Domain Name</a> All Rights Reserved</p>
           
