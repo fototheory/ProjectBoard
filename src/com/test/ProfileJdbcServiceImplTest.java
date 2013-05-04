@@ -13,7 +13,7 @@ import com.service.ProfileJdbcServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:WebContent/WEB-INF/applicationContext.xml")
-public class ProfileJdbcDaoImplTest {
+public class ProfileJdbcServiceImplTest {
 	private ProfileJdbcServiceImpl profileDB;
 	private Profile testProfile;
 	private Profile selectedProfile;
@@ -28,8 +28,8 @@ public class ProfileJdbcDaoImplTest {
 		selectedProfile = new Profile();
     }
 
-    public int insert() {
-    	return profileDB.insert(testProfile);
+    public int insert(Profile profile) {
+    	return profileDB.insert(profile);
     }
     
     public Profile select(int id) {
@@ -67,7 +67,7 @@ public class ProfileJdbcDaoImplTest {
     	testProfile.setSkills("Test Skills");
     	
     	//Try and insert bad profile
-    	int	count = this.insert();
+    	int	count = this.insert(testProfile);
     	
     	//Test insert - no profile should have been created
     	assertEquals(0,count);
@@ -76,13 +76,14 @@ public class ProfileJdbcDaoImplTest {
     
     //Insert Profile into DB
     @Test 
-    public void InsertProfileIntoDB() {
+    public void InsertUpdateDeleteProfile() {
+    	//INSERT
     	//Setup fields for Profile
     	setProfileSampleValues();
 
     	//Insert Profile into database and to get its project_id from the DB
     	//Make sure it is not 0 and set the testProfile's id to that number
-    	int id = this.insert();
+    	int id = this.insert(testProfile);
     	assertTrue(id !=0);  
     	testProfile.setId(id);
 
@@ -93,21 +94,25 @@ public class ProfileJdbcDaoImplTest {
     	assertEquals(testProfile.getCompany(),selectedProfile.getCompany());
     	assertEquals(testProfile.getPhone(),selectedProfile.getPhone());
     	assertEquals(testProfile.getSkills(),selectedProfile.getSkills());
-    }
-    
-    @Test
-    public void UpdateProfileInDB() {
-    	//Setup fields for updated profile
+
+    	
+    	//UPDATE
+    	//Set testProfile to new sample values
     	setNewProfileSampleValues();
-    	
-    	//Get the last inserted profile_id
-    	int id = profileDB.getLastId();
-    	
-    	//Set new test profile's id
     	testProfile.setId(id);
     	
-    	//Update the profile with the updated values
+    	//Perform update test
     	assertEquals(1,this.update(testProfile));
+
+    	
+    	//DELETE
+    	//Delete test record, should only return one record that was deleted
+    	assertEquals(1,this.delete(id));
+
+    	//Try retrieving the deleted record id from the DB
+    	testProfile = this.select(id);
+    	assertEquals("Try retrieving the deleted record",0,testProfile.getId());
+
     }
     
     @Test
@@ -119,30 +124,5 @@ public class ProfileJdbcDaoImplTest {
     	assertEquals(0,this.delete(id+1));
     }
 
-    
-    //Delete Profile from DB
-    @Test
-    public void DeleteProfileFromDB(){
-    	//Setup fields for profile
-    	setNewProfileSampleValues();
-    	
-    	//Get the last inserted profile_id
-    	int id = profileDB.getLastId();
-
-    	//Retrieve the profile from the DB
-    	selectedProfile = this.select(id);
-
-    	//Test to see if the profile is the one that was inserted/updated
-    	assertEquals(testProfile.getCompany(),selectedProfile.getCompany());
-    	assertEquals(testProfile.getPhone(),selectedProfile.getPhone());
-    	assertEquals(testProfile.getSkills(),selectedProfile.getSkills());
-    	
-    	//Delete test record, should only return one record that was deleted
-    	assertEquals(1,this.delete(id));
-
-    	//Try retrieving the deleted record id from the DB
-    	testProfile = this.select(id);
-    	assertEquals("Try retrieving the deleted record",0,testProfile.getId());
-    }
-    
+   
 }

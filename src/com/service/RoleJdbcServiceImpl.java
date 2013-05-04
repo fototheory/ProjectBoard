@@ -1,5 +1,6 @@
 package com.service;
 
+import com.beans.Profile;
 import com.beans.Role;
 import com.dao.RoleJdbcDaoImpl;
 import java.util.List;
@@ -37,4 +38,21 @@ public class RoleJdbcServiceImpl implements SpringJdbcService<Role> {
 	public List<Role> selectAllRoles() {
 		return roleJdbcDao.selectAllRoles();
 	}
+
+	public int insert(Role role) {
+		return roleJdbcDao.insert(role);
+	}
+	
+	public int update(Role role) {
+		return roleJdbcDao.update(role);
+	}
+	
+	public int delete(int roleId) {
+		return roleJdbcDao.deleteById(roleId);
+	}
+	
+	public int getLastId() {
+		return roleJdbcDao.getLastRoleId();
+	}
+	
 }
