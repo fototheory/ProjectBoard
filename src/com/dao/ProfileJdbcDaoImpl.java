@@ -1,12 +1,21 @@
 package com.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+
 import com.beans.Profile;
+import com.beans.Project;
 
 /**
  * <code>ProfileJdbcDaoImpl</code> implements <code>SpringJdbcDao</code>
@@ -53,16 +62,26 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		        });
 		return this.fetchOneProfile(profileInfo);	
 	}
-	
-	/**
-	 * return the record count of the profile found in database (select by id)
-	 * @param id profile_id of profile table
-	 * @return record count
-	 */
-	public int countById(int id) {
-		String query = "SELECT COUNT(profile_id) FROM profile WHERE profile_id=?";
-		return this.template.queryForInt(query, new Object[]{id});
-	}
+
+	public int insert(final Profile profile) {
+		final String query = "insert into profile (profile_company_name,profile_phone,profile_skills) "+
+				"values (?, ?, ?)";
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+			
+		this.template.update(new PreparedStatementCreator() {           
+			@Override
+	        public PreparedStatement createPreparedStatement(Connection connection) throws SQLException, DataIntegrityViolationException {
+				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, profile.getCompany());
+				ps.setString(2, profile.getPhone());
+				ps.setString(3, profile.getSkills());
+	                return ps;
+	            }
+	        }, keyHolder);
+			
+			return keyHolder.getKey().intValue();
+	}	
 	
 	/**
 	 * from the list, fetch the first record
@@ -77,15 +96,43 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		//return empty profile if not profile found in database
 		return new Profile();
 	}
-
 	
-	public int addNewProfile(Profile profile) {
-		String query = "insert into profile (profile_company_name,profile_skills,profile_phone) values (?, ?, ?)";
-
-		this.template.update(query,profile.getCompany(),profile.getSkills(),profile.getPhone());
-		
-		//Return id of the last record inserted
-		return this.template.queryForInt("select max(profile_id) from profile;");
+	public int deleteById(int profileID) {
+		String query = "DELETE FROM profile WHERE profile_id=? ";
+		int count = 0;
+		try {
+			count = this.template.update(query,new Object[]{profileID});
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
+	}
+	
+	public int getLastProfileId() {
+		String query = "select max(profile_id) from profile";
+		int count = 0;
+		try {
+			count = this.template.queryForInt(query);
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
+	}
+	
+	public int update(Profile profile) {
+		String query = "UPDATE profile SET profile_company_name=?, profile_phone=?, " +
+				"profile_skills=? WHERE profile_id=?";
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{profile.getCompany(), 
+						profile.getPhone(), profile.getSkills(), profile.getId()});
+		}
+		catch(Exception e) { 
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 
 }

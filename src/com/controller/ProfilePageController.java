@@ -60,7 +60,7 @@ public class ProfilePageController {
 		}
 	
 		//Add profile to database
-		int profileId = profileService.addNewProfile(profile);
+		int profileId = profileService.insert(profile);
 		
 		//Update user's profile id
 		sessionService.updateProfileId(user, profileId);

@@ -34,8 +34,20 @@ public class ProfileJdbcServiceImpl implements SpringJdbcService<Profile> {
 		return profileJdbcDao.selectById(id);
 	}
 	
-	public int addNewProfile(Profile profile) {
-		return profileJdbcDao.addNewProfile(profile);
+	public int insert(Profile profile) {
+		return profileJdbcDao.insert(profile);
+	}
+	
+	public int update(Profile profile) {
+		return profileJdbcDao.update(profile);
+	}
+	
+	public int delete(int projId) {
+		return profileJdbcDao.deleteById(projId);
+	}
+	
+	public int getLastId() {
+		return profileJdbcDao.getLastProfileId();
 	}
 
 }
