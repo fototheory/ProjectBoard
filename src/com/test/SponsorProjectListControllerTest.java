@@ -102,7 +102,7 @@ public class SponsorProjectListControllerTest {
         	handler = handlerMapping.getHandler(request).getHandler();
         	request.setAttribute(DispatcherServlet.OUTPUT_FLASH_MAP_ATTRIBUTE,new FlashMap());
         	ModelAndView mv = handlerAdapter.handle(request, response, handler);
-        	assertEquals(((RedirectView) mv.getView()).getUrl(),"sponsor/project.do");
+        	assertEquals(((RedirectView) mv.getView()).getUrl(),"sponsor/projectList.do");
         }catch (Exception exception){
         	System.out.println(exception.getMessage());
             Assert.fail(exception.getMessage());
