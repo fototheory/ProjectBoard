@@ -9,6 +9,7 @@
 <title>The Capstone Portal @ NU | Contact us</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
     <title>jQuery Dropdown Login Freebie | The Finished Box</title>
     <link rel="stylesheet" href="css/style.css" />
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
@@ -18,6 +19,7 @@
 <link rel="stylesheet" href="css/reset.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css" media="screen">
 <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen">
+
 <script type="text/javascript" src="js/jquery-1.6.min.js"></script>
 <script src="js/cufon-yui.js" type="text/javascript"></script>
 <script src="js/cufon-replace.js" type="text/javascript"></script>
@@ -25,12 +27,14 @@
 <script src="js/Open_Sans_Light_300.font.js" type="text/javascript"></script>
 <script src="js/Open_Sans_Semibold_600.font.js" type="text/javascript"></script>
 <script src="js/FF-cash.js" type="text/javascript"></script>
+
 <!--[if lt IE 9]>
 <script type="text/javascript" src="js/html5.js"></script>
 <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen">
 <![endif]-->
 </head>
 <body id="page5">
+
 <!-- header -->
 <div class="bg">
   <div class="main">
@@ -106,9 +110,9 @@
               </dl>
               <h3 class="color-4 indent-bot2">Follow Us</h3>
               <ul class="list-services">
-                <li class="item-1"><a href="#">Facebook</a></li>
-                <li class="item-2"><a href="#">Twitter</a></li>
-                <li class="item-3"><a href="#">LinkedIn</a></li>
+                <li class="item-1"><a href="https://www.facebook.com/">Facebook</a></li>
+                <li class="item-2"><a href="https://twitter.com/">Twitter</a></li>
+                <li class="item-3"><a href="http://www.linkedin.com/">LinkedIn</a></li>
               </ul>
             </div>
           </div>

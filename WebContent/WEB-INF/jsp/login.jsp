@@ -94,22 +94,20 @@
 					<div class="slider-wrapper">
 						<div class="slider">
 							<ul class="items">
-								<li><img src="images/slider-img1.jpg" alt=""> <strong
-									class="banner"> <strong class="b1">Sponsor
-											Name1</strong> <strong class="b2">Project tittle 1 </strong> <strong
-										class="b3">Brief description -2linesMax-<br>
-									</strong>
-								</strong></li>
+								<li><img src="images/slider-img1.jpg" alt=""> 
+									<strong	class="banner"> <strong class="b2">Qualcomm</strong> 
+									<strong class="b1">Mobile Data Traffic Management </strong> 
+									<strong	class="b3">There is a real need for intelligent system selection and effective use of offload between 3G/LTE and Wi-Fi.<br>	</strong>
+								</strong>
+								</li>
 								<li><img src="images/slider-img2.jpg" alt=""> <strong
-									class="banner"> <strong class="b1">Sponsor
-											Name2</strong> <strong class="b2">Project tittle 2 </strong> <strong
-										class="b3">Brief description -2linesMax-<br>
+									class="banner"> <strong class="b2">IMATIS </strong> <strong class="b1">Mobile Nurse Call </strong> <strong
+										class="b3"> Nurses receive notifications to their IP phones with IMATIS Mobile Nurse Call.<br>
 									</strong>
 								</strong></li>
 								<li><img src="images/slider-img3.jpg" alt=""> <strong
-									class="banner"> <strong class="b1">Sponsor
-											Name3</strong> <strong class="b2">Project tittle 3 </strong> <strong
-										class="b3">Brief description -2linesMax-<br>
+									class="banner"> <strong class="b2">TopView</strong> <strong class="b1">TopView Mobile Web App. </strong> <strong
+										class="b3">Provides access to TopView alarms and all monitored data values from mobile devices.<br>
 									</strong>
 								</strong></li>
 							</ul>
@@ -136,8 +134,6 @@
 											</div>
 										</div>
 										<div class="wrapper">
-											<a class="button img-indent-r" href="#">>></a>
-
 											<div class="extra-wrap">As a project sponsor, we
 												welcome you to post a project for our students to undertake
 												for you.</div>
@@ -157,7 +153,7 @@
 											</div>
 										</div>
 										<div class="wrapper">
-											<a class="button img-indent-r" href="#"></a>
+											
 											<div class="extra-wrap">As a faculty member, you will
 												be able to manage the flow of past and on-going projects.</div>
 										</div>
@@ -176,7 +172,7 @@
 											</div>
 										</div>
 										<div class="wrapper">
-											<a class="button img-indent-r" href="projectlist.html#">>></a>
+											
 											<div class="extra-wrap">As a capstone student, you can
 												request participating in a variety of meaningful projects.</div>
 										</div>
@@ -189,14 +185,7 @@
 						<div class="col-3">
 							<div class="indent">
 								<h2>About us</h2>
-								<p class="color-4 p1">We are ....blah blahblahblahblahblah
-									blahblah blahblah blahblah blah blahblahblahblahblah blahblah
-									blahblah blahblah blah blahblahblahblahblah blahblah blahblah
-									blahblah blah blahblahblahblahblah blahblah blahblah blahblah
-									blah blahblahblahblahblah blahblah blahblah blahblah blah
-									blahblahblahblahblah blahblah blahblah blahblah blah
-									blahblahblahblahblah blahblah blahblah blahblah blah
-									blahblahblahblahblah blahblah blahblah blahblah</p>
+										<p class="color-4 p1">The NU Capstone Project Board is a web-based application that will streamline and enhance the current capability and process of Masters levels capstone projects by allowing the faculty to define academic, business and technical requirements. The board will facilitate the interactions between the project sponsor, National University (NU) faculty members, and students. The board will also serve as a platform to allows any student group grab a defined project and to archive finalized projects to give students exposure during and after a project completion.</p>
 								<div class="wrapper"></div>
 							</div>
 						</div>
@@ -239,7 +228,7 @@
 				prevBu : '.prev',
 				nextBu : '.next',
 				playBu : '.play',
-				duration : 800,
+				duration : 600,
 				easing : 'easeOutQuad',
 				preset : 'simpleFade',
 				pagination : false,
