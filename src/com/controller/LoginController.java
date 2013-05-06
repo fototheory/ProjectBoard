@@ -66,7 +66,6 @@ public class LoginController {
 					
 					//Check if verified user has a profile
 					if (regUser.getHasProfile() == 0){
-						//mav = new ModelAndView("redirect:/profilepage.do");
 						mav.setViewName("redirect:/profilepage.do");
 						return mav;
 					}
@@ -76,6 +75,10 @@ public class LoginController {
 	            	String roleName = rl.getName();
 
 	            	switch (roleName) {
+	            	case "Admin":
+	            		System.out.println("User is an admin.");
+	            		mav.setViewName("redirect:/admin/adminpage.do");
+	            		break;
 	            	case "Student":
 						//redirect a user to student/index.jsp
 						//mav = new ModelAndView(new RedirectView("student/index.do"));

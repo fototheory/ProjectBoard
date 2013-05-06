@@ -1,10 +1,10 @@
 package com.service;
 
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import com.beans.User;
-import com.dao.StatusJdbcDaoImpl;
 import com.dao.UserJdbcDaoImpl;
 
 /**
@@ -48,7 +48,7 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	 */
 	public User loginCheck(String email, String password) {
 		//get user with matching email and password
-		return userJdbcDao.loginCheck(email, password);
+		return userJdbcDao.getUserByEmailAndPassword(email, password);
 	}
 	/**
 	 * check session user's authenticity 
@@ -65,7 +65,7 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	}
 	
 	public void addNewUser(User user) {
-		userJdbcDao.addNewUser(user);
+		userJdbcDao.insert(user);
 	}
 	
 	public User getUserByEmail(String email) {
@@ -78,6 +78,26 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	
 	public int updateProfileId(User user, int profileId) {
 		return userJdbcDao.updateProfileId(user, profileId);
+	}
+	
+	public int updateUser(User user) {
+		return userJdbcDao.update(user);
+	}
+	
+	public int deleteUser(int userId) {
+		return userJdbcDao.deleteById(userId);
+	}
+
+	public List<User> getAllUsers() {
+		return userJdbcDao.selectAllUsers();
+	}
+
+	public List<User> getUnVerifiedUsers() {
+		return userJdbcDao.selectUnVerifiedUsers();
+	}
+	
+	public int verifyUser(User user) {
+		return userJdbcDao.verifyUser(user);
 	}
 
 }
