@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.beans.Project;
 import com.beans.User;
+import com.mail.MailManager;
 import com.service.ProjectJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
@@ -31,9 +34,13 @@ import com.session.SessionScopeData;
 public class SponsorProjectListController {
 	//instantiates ProjectJdbcServiceImpl for user related activities
 	ProjectJdbcServiceImpl  projectService = new ProjectJdbcServiceImpl();
-	
+	//autowire Mail Manager
+	@Autowired
+	private MailManager mailManager;
+		
 	@RequestMapping(params = {"action", "id", "dispID"})
-	public ModelAndView projectSubmit(@RequestParam(value = "action") String actionVal, @RequestParam(value = "id") int projId, @RequestParam(value = "dispID", required=false) int dispId) {
+	public ModelAndView projectSubmit(@RequestParam(value = "action") String actionVal, @RequestParam(value = "id") int projId, 
+				@RequestParam(value = "dispID", required=false) int dispId, HttpServletRequest request) {
 		ModelAndView mav;
 		String status="";
 		if(actionVal.equals("edit")) {
@@ -42,7 +49,8 @@ public class SponsorProjectListController {
 			mav.addObject("id", projId);		
 		}
 		else if(actionVal.equals("submit")) {
-			if(projectService.updateProjectStatusWithFac(projId, "Submitted", dispId)>0) {
+			String serverURL = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+			if(projectService.updateProjectStatusLead(serverURL, mailManager, projId, "Submitted", dispId)>0) {
 				status="project successfully submitted to lead faculty";
 			}
 			else {
@@ -68,6 +76,17 @@ public class SponsorProjectListController {
 		else if(actionVal.equals("delete")) {
 			if(projectService.delete(projId)>0) {
 				status="project successfully deleted";
+			}
+			else {
+				status="project deletion failed";
+			}
+			mav = new ModelAndView(new RedirectView("projectList.do"),"status",status);
+			//mav.addObject("status", status);	
+			
+		}
+		else if(actionVal.equals("archive")) {
+			if(projectService.delete(projId)>0) {
+				status="project successfully archived";
 			}
 			else {
 				status="project deletion failed";

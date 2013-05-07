@@ -2,6 +2,7 @@ package com.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -178,6 +179,30 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 			System.out.println(e.toString());
 		}
 		return LeadId;
+	}
+	
+	public List<User> getAllLeadsInDisp(int dispId) {
+		String query = "SELECT * FROM user u, role r " +
+				"WHERE u.role_id=r.role_id AND u.discipline_id=? AND r.role_name=?";
+		
+		List<User> userInfo = new LinkedList<User>();
+		try {
+			userInfo = this.template.query(query, new Object[]{dispId,"Lead faculty"}, 
+					new RowMapper<User>() {
+	            		public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+	            			User temp = new User(rs.getInt("user_id"),rs.getString("user_fname"),rs.getString("user_lname"),
+            	   			rs.getString("user_email"),rs.getString("user_password"),rs.getInt("user_isverified"),
+            	   			rs.getInt("user_hasProfile"),rs.getInt("role_Id"),rs.getInt("profile_Id"),
+            	   			rs.getInt("discipline_Id"),rs.getInt("group_id"));
+            	   	
+	                return temp;
+	            }
+	        });
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return userInfo;
 	}
 	
 	public User getUserByEmail(String email) {

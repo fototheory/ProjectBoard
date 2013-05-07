@@ -2,7 +2,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <c:import url="template/header.jsp" />
-
+<script>
+ 	$(document).ready(function(){
+ 		$("#acceptProj").click(function() {
+ 			$("#acptVal").val("true");
+ 			$(this).parents('form').submit();
+ 		}); 
+ 		
+ 		$("#denyProj").click(function() {
+ 			$("#acptVal").val("true");
+ 			$(this).parents('form').submit();
+ 		}); 		
+  	});
+</script>
     <!-- content -->
     <section id="content">
       <div class="padding">
@@ -12,35 +24,25 @@
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>
 			  </c:if>
-              <h2>Projects</h2>
-              <p class="color-4">Each year organizations from the private, government, and non-profit sectors come to NU to assist them in turning ideas into action. Highly talented students work in accordance to the organization’s business and technical requirements while also following strict academic requirements..</p>
+              <h2><c:if test="${not empty title}">${title} </c:if></h2>
+              <p class="color-4"><c:if test="${not empty body}">${body}</c:if></p>
               <div class="wrapper p2">
               </div>
-			  	<h3 style="padding-bottom:10px;"> Available Projects <span style="float:right;"><a class="button-2" href="projectForm.do?action=add&id=0" id="addProj">Add Project</a></span></h3>
-			  	<div id="accordion">
-			  	<c:if test="${not empty projectList}">
-					<c:forEach items="${projectList}" var="map"> 
-					<p>${map.get("Sponsor")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
-					<div>
-						<p>						
-						<c:forEach items="${map}" var="entry"> 
-							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date'&& entry.key != 'DispID'}">
-							${entry.key}: ${entry.value}<br />
-							</c:if>
-						</c:forEach>	
-						<br />
-						<c:if test="${map.get('Status') eq 'New'}">
-						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:65px;"> | Edit project | </a>	
-						<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;"> | Delete project | </a>
-						<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;"> | Archive project | </a>
-						<br /><br />
-						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
-						</c:if>				
-						</p>
-					</div>
-					</c:forEach>
-				</c:if>
-				</div>			   
+              <c:choose>
+	   				<c:when test="${not empty result}">
+	   					${result}
+	   				</c:when>
+	   				<c:otherwise>
+		              <form action="acceptNewProject.do" method="post">
+		              	<input type="hidden" name="projId" value="<c:if test='${not empty projId}'>${projId}</c:if>" />
+		              	<input type="hidden" name="statId" value="<c:if test='${not empty statId}'>${statId}</c:if>" />
+		              	<input type="hidden" name="leadId" value="<c:if test='${not empty leadId}'>${leadId}</c:if>" />
+		              	<input type="hidden" name="acptVal" id="acptVal" value="">
+					 	<a class="button-2" href="#" id="acceptProj">Accept</a>
+					 	<a class="button-2" href="#" id="denyProj">Deny</a>
+					  </form>
+					 </c:otherwise>
+			 </c:choose>
 			 <br />
 			 </div>
 		  </div>

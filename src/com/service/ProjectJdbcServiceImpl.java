@@ -1,5 +1,8 @@
 package com.service;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
@@ -9,6 +12,11 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.beans.Discipline;
 import com.beans.Project;
@@ -20,6 +28,8 @@ import com.dao.ProjectJdbcDaoImpl;
 import com.dao.RoleJdbcDaoImpl;
 import com.dao.StatusJdbcDaoImpl;
 import com.dao.UserJdbcDaoImpl;
+import com.encryption.URLEncryption;
+import com.mail.MailManager;
 
 /**
  * <code>ProjectJdbcServiceImpl</code> implements <code>SpringJdbcService</code>
@@ -34,6 +44,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	ProjectJdbcDaoImpl projectJdbcDao = new ProjectJdbcDaoImpl();
 	//instantiates ProjectJdbcDaoImpl user related database transaction
 	RoleJdbcDaoImpl roleJdbcDao = new RoleJdbcDaoImpl();
+	private static final String SEP = "=/=";
 	
 	//getter/setter for the attribute
 	public ProjectJdbcDaoImpl getSpringJdbcDao() {
@@ -127,6 +138,99 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectJdbcDao.delete(projId);
 	}
 	
+	/*
+	 * updateProjectStatusLead - send email to all lead faculty
+	 *
+	 */
+	public int updateProjectStatusLead(String serverURL, MailManager mailManager, int projId, String stat, int dispId) {
+		int statId = 0; 
+		statId = fetchStatusId(stat);
+		if(statId>0) {
+			//get all leads in discipline
+			List<User> leads = fetchAllLeads(dispId);
+			if(leads.size()>0) {
+				String[] messages = this.createRequestMsg(projId, "email");
+				String subject = messages[0];
+				messages[1] += "\n\nIf you are willing to accept this project, please click on following link: ";
+				//send email to each lead
+				for(User lead : leads){
+					String leadName = lead.getFname()+" "+lead.getLname()+"\n\r";
+					String link = serverURL + "/acceptNewProject.do?key=";
+					String key = projId+SEP+lead.getId();
+					URLEncryption newEnc = new URLEncryption();
+					String wholeMsg = "";
+					try {
+						byte[] encodedBytes = newEnc.encodeURL(key);
+					    String encodedURL = new String(Base64.encodeBase64(encodedBytes));
+					    wholeMsg = leadName+messages[1]+link+encodedURL;
+					}	
+					catch(Exception e) {
+						System.out.println(e.toString());
+					}
+					boolean res = mailManager.sendMail("webmaster.nuproactive@gmail.com",lead.getEmail(),subject,wholeMsg);					
+				}
+				//update status
+				return projectJdbcDao.updateStatus(projId, statId);
+			}
+		}
+		return 0;
+	}
+	
+	public String[] createRequestMsg(int projId, String type) {
+		//get project information
+		Project submittedProj = projectJdbcDao.selectById(projId);
+		//get sponsor information
+		//instantiates UserJdbcDaoImpl user related database transaction
+		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
+		User sponsor = userJdbcDao.selectById(submittedProj.getSponsorId());
+		//decide line break for email or html
+		String lineBreak = (type.equals("html"))?"<br />":"\n";
+		String messages[] = new String[2];
+		messages[0] = "NU Capstone Project Board - Accept Project: " + submittedProj.getTitle();
+		messages[1] = "Sponsor: "+ sponsor.getFname() +" " + sponsor.getLname()
+				+ " has submitted new project: "+ lineBreak + 
+				"Title: "+ submittedProj.getTitle() + lineBreak + 
+				"Description: "+ submittedProj.getDesc()+ lineBreak + 
+				"Due Date: "+ submittedProj.getDue()+ lineBreak + 
+				"Are you willing to accept this project?";
+		return messages;
+	}
+	
+	/*
+	 * decodeKey - retrieve project and lead information based on the email sent to faculty
+	 *
+	 */
+	public String[] decodeKey(String key) {
+		try {
+			byte[] encodedBytes = Base64.decodeBase64(key.getBytes("UTF8"));
+			URLEncryption newEnc = new URLEncryption();
+			String decodedString = "";
+			decodedString = newEnc.decodeURL(encodedBytes);
+			return separateString(decodedString);	
+		}	
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return new String[]{};
+	}
+	
+	protected String[] separateString(String combined) {
+		return combined.split(SEP);
+	}
+	
+	public int leadAcceptProj(int leadId, int projId, int statId) {
+		if(statId>0) {
+			if(leadId>0) {
+				return projectJdbcDao.updateStatusWithFac(projId, statId, "project_lead_faculty",leadId);
+			}
+		}
+		return 0;
+	}
+	
+	/*
+	 * updateProjectStatusWithFac - assign lead faculty to the project
+	 *
+	 */
 	public int updateProjectStatusWithFac(int projId, String stat, int dispId) {
 		int statId = 0; 
 		statId = fetchStatusId(stat);
@@ -140,10 +244,19 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return 0;
 	}
 	
+	public int checkProjAcceptedbyLead(int projId, int leadId) {
+		return projectJdbcDao.checkAcceptedbyLead(projId, leadId);
+	}
 	protected int fetchLeadId(int dispId) {
 		//instantiates StatusJdbcDaoImpl user related database transaction
 		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
 		return userJdbcDao.getLeadId(dispId);
+	}
+	
+	protected List<User> fetchAllLeads(int dispId) {
+		//instantiates StatusJdbcDaoImpl user related database transaction
+		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
+		return userJdbcDao.getAllLeadsInDisp(dispId);
 	}
 	
 	protected int fetchStatusId(String stat) {
@@ -267,7 +380,6 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
         	break;
 		}
 		return fld;
-	}
-	
+	}	
 }
 

@@ -224,6 +224,11 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		return this.template.update(query, new Object[]{statId, facId, projId});
 	}
 	
+	public int checkAcceptedbyLead(int projId, int leadId) {
+		String query = "SELECT COUNT(project_id) FROM project WHERE project_id=? AND project_lead_faculty=?";
+		return this.template.queryForInt(query, new Object[]{projId, leadId});
+	}
+	
 	protected java.sql.Date changetoSqlDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 		String formattedDate = sdf.format(date);
@@ -242,10 +247,10 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	 * @param userInfo a list of records retrieved from database
 	 * @return returns empty user object if the list is empty, otherwise, returns a user in the list
 	 */
-	protected Project fetchOneProject(List<Project> userInfo) {
-		if(userInfo.size()>0) {
+	protected Project fetchOneProject(List<Project> projInfo) {
+		if(projInfo.size()>0) {
 			//only one user should be returned
-			return userInfo.get(0);			
+			return projInfo.get(0);			
 		}
 		//return empty user if not user found in database
 		return new Project();
