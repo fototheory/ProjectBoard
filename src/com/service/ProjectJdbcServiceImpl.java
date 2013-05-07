@@ -319,9 +319,14 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		}
 		if(proiority > 0) {
 			//project submitted
-			User lead = userJdbcDao.selectById(proj.getLeadId());
-			projItem.put("Lead Faculty",lead.getFname()+" "+lead.getLname());
-			projItem.put("Man Hours",Integer.toString(proj.getManHours()));
+			if(proj.getLeadId()>0) {
+				User lead = userJdbcDao.selectById(proj.getLeadId());
+				projItem.put("Lead Faculty",lead.getFname()+" "+lead.getLname());
+				projItem.put("Man Hours",Integer.toString(proj.getManHours()));
+			}
+			else {
+				projItem.put("Lead Faculty","Waiting for lead faculty to accept project");
+			}
 		}
 		return projItem;
 	}
