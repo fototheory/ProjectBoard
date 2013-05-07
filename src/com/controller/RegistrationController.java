@@ -43,7 +43,7 @@ public class RegistrationController {
 	public ModelAndView showRegistration(ModelMap model) {
 		ModelAndView mav = new ModelAndView("registrationform");
 
-		List<Role> roles = roleService.selectAllRoles();
+		List<Role> roles = roleService.selectAllRolesExceptAdmin();
 		List<Discipline> disciplines = disciplineService.selectAllDisciplines();
 
 		Registration registration = new Registration();
@@ -78,7 +78,7 @@ public class RegistrationController {
 			logger.info("Registration form has missing information: "
 					+ result.getFieldError());
 
-			List<Role> roles = roleService.selectAllRoles();
+			List<Role> roles = roleService.selectAllRolesExceptAdmin();
 			List<Discipline> disciplines = disciplineService
 					.selectAllDisciplines();
 

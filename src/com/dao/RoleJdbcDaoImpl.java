@@ -15,8 +15,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 
 import com.beans.Role;
-import com.beans.Role;
-import com.beans.Role;
 
 /**
  * <code>RoleJdbcDaoImpl</code> implements <code>SpringJdbcDao</code>
@@ -28,6 +26,7 @@ import com.beans.Role;
 public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 	private JdbcDataSource ds = new SpringJdbcDataSource();
 	private JdbcTemplate template;
+	
 	public RoleJdbcDaoImpl() {
 		super();
 		ds.createDataSource();
@@ -35,8 +34,8 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 	}
 	
 	/**
-	 * generic select by id
-	 * @param id role_id of role table
+	 * Select a role by its id
+	 * @param id a role id
 	 * @return returns empty role object if a role_id doesn't have match in database, 
 	 * otherwise, returns a role record
 	 */
@@ -56,8 +55,8 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 	}
 	
 	/**
-	 * from the list, fetch the first record
-	 * @param roleInfo a list of records retrieved from database
+	 * Fetch the first record from a list of Roles
+	 * @param roleInfo a Role list
 	 * @return returns empty user object if the list is empty, otherwise, returns a user in the list
 	 */
 	protected Role fetchOneRole(List<Role> roleInfo) {
@@ -69,6 +68,10 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		return new Role();
 	}
 	
+	/**
+	 * Select all roles
+	 * @return returns a list of roles 
+	 */
 	public List<Role> selectAllRoles() {
 		String query = "select * from role order by role_id;";
 		List<Role> roles = this.template.query(query, new RowMapper<Role>(){
@@ -81,7 +84,29 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		});
 		return roles;
 	}
+
+	/**
+	 * Select all roles except the admin role
+	 * @return a list of all roles except the admin role
+	 */
+	public List<Role> selectAllRolesExceptAdmin() {
+		String query = "select * from role where role_name <> 'Admin' order by role_id;";
+		List<Role> roles = this.template.query(query, new RowMapper<Role>(){
+			public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Role temp = new Role();
+				temp.setId(rs.getInt("role_id"));
+				temp.setName(rs.getString("role_name"));
+				return temp;
+			}
+		});
+		return roles;
+	}
 	
+	/**
+	 * Insert a role
+	 * @param role a Role object
+	 * @return int
+	 */
 	public int insert(final Role role) {
 		final String query = "insert into role (role_name) values (?)";
 
@@ -100,6 +125,11 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 			return keyHolder.getKey().intValue();
 	}	
 	
+	/**
+	 * Update a role with a role object
+	 * @param role a Role object
+	 * @return returns the number of records affected by the update
+	 */
 	public int update(Role role) {
 		String query = "UPDATE role SET role_name=? WHERE role_id=?";
 		int count = 0;
@@ -112,6 +142,11 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		return count;
 	}
 	
+	/**
+	 * Delete a role by the role id
+	 * @param roleID the role's id number
+	 * @return returns the number of records deleted
+	 */
 	public int deleteById(int roleID) {
 		String query = "DELETE FROM role WHERE role_id=? ";
 		int count = 0;
@@ -124,6 +159,10 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		return count;
 	}
 	
+	/**
+	 * Get the last role's id number
+	 * @return returns the role_id of the last role in the table
+	 */
 	public int getLastRoleId() {
 		String query = "select max(role_id) from role";
 		int count = 0;
@@ -134,7 +173,6 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 			System.out.println(e.toString());
 		}
 		return count;
-	}
-	
+	}	
 }
 
