@@ -44,7 +44,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	ProjectJdbcDaoImpl projectJdbcDao = new ProjectJdbcDaoImpl();
 	//instantiates ProjectJdbcDaoImpl user related database transaction
 	RoleJdbcDaoImpl roleJdbcDao = new RoleJdbcDaoImpl();
-	private static final String SEP = "=/=";
+	private static final String SEP = "=-=";
 	
 	//getter/setter for the attribute
 	public ProjectJdbcDaoImpl getSpringJdbcDao() {
@@ -115,9 +115,37 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	public Collection<Map<String, String>> selectArchivedByRole(int id, int roleId) {
+		//get role name
+		Role role = roleJdbcDao.selectById(roleId);
+		//get user with matching email and password
+		List<Project> projList = projectJdbcDao.selectArchivedByRole(id, projectFldByRole(role.getName()));
+		//based on status fetch and format related data
+		//loop through each project object
+		
+		Collection<Map<String, String>> projectList = new HashSet<Map<String, String>>();
+		for (int i = 0; i < projList.size(); i++) {
+			projectList.add(formatProjectItem(projList.get(i)));
+		}
+		return projectList;
+	}
+	
 	public Collection<Map<String, String>> selectAll() {
 		//get role name
 		List<Project> projList = projectJdbcDao.selectAll();
+		//based on status fetch and format related data
+		//loop through each project object
+		
+		Collection<Map<String, String>> projectList = new HashSet<Map<String, String>>();
+		for (int i = 0; i < projList.size(); i++) {
+			projectList.add(formatProjectItem(projList.get(i)));
+		}
+		return projectList;
+	}
+	
+	public Collection<Map<String, String>> selectAllArchived() {
+		//get role name
+		List<Project> projList = projectJdbcDao.selectAllARchived();
 		//based on status fetch and format related data
 		//loop through each project object
 		
@@ -246,6 +274,10 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	
 	public int checkProjAcceptedbyLead(int projId, int leadId) {
 		return projectJdbcDao.checkAcceptedbyLead(projId, leadId);
+	}
+	
+	public int archiveProject(int projId) {
+		return projectJdbcDao.archiveProject(projId);
 	}
 	protected int fetchLeadId(int dispId) {
 		//instantiates StatusJdbcDaoImpl user related database transaction

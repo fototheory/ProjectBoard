@@ -60,6 +60,29 @@ public class SponsorDefaultController {
 			User user = sessionScopeUserData.getUserInfo();	
 			//check sponsor has a project already
 			Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
+			Collection<Map<String, String>> archiveList = projectService.selectArchivedByRole(user.getId(), user.getRoleId());	
+			//send session variable to view 
+			mav.addObject("sessionUserInfo", user);	
+			//send session variable to view 
+			mav.addObject("projectList", projList);	
+			//send session variable to view 
+			mav.addObject("archiveList", archiveList);	
+			mav.addObject("status", stat);
+			return mav;
+		}
+		else {
+			//user hasn't logged in
+			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
+		}
+	}
+	
+	@RequestMapping(value = "/archivedProjects", method = RequestMethod.GET)
+	public ModelAndView projectArchivedList(@RequestParam(value = "status", required=false) String stat) {
+		ModelAndView mav = new ModelAndView("/sponsor/archivedProjects");
+		if(this.sessionCheck(sessionScopeUserData)) {
+			User user = sessionScopeUserData.getUserInfo();	
+			//check sponsor has a project already
+			Collection<Map<String, String>> projList = projectService.selectArchivedByRole(user.getId(), user.getRoleId());	
 			//send session variable to view 
 			mav.addObject("sessionUserInfo", user);	
 			//send session variable to view 

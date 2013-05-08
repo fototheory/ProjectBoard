@@ -49,16 +49,10 @@
               <h3 class="color-4 p2">Archived Projects</h3>
                <c:choose>
                <c:when test="${not empty archiveList}">
-              	<ul class="list-2">	             
-	                <li><a href="#">Project Title 1 </a></li>
-	                <li><a href="#">Project Title 2</a></li>
-	                <li><a href="#">Project Title 3</a></li>
-	                <li><a href="#">Project Title 4</a></li>
-	                <li><a href="#">Project Title 5</a></li>
-	                <li><a href="#">Project Title 6</a></li>
-	                <li><a href="#">Project Title 7</a></li>
-	                <li><a href="#">Project Title 8</a></li>
-	                <li><a href="#">Project Title 9</a></li>	             
+              	<ul class="list-2">	 
+              		<c:forEach items="${archiveList}" var="map">             
+	                <li><a href="#">${map.get("Title")}</a></li>
+	                </c:forEach>          
               	</ul>
               	</c:when>
               	<c:otherwise>
@@ -68,7 +62,7 @@
               	</c:otherwise>
               </c:choose>
             </div>
-			 <a class="button-2" href="#">Previous Years</a>
+			 <a class="button-2" href="archivedProjects.do">Previous Years</a>
 		  </div>
           </div>
        </div>

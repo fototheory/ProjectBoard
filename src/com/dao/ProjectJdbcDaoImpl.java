@@ -151,7 +151,34 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	 * @return record count
 	 */
 	public List<Project> selectByRole(int id, String roleFld) {
-		String query = "SELECT * FROM project WHERE "+roleFld+"=?";
+		String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=0";
+		return this.template.query(query, new Object[]{id},
+				new RowMapper<Project>() {
+            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
+        	   	Project temp = new Project();
+        	   	temp.setId(rs.getInt("project_id"));
+        	   	temp.setTitle(rs.getString("project_title"));
+            	temp.setDesc(rs.getString("project_description"));
+            	temp.setArchived(rs.getInt("project_isarchived"));
+            	temp.setManHours(rs.getInt("project_manhours"));
+            	temp.setDue(rs.getDate("project_date_due"));
+            	temp.setDateStarted(rs.getDate("project_date_started"));
+            	temp.setDateCompleted(rs.getDate("project_date_completed"));
+            	temp.setDateCreated(rs.getDate("project_date_created"));
+            	temp.setStatusId(rs.getInt("status_id"));
+            	temp.setDispId(rs.getInt("discipline_id"));
+            	temp.setGroupId(rs.getInt("group_id"));
+            	temp.setSponsorId(rs.getInt("project_sponsor"));
+            	temp.setLeadId(rs.getInt("project_lead_faculty"));
+            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+            	temp.setCapId(rs.getInt("project_capstone_faculty"));
+                return temp;
+            }
+        });
+	}
+	
+	public List<Project> selectArchivedByRole(int id, String roleFld) {
+		String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=1";
 		return this.template.query(query, new Object[]{id},
 				new RowMapper<Project>() {
             public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -178,7 +205,34 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	}
 	
 	public List<Project> selectAll() {
-		String query = "SELECT * FROM project";
+		String query = "SELECT * FROM project WHERE project_isarchived=0";
+		return this.template.query(query, new Object[]{},
+				new RowMapper<Project>() {
+            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
+        	   	Project temp = new Project();
+        	   	temp.setId(rs.getInt("project_id"));
+        	   	temp.setTitle(rs.getString("project_title"));
+            	temp.setDesc(rs.getString("project_description"));
+            	temp.setArchived(rs.getInt("project_isarchived"));
+            	temp.setManHours(rs.getInt("project_manhours"));
+            	temp.setDue(rs.getDate("project_date_due"));
+            	temp.setDateStarted(rs.getDate("project_date_started"));
+            	temp.setDateCompleted(rs.getDate("project_date_completed"));
+            	temp.setDateCreated(rs.getDate("project_date_created"));
+            	temp.setStatusId(rs.getInt("status_id"));
+            	temp.setDispId(rs.getInt("discipline_id"));
+            	temp.setGroupId(rs.getInt("group_id"));
+            	temp.setSponsorId(rs.getInt("project_sponsor"));
+            	temp.setLeadId(rs.getInt("project_lead_faculty"));
+            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+            	temp.setCapId(rs.getInt("project_capstone_faculty"));
+                return temp;
+            }
+        });
+	}
+	
+	public List<Project> selectAllARchived() {
+		String query = "SELECT * FROM project WHERE project_isarchived=1";
 		return this.template.query(query, new Object[]{},
 				new RowMapper<Project>() {
             public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -217,6 +271,11 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	public int updateStatus(int projId, int statId) {
 		String query = "UPDATE project SET status_id=? WHERE project_id=?";
 		return this.template.update(query, new Object[]{statId, projId});
+	}
+	
+	public int archiveProject(int projId) {
+		String query = "UPDATE project SET project_isarchived=1 WHERE project_id=?";
+		return this.template.update(query, new Object[]{projId});
 	}
 	
 	public int updateStatusWithFac(int projId, int statId, String facFld, int facId) {

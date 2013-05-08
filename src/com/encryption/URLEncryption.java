@@ -6,6 +6,7 @@ import com.encryption.RC4Lite;
 
 public class URLEncryption {
 	private static final String ENCODING_KEY = "nuProactiveGradsBest";
+	
 	public byte[] encodeURL(String userDetails) throws UnsupportedEncodingException {		
 	    RC4Lite rc4 = getRC4Lite();
 	
