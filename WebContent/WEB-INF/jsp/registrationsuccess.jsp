@@ -14,10 +14,8 @@
 						Welcome <c:out value="${registration.fname}" />	<c:out value="${registration.lname}" />.
 					</h2>
 					<h6>
-						Thank you for registering.<br /> <br /> You should receive an
-						email within 24hrs informing you that your account is ready.<br />
-						<br /> Account information:<br />
-
+						Thank you for registering with the NU Capstone Project Board.<br /> 
+						<br /> Account Details:<br />
 						<table>
 							<tr>
 								<td>User Name :</td>
@@ -27,7 +25,7 @@
 
 							<tr>
 								<td>Password :</td>
-								<td><c:out value="${registration.password}" /></td>
+								<td>(on file)</td>
 							</tr>
 
 							<tr>
@@ -39,9 +37,13 @@
 								<td>Discipline :</td>
 								<td><c:out value="${discipline}" /></td>
 							</tr>
-
 						</table>
-						<br /><br />
+						<br />
+						You should receive an email within 24hrs informing you that your account is ready.<br />
+						<c:if test="${not empty successMsg}">
+							<br />${successMsg}<br />
+						</c:if>
+						<br />
 						<a class="button-2" href="login.html">Ok</a>
 					</h6>
 				</div>

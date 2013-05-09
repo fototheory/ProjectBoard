@@ -36,16 +36,16 @@ public class RegistrationValidation implements Validator {
 		String lname = registration.getLname();
 
 		if (fname.length() > 0) {
-			if (fname.length() < 1 || fname.length() > 40) {
+			if (fname.length() < 1 || fname.length() > 45) {
 				errors.rejectValue("fname", "lengthOfUser.registration.fname",
-						"First name must be not be greater than 40 characters.");
+						"First name must be not be greater than 45 characters.");
 			}
 		}
 
 		if (lname.length() > 0) {
-			if (lname.length() <1 || lname.length() > 40) {
+			if (lname.length() <1 || lname.length() > 45) {
 				errors.rejectValue("lname", "lengthOfUser.registration.lname",
-						"Last name must not be greater than 40 characters.");
+						"Last name must not be greater than 45 characters.");
 			}
 		}
 
@@ -59,10 +59,10 @@ public class RegistrationValidation implements Validator {
 		String password = registration.getPassword();
 		
 		if (password.length() > 0) {
-			if (password.length() < 4 || password.length() > 40) {
+			if (password.length() < 4 || password.length() > 45) {
 				errors.rejectValue("password",
 						"lengthOfUser.registration.password",
-						"Password must be between 4 and 40 characters.");
+						"Password must be between 4 and 45 characters.");
 			}
 		}
 			

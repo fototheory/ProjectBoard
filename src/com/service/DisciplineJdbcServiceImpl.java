@@ -23,8 +23,9 @@ public class DisciplineJdbcServiceImpl implements SpringJdbcService<Discipline> 
 	public void setSpringJdbcDao(DisciplineJdbcDaoImpl springJdbcDao) {
 		this.disciplineJdbcDao = springJdbcDao;
 	}
+	
 	/**
-	 * generic select by id
+	 * Select a discipline given its id
 	 * @param id discipline_id of discipline table
 	 * @return returns empty discipline object if a discipline_id doesn't have match in database, 
 	 * otherwise, returns a discipline in the list
@@ -34,7 +35,20 @@ public class DisciplineJdbcServiceImpl implements SpringJdbcService<Discipline> 
 		return disciplineJdbcDao.selectById(id);
 	}
 	
+	/**
+	 * Select a list of all disciplines
+	 * @return returns a list of all disciplines in the database
+	 */
 	public List<Discipline> selectAllDisciplines() {
 		return disciplineJdbcDao.selectAllDisciplines();
+	}
+	
+	/**
+	 * Get the discipline name given the discipline's id
+	 * @param disciplineId the discipline_id for the discipline
+	 * @return returns the name of the discipline
+	 */
+	public String getDisciplineName(int disciplineId) {
+		return disciplineJdbcDao.getDisciplineNameById(disciplineId);
 	}
 }

@@ -86,4 +86,11 @@ public class RoleJdbcServiceImpl implements SpringJdbcService<Role> {
 		return roleJdbcDao.getLastRoleId();
 	}
 	
+	/**
+	 * Get the role's name given the role's id
+	 * @return returns the name of the role
+	 */
+	public String getRoleName(int roleId) {
+		return roleJdbcDao.getRoleNameById(roleId);
+	}
 }

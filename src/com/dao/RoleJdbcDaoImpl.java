@@ -6,14 +6,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import com.beans.Role;
 
 /**
@@ -174,5 +172,24 @@ public class RoleJdbcDaoImpl implements SpringJdbcDao<Role> {
 		}
 		return count;
 	}	
+	
+	/**
+	 * Get the role's name given the role's id
+	 * @return returns the name of the role
+	 */
+	public String getRoleNameById(int roleId) {
+		String query = "select role_name from role where role_id = ?";
+
+		List<Role> roleName = this.template.query(query,
+				 new Object[]{roleId},
+			        new RowMapper<Role>() {
+			            public Role mapRow(ResultSet rs, int rowNum) throws SQLException {
+			            	Role temp = new Role();
+			            	temp.setName(rs.getString("role_name"));
+			                return temp;
+			            }
+		        });
+		return fetchOneRole(roleName).getName();
+	}
 }
 

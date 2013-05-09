@@ -24,7 +24,7 @@ public class DisciplineJdbcDaoImpl implements SpringJdbcDao<Discipline> {
 	}
 	
 	/**
-	 * generic select by id
+	 * Select a discipline given its id
 	 * @param id discipline_id of Discipline table
 	 * @return returns empty Discipline object if a discipline_id doesn't have match in database, 
 	 * otherwise, returns a Discipline record
@@ -45,7 +45,7 @@ public class DisciplineJdbcDaoImpl implements SpringJdbcDao<Discipline> {
 	}
 	
 	/**
-	 * from the list, fetch the first record
+	 * Fetch the first record from the Discipline list
 	 * @param disciplineInfo a list of records retrieved from database
 	 * @return returns empty user object if the list is empty, otherwise, returns a user in the list
 	 */
@@ -58,6 +58,10 @@ public class DisciplineJdbcDaoImpl implements SpringJdbcDao<Discipline> {
 		return new Discipline();
 	}
 	
+	/**
+	 * Select a list of all disciplines
+	 * @return returns a list of all disciplines in the database
+	 */
 	public List<Discipline> selectAllDisciplines() {
 		String query = "select * from discipline order by discipline_id;";
 		List<Discipline> disciplines = this.template.query(query, new RowMapper<Discipline>(){
@@ -69,6 +73,26 @@ public class DisciplineJdbcDaoImpl implements SpringJdbcDao<Discipline> {
 			}
 		});
 		return disciplines;
+	}
+	
+	/**
+	 * Get the discipline name given the discipline's id
+	 * @param disciplineId the discipline_id for the discipline
+	 * @return returns the name of the discipline
+	 */
+	public String getDisciplineNameById(int disciplineId) {
+		String query = "select discipline_name from discipline where discipline_id = ?";
+
+		List<Discipline> disciplineName = this.template.query(query,
+				 new Object[]{disciplineId},
+			        new RowMapper<Discipline>() {
+			            public Discipline mapRow(ResultSet rs, int rowNum) throws SQLException {
+			            	Discipline temp = new Discipline();
+			            	temp.setName(rs.getString("discipline_name"));
+			                return temp;
+			            }
+		        });
+		return fetchOneDiscipline(disciplineName).getName();
 	}
 }
 
