@@ -25,6 +25,12 @@ public class Role {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getRoleName() {
+		return name;
+	}
+	public void setRoleName(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public String toString() {

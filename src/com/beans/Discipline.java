@@ -24,6 +24,12 @@ public class Discipline {
 	public void setName(String name) {
 		this.name = name;
 	}
+	public String getDispName() {
+		return name;
+	}
+	public void setDispName(String name) {
+		this.name = name;
+	}
 
 	@Override
 	public String toString() {

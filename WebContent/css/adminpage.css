@@ -1,0 +1,19 @@
+
+#userList {
+   width: 350px;
+   padding: 5px;
+   font-size: 16px;
+   border-color:black;
+   border-style:solid;
+}
+
+input[type="text"], textarea {
+    font-size: 16px;
+    color : black; 
+    background-color:white;
+    border-color:grey;
+    border-style:solid;
+    border-width:1px;
+
+}
+
