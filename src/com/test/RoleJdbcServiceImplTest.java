@@ -13,7 +13,7 @@ import com.service.RoleJdbcServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:WebContent/WEB-INF/applicationContext.xml")
+@ContextConfiguration("file:WebContent/WEB-INF/springMail.xml")
 public class RoleJdbcServiceImplTest {
 	private RoleJdbcServiceImpl roleDB;
 	private Role testRole;

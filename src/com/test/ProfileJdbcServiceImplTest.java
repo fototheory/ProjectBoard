@@ -12,7 +12,7 @@ import com.service.ProfileJdbcServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("file:WebContent/WEB-INF/applicationContext.xml")
+@ContextConfiguration("file:WebContent/WEB-INF/springMail.xml")
 public class ProfileJdbcServiceImplTest {
 	private ProfileJdbcServiceImpl profileDB;
 	private Profile testProfile;
