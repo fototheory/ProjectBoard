@@ -59,6 +59,7 @@
 								<input type="submit" id="login" value="Sign in" />
 							</fieldset>
 							<span><a href="registrationform.html#">Sign up</a></span>
+							<span><a href="forgotpassword.html#">Forgot Password ?</a></span>
 						</form:form>
 					</div>
 				</div>
