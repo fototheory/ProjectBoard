@@ -95,6 +95,10 @@ public class SponsorProjectListController {
 				//mav.addObject("status", status);	
 				
 			}
+			else if(actionVal.equals("progress")) {
+				mav = new ModelAndView(new RedirectView("projectprogress.do"));
+				//mav.addObject("status", status);	
+			}
 			else if(actionVal.equals("archive")) {
 				if(projectService.archiveProject(projId)>0) {
 					status="project successfully archived";

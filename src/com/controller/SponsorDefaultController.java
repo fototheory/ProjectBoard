@@ -96,6 +96,20 @@ public class SponsorDefaultController {
 		}
 	}
 	
+	@RequestMapping(value = "/projectprogress", method = RequestMethod.GET)
+	public ModelAndView projectProgress(@RequestParam(value = "status", required=false) String stat) {
+		ModelAndView mav = new ModelAndView("/sponsor/projectprogress");
+		if(this.sessionCheck(sessionScopeUserData)) {
+			User user = sessionScopeUserData.getUserInfo();	
+			mav.addObject("sessionUserInfo", user);
+			return mav;
+		}
+		else {
+			//user hasn't logged in
+			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
+		}
+	}
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView index() {
 		if(this.sessionCheck(sessionScopeUserData)) {

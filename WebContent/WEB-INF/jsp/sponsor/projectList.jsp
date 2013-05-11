@@ -34,7 +34,8 @@
 						<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;"> | Delete project | </a>
 						<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;"> | Archive project | </a>
 						<br /><br />
-						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
+						<a href="projectList.do?action=progress&id=${map.get('ID')}" style="padding-left:10px;"> | View project progress | </a>
+						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:15px;"> | Submit this project to Lead Faculty | </a>
 						</c:if>				
 						</p>
 					</div>
