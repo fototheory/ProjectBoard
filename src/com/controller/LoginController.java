@@ -77,7 +77,7 @@ public class LoginController {
 	            	switch (roleName) {
 	            	case "Admin":
 	            		System.out.println("User is an admin.");
-	            		mav.setViewName("redirect:/admin/adminpage.do");
+	            		mav.setViewName("redirect:/admin/index.do");
 	            		break;
 	            	case "Student":
 						//redirect a user to student/index.jsp
@@ -90,7 +90,9 @@ public class LoginController {
 						mav = new ModelAndView("redirect:/sponsor.do");
 						break;
 	            	case "Lead faculty":
-	            		System.out.println("Lead fauculty - not yet implemented.");
+	            		System.out.println("User is a Lead faculty.");
+						//redirect a user to sponsor/index.jsp
+						mav = new ModelAndView("redirect:/leadFac/projectList.do");
 	            		break;
 	            	case "Capstone faculty":
 	            		System.out.println("Captstone fauculty - not yet implemented.");

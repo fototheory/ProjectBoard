@@ -2,6 +2,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <c:import url="template/header.jsp" />
+	<script type="text/javascript">
+	 $(document).ready(function(){
+ 		$("#negSubmit").click(function() {
+ 			$(this).parents('form').submit();
+ 		}); 
+	 		
+		 // simple Selectyze call
+		$(".selectyze").Selectyze();
+		 // call with options
+		$(".selectyze").Selectyze({
+		 theme:'css3',
+		 effectOpen:'fade',
+		effectClose:'slide'
+		 });
+	});
+	</script>
+	
     <!-- content -->
     <section id="content">
       <div class="padding">
@@ -11,30 +28,73 @@
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>
 			  </c:if>
-              <h2>Projects</h2>
-              <p class="color-4">Each year organizations from the private, government, and non-profit sectors come to NU to assist them in turning ideas into action. Highly talented students work in accordance to the organization’s business and technical requirements while also following strict academic requirements..</p>
-              <div class="wrapper p2">
-              </div>
-			  	<h3> Available Projects</h3>
+			  	<h2> My Project List</h2>
 			  	<div id="accordion">
 			  	<c:if test="${not empty projectList}">
 					<c:forEach items="${projectList}" var="map"> 
 					<c:if test="${map.get('Status') != 'New'}">
-					<p>${map.get("Sponsor")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
+					<p>${map.get("Discipline")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
 					<div>
-						<p>						
-						<c:forEach items="${map}" var="entry"> 
-							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date'&& entry.key != 'DispID'}">
-							${entry.key}: ${entry.value}<br />
-							</c:if>
-						</c:forEach>	
+						<p>	
+						<form action="projectList.do" method="post">
+						<input type="hidden" name="projId" value="${map.get('ID')}" />
+						<h5>Company:</h5> ${map.get("company")}<br />	
+						<h5>Project sponsor:</h5> ${map.get("Sponsor")}<br />
+						<h5>Project description:</h5> ${map.get("Description")}<br />
 						<br />
-						<c:if test="${map.get('Status') eq 'Submitted'}">
-						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:200px;"> | Edit project | </a>	
-						<br /><br />
-						<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:125px;"> | Submit this project to Lead Faculty | </a>
-						</c:if>				
-						</p>
+						Append discipline's academic requirements for this project :<br/>
+					 	<select name="my_select" class="selectyze">
+							<option value="value1" selected="selected"> </option>
+							<option value="value2">Applied Engineering</option>
+							<option value="value2">Computer Science, Information and Media Systems</option>
+						</select>
+						<br/>
+						<br/> Additional team member ratio: <br/>
+						 <select name="my_select" class="selectyze">
+							 <option value="value1" selected="selected"> </option>
+							 <option value="value2">1</option>
+							 <option value="value2">2</option>
+							 <option value="value2">3</option>
+							 <option value="value2">4</option>
+							 <option value="value2">5</option>
+						 </select>
+							<br/>							
+							<br/> Suggested team size:<br/>
+							 <select name="my_select" class="selectyze">
+							 <option value="value1" selected="selected"> </option>
+							 <option value="value2">1</option>
+							 <option value="value2">2</option>
+							 <option value="value2">3</option>
+							 <option value="value2">4</option>
+							 <option value="value2">5</option>
+						 </select>
+							<br/>
+							<br/> Total number of team member hours involvement per week: <br/>
+						 <select name="my_select" class="selectyze">
+							 <option value="value1" selected="selected"> </option>
+							 <option value="value2">15</option>
+							 <option value="value2">20</option>
+							 <option value="value2">30</option>
+							 <option value="value2">40</option>
+							 <option value="value2">50</option>
+						 </select>
+						 <br/>
+						 <!-- Basic / Normal HTML Select element -->
+						 <br/> Assign a Negotiating faculty member: <br/>	
+						 
+						 <select name="neg" class="selectyze">
+							 <option value="" selected="selected"> List of Potential Negotiating Faculty Members</option>
+							 <c:if test="${not empty facUsers}">
+								 <c:forEach items="${facUsers}" var="user">
+								 <option value="${user.getId()}">${user.getFname()} ${user.getLname()}</option>
+	   							 </c:forEach>
+							 </c:if>
+						 </select>
+ 						 <br/> <br/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
+						 <a href="#">| Edit project |</a> &nbsp;  &nbsp; &nbsp; &nbsp; 
+						 <a href="projectprogress.html#">| view project progress | </a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+						 <a href="#" id="negSubmit">| Route this project to the selected negotiating faculty member | </a>
+						 </form>
 					</div>
 					</c:if>
 					</c:forEach>
@@ -43,32 +103,7 @@
 			 <br />
 			 </div>
 		  </div>
-          <div class="col-4">
-            <div class="block-news">
-              <h3 class="color-4 p2">Archived Projects</h3>
-               <c:choose>
-               <c:when test="${not empty archiveList}">
-              	<ul class="list-2">	             
-	                <li><a href="#">Project Title 1 </a></li>
-	                <li><a href="#">Project Title 2</a></li>
-	                <li><a href="#">Project Title 3</a></li>
-	                <li><a href="#">Project Title 4</a></li>
-	                <li><a href="#">Project Title 5</a></li>
-	                <li><a href="#">Project Title 6</a></li>
-	                <li><a href="#">Project Title 7</a></li>
-	                <li><a href="#">Project Title 8</a></li>
-	                <li><a href="#">Project Title 9</a></li>	             
-              	</ul>
-              	</c:when>
-              	<c:otherwise>
-              		<ul class="list-2">
-              		 <li>No Archived Project</li>
-              		</ul>
-              	</c:otherwise>
-              </c:choose>
-            </div>
-			 <a class="button-2" href="#">Previous Years</a>
-		  </div>
           </div>
+    	</div>
 	</section>
 	<c:import url="template/footer.jsp" />

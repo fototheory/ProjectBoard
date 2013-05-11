@@ -19,11 +19,13 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.beans.Discipline;
+import com.beans.Profile;
 import com.beans.Project;
 import com.beans.Role;
 import com.beans.Status;
 import com.beans.User;
 import com.dao.DisciplineJdbcDaoImpl;
+import com.dao.ProfileJdbcDaoImpl;
 import com.dao.ProjectJdbcDaoImpl;
 import com.dao.RoleJdbcDaoImpl;
 import com.dao.StatusJdbcDaoImpl;
@@ -203,7 +205,15 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		}
 		return 0;
 	}
-	
+
+	public int assignNeg(int projId, int negId) {
+		int statId = 0; 
+		statId = fetchStatusId("Neg Assigned");
+		if(statId>0) {
+			return projectJdbcDao.updateStatusWithFac(projId, statId, projectFldByRole("Negotiating faculty"), negId);
+		}
+		return 0;
+	}
 	public String[] createRequestMsg(int projId, String type) {
 		//get project information
 		Project submittedProj = projectJdbcDao.selectById(projId);
@@ -274,6 +284,17 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	
 	public int checkProjAcceptedbyLead(int projId, int leadId) {
 		return projectJdbcDao.checkAcceptedbyLead(projId, leadId);
+	}
+	
+	public String getSponsorCompany(int projId) {
+		Project proj = projectJdbcDao.selectById(projId);
+		//instantiates UserJdbcDaoImpl user related database transaction
+		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
+		User sponsor = userJdbcDao.selectById(proj.getSponsorId());
+		//instantiates ProfileJdbcDaoImpl user related database transaction
+		ProfileJdbcDaoImpl profileJdbcDao = new ProfileJdbcDaoImpl();
+		Profile sponsorProfile = profileJdbcDao.selectById(sponsor.getProfileId());
+		return sponsorProfile.getCompany();
 	}
 	
 	public int archiveProject(int projId) {

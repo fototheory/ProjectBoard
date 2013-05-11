@@ -1,8 +1,12 @@
 package com.controller;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.beans.Project;
 import com.beans.User;
+import com.service.ProfileJdbcServiceImpl;
 import com.service.ProjectJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
@@ -58,12 +63,20 @@ public class LeadDefaultController {
 		ModelAndView mav = new ModelAndView("/leadFac/projectList");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
-			//check sponsor has a project already
+			//get all the projects under lead
 			Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
 			//send session variable to view 
 			mav.addObject("sessionUserInfo", user);	
+			//get sponsor company name
+			for (Iterator<Map<String, String>> iter = projList.iterator(); iter.hasNext();) {
+				Map<String, String> proj = (Map<String, String>) iter.next();
+				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
+			}
+			//get all faculty members for assign as neg faculty
+			List<User> facUsers = sessionService.getUsersByRole("Negotiating faculty");
 			//send session variable to view 
 			mav.addObject("projectList", projList);	
+			mav.addObject("facUsers", facUsers);	
 			mav.addObject("status", stat);
 			return mav;
 		}
@@ -71,6 +84,50 @@ public class LeadDefaultController {
 			//user hasn't logged in
 			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
 		}
+	}
+	
+	@RequestMapping(value = "/projectList", method = RequestMethod.POST)
+	public ModelAndView assignNeg(HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView("/leadFac/projectList");
+		if(this.sessionCheck(sessionScopeUserData)) {
+			User user = sessionScopeUserData.getUserInfo();	
+			//get all the projects under lead
+			Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
+			//send session variable to view 
+			mav.addObject("sessionUserInfo", user);	
+			//get sponsor company name
+			for (Iterator<Map<String, String>> iter = projList.iterator(); iter.hasNext();) {
+				Map<String, String> proj = (Map<String, String>) iter.next();
+				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
+			}
+			
+			List<User> facUsers = new LinkedList<User>();
+			if(request.getParameter("neg").length()>0) {
+				int negId = Integer.parseInt(request.getParameter("neg"));
+				int projId = Integer.parseInt(request.getParameter("projId"));
+				//get all faculty members for assign as neg faculty
+				User facUser = sessionService.selectById(negId);
+				facUsers.add(facUser);
+				if(projectService.assignNeg(projId, negId)>0) {
+					mav.addObject("status", "Negotiating faculty successfully assigned.");
+				}
+				else {
+					mav.addObject("status", "Negotiating faculty assignment failed.");
+				}
+			}
+			else {
+				//negotiating faculty not selected, display error
+			}
+			
+			//send session variable to view 
+			mav.addObject("projectList", projList);	
+			mav.addObject("facUsers", facUsers);
+		}
+		else {
+			//user hasn't logged in
+			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
+		}
+		return mav;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET)

@@ -376,4 +376,28 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		}
 		return count;
 	}
+	
+	public List<User> getUsersByRole(String roleName) {
+		String query = "select * from user u, role r WHERE u.role_id=r.role_id AND r.role_name=?;";
+		List<User> users = this.template.query(query, new Object[]{roleName}, new RowMapper<User>(){
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User temp = new User();
+        	   	temp.setId(rs.getInt("user_id"));
+        		temp.setEmail(rs.getString("user_email"));
+        		temp.setPassword(rs.getString("user_password"));
+            	temp.setFname(rs.getString("user_fname"));
+            	temp.setLname(rs.getString("user_lname"));
+            	temp.setEmail(rs.getString("user_email"));
+            	temp.setDisciplineId(rs.getInt("discipline_id"));
+            	temp.setRoleId(rs.getInt("role_id"));
+            	temp.setVerified(rs.getInt("user_isverified"));
+            	temp.setHasProfile(rs.getInt("user_hasprofile"));
+            	temp.setProfileId(rs.getInt("profile_id"));
+            	temp.setDisciplineId(rs.getInt("discipline_id"));
+            	temp.setGroupId(rs.getInt("group_id"));
+				return temp;
+			}
+		});
+		return users;
+	}
 }
