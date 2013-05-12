@@ -103,6 +103,26 @@
 			 <br />
 			 </div>
 		  </div>
+          <div class="col-4">
+            <div class="block-news">
+              <h3 class="color-4 p2">Archived Projects</h3>
+               <c:choose>
+               <c:when test="${not empty archiveList}">
+              	<ul class="list-2">	 
+              		<c:forEach items="${archiveList}" var="map">             
+	                <li><a href="#">${map.get("Title")}</a></li>
+	                </c:forEach>          
+              	</ul>
+              	</c:when>
+              	<c:otherwise>
+              		<ul class="list-2">
+              		 <li>No Archived Project</li>
+              		</ul>
+              	</c:otherwise>
+              </c:choose>
+            </div>
+			 <a class="button-2" href="archivedProjects.do">Previous Years</a>
+		  </div>
           </div>
     	</div>
 	</section>

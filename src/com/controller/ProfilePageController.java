@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.beans.Profile;
 import com.beans.User;
 import com.service.ProfileJdbcServiceImpl;
+import com.service.RoleJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
 
@@ -20,6 +21,8 @@ public class ProfilePageController {
 	UserJdbcServiceImpl sessionService = new UserJdbcServiceImpl();
 	//instantiates ProfileJdbcServiceImpl for profile related activities
 	ProfileJdbcServiceImpl profileService = new ProfileJdbcServiceImpl();
+	//instantiates RoleJdbcServiceImpl for profile related activities
+	RoleJdbcServiceImpl roleService = new RoleJdbcServiceImpl();
 	
 	//autowire session variable User
 	@Autowired
@@ -64,7 +67,8 @@ public class ProfilePageController {
 		
 		//Update user's profile id
 		sessionService.updateProfileId(user, profileId);
-	
+		//fetch role name
+		model.addAttribute("roleName", roleService.getRoleName(user.getRoleId()));
 		model.addAttribute("successMsg", "Profile update successful.");
 		
 		return mav;

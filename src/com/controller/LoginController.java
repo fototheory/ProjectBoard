@@ -95,14 +95,19 @@ public class LoginController {
 						mav = new ModelAndView("redirect:/leadFac/projectList.do");
 	            		break;
 	            	case "Capstone faculty":
-	            		System.out.println("Captstone fauculty - not yet implemented.");
+	            		System.out.println("User is a Capstone faculty.");
+						//redirect a user to sponsor/index.jsp
+						mav = new ModelAndView("redirect:/capFac/projectList.do");
 	            		break;
 	            	case "Negotiating faculty":
-	            		System.out.println("Negotiating fauculty - not yet implemented.");
+	            		System.out.println("User is a Negotiating faculty.");
+						//redirect a user to sponsor/index.jsp
+						mav = new ModelAndView("redirect:/negFac/projectList.do");
 	            		break;
 	            	default:
-	            		System.out.println("No user role found.");	            		
-						mav.addObject("status", "cannot find a user type, contact admininstrator");
+	            		System.out.println("User is a Negotiating faculty.");
+						//redirect a user to sponsor/index.jsp
+						mav = new ModelAndView("redirect:/student/projectList.do");
 						break;
 	            	}
 				}

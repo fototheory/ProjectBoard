@@ -1,6 +1,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:import url="template/header.jsp" />
 
@@ -49,7 +50,25 @@
 					<c:if test="${not empty successMsg}">
 						<br />
 						<font color="red">${successMsg}</font><br /><br /><br />
-						<a class="button-2" href="sponsor/projectForm.do?action=add&id=0" id="addProj">Add Project</a>
+						<c:if test="${not empty roleName}">
+							<c:choose>
+								<c:when test="${fn:toLowerCase(roleName) eq 'sponsor'}">						
+									<a class="button-2" href="sponsor/projectForm.do?action=add&id=0" id="addProj">Add Project</a>
+								</c:when>
+								<c:when test="${fn:toLowerCase(roleName) eq 'lead faculty'}">						
+									<a class="button-2" href="leadFac/projectList.do" id="addProj">Project List</a>
+								</c:when>
+								<c:when test="${fn:toLowerCase(roleName) eq 'negotiating faculty'}">						
+									<a class="button-2" href="negFac/projectList.do" id="addProj">Project List</a>
+								</c:when>
+								<c:when test="${fn:toLowerCase(roleName) eq 'capstone faculty'}">						
+									<a class="button-2" href="capFac/projectList.do" id="addProj">Project List</a>
+								</c:when>
+								<c:when test="${fn:toLowerCase(roleName) eq 'student'}">						
+									<a class="button-2" href="student/projectList.do" id="addProj">Project List</a>
+								</c:when>
+							</c:choose>
+						</c:if>
 					</c:if>
 				</div>
 			</div>
