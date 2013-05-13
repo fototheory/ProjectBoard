@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.regex.Pattern;
 
-public class GUI_sponsorAddProject {
+public class SP_2LoginFailure {
 	private Selenium selenium;
 
 	@Before
@@ -17,7 +17,13 @@ public class GUI_sponsorAddProject {
 	}
 
 	@Test
-	public void testGUI_sponsorAddProject() throws Exception {
+	public void testSP_2LoginFailure() throws Exception {
+		selenium.open("/ProjectBoard/");
+		selenium.click("id=email");
+		selenium.type("id=email", "sponsor@nu.edu");
+		selenium.type("id=password", "sponsorrrrr");
+		selenium.click("id=login");
+		selenium.waitForPageToLoad("30000");
 	}
 
 	@After

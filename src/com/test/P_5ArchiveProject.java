@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import java.util.regex.Pattern;
 
-public class GUI_SponsorLogsIn {
+public class P_5ArchiveProject {
 	private Selenium selenium;
 
 	@Before
@@ -17,11 +17,15 @@ public class GUI_SponsorLogsIn {
 	}
 
 	@Test
-	public void testGUI_SponsorLogsIn() throws Exception {
+	public void testP_5ArchiveProject() throws Exception {
 		selenium.open("/ProjectBoard/");
 		selenium.type("id=email", "sponsor@nu.edu");
 		selenium.type("id=password", "sponsor");
 		selenium.click("id=login");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("css=div.col-4 > a.button-2 > cufon.cufon.cufon-canvas > canvas");
+		selenium.waitForPageToLoad("30000");
+		selenium.click("link=| Archive project |");
 		selenium.waitForPageToLoad("30000");
 	}
 
