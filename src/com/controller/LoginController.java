@@ -82,7 +82,7 @@ public class LoginController {
 	            	case "Student":
 						//redirect a user to student/index.jsp
 						//mav = new ModelAndView(new RedirectView("student/index.do"));
-	            		mav.setViewName("redirect:/student/index.do");
+	            		mav.setViewName("redirect:/student/projectList.do");
 						break;
 	            	case "Sponsor":
 	            		System.out.println("User is a sponsor.");

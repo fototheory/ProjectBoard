@@ -1,16 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <c:import url="template/header.jsp" />
-
-
- <!-- include CSS & JS files -->
- <!-- CSS file -->
- <link rel="stylesheet" type="text/css" href="Selectyze.jquery.css" media="screen" />
- <!-- jQuery files -->
- <script type="text/javascript" src="jquery.js"></script>
- <script type="text/javascript" src="Selectyze.jquery.min.js"></script>
-
 
     <!-- content -->
     <section id="content">
