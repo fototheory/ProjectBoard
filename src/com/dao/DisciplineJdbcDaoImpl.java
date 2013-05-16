@@ -1,10 +1,17 @@
 package com.dao;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import com.beans.Discipline;
 
 /**
@@ -94,5 +101,81 @@ public class DisciplineJdbcDaoImpl implements SpringJdbcDao<Discipline> {
 		        });
 		return fetchOneDiscipline(disciplineName).getName();
 	}
+
+	//
+	/**
+	 * Insert a discipline
+	 * @param discipline a Discipline object
+	 * @return int
+	 */
+	public int insert(final Discipline discipline) {
+		final String query = "insert into discipline (discipline_name) values (?)";
+
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+			
+		this.template.update(new PreparedStatementCreator() {           
+			@Override
+	        public PreparedStatement createPreparedStatement(Connection connection) 
+	        		throws SQLException, DataIntegrityViolationException {
+				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+				ps.setString(1, discipline.getName());
+
+	                return ps;
+	            }
+	        }, keyHolder);
+			
+			return keyHolder.getKey().intValue();
+	}	
+	
+	/**
+	 * Update a discipline with a discipline object
+	 * @param discipline a Discipline object
+	 * @return returns the number of records affected by the update
+	 */
+	public int update(Discipline discipline) {
+		String query = "UPDATE discipline SET discipline_name=? WHERE discipline_id=?";
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{discipline.getName(), discipline.getId()});
+		}
+		catch(Exception e) { 
+			System.out.println(e.toString());
+		}
+		return count;
+	}
+	
+	/**
+	 * Delete a discipline by the discipline id
+	 * @param disciplineID the discipline's id number
+	 * @return returns the number of records deleted
+	 */
+	public int deleteById(int disciplineID) {
+		String query = "DELETE FROM discipline WHERE discipline_id=? ";
+		int count = 0;
+		try {
+			count = this.template.update(query,new Object[]{disciplineID});
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
+	}
+	
+	/**
+	 * Get the last discipline's id number
+	 * @return returns the discipline_id of the last discipline in the table
+	 */
+	public int getLastDisciplineId() {
+		String query = "select max(discipline_id) from discipline";
+		int count = 0;
+		try {
+			count = this.template.queryForInt(query);
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
+	}	
+	
 }
 

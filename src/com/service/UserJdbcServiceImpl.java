@@ -150,4 +150,13 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	public List<User> getUsersByRole(String roleName) {
 		return userJdbcDao.getUsersByRole(roleName);
 	}
+	
+	/**
+	 * Get the last user id number
+	 * @return returns the user_id of the last user in the table
+	 */
+	public int getLastUserId() {
+		return userJdbcDao.getLastUserId();
+	}
+
 }

@@ -51,4 +51,39 @@ public class DisciplineJdbcServiceImpl implements SpringJdbcService<Discipline> 
 	public String getDisciplineName(int disciplineId) {
 		return disciplineJdbcDao.getDisciplineNameById(disciplineId);
 	}
+
+	/**
+	 * Add a discipline
+	 * @param discipline a Discipline object
+	 * @return int
+	 */
+	public int add(Discipline discipline) {
+		return disciplineJdbcDao.insert(discipline);
+	}
+	
+	/**
+	 * Update a discipline with a discipline object
+	 * @param discipline a Discipline object
+	 * @return returns the number of records affected by the update
+	 */
+	public int update(Discipline discipline) {
+		return disciplineJdbcDao.update(discipline);
+	}
+	
+	/**
+	 * Delete a discipline by the discipline id
+	 * @param disciplineID the discipline's id number
+	 * @return returns the number of records deleted
+	 */
+	public int delete(int disciplineId) {
+		return disciplineJdbcDao.deleteById(disciplineId);
+	}
+	
+	/**
+	 * Get the last discipline's id number
+	 * @return returns the discipline_id of the last discipline in the table
+	 */
+	public int getLastDisciplineId() {
+		return disciplineJdbcDao.getLastDisciplineId();
+	}
 }
