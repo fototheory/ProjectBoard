@@ -158,5 +158,4 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 	public int getLastUserId() {
 		return userJdbcDao.getLastUserId();
 	}
-
 }
