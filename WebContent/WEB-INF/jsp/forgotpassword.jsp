@@ -16,7 +16,7 @@
 					<c:if test="${not empty status}">
 						<font color="red">${status}</font>
 					</c:if>
-					<h2 class="p0">Forgot Password Form</h2>
+					<h2 class="p0">Password Retrieval Form</h2>
 
 
 <h4>
@@ -25,9 +25,9 @@
 						
 						<table >
 							
-								<td>Your e-mail Address:</td>
+								<td><font color="grey">Your e-mail Address:</font></td> &nbsp
 								
-								<td> <input type="email" name="email" placeholder="please enter your email address"  size ="40"> </td>
+								<td> <input type="email" name="email" placeholder="Please enter your email address here"  size ="40"> </td>
   
 							</tr>
 							
@@ -56,4 +56,4 @@
 
 
 
-<c:import url="template/footer.jsp" />
+<c:import url="globalFooter.jsp"/>
