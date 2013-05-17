@@ -41,11 +41,11 @@
 		<div class="wrapper margin-bot">
 			<div class="col-3">
 				<div class="indent">
-					<h2 class="p0">Admin Page</h2>
+					<h2 class="p0">System Administrator Page</h2>
 					<c:if test="${not empty status}">
 						<font color="red">${status}</font>
 					</c:if>
-					<div>List of users needing verification:</div>
+					<div>List of users in need of verification:</div>
 					<form:form method="Post" action="adminpage.do" commandName="user">
 							<c:forEach items="${userList}" var="user">
 								<form:hidden path="fname" id="fname${user.id}" value="${user.fname}"/>

@@ -115,7 +115,7 @@ p {
 }
 /* boxes */
 .margin-bot {
-	margin-bottom:35px
+	margin-bottom:2px
 }
 .spacing {
 	margin-right:35px
@@ -185,19 +185,19 @@ header {
 }
 .row-1 {
 	width:100%;
-	height:120px;
+	height:140px;
 	overflow:hidden;
 	padding-top:24px
 }
 .row-2 {
 	width:100%;
-	min-height:80px;
+	min-height:75px;
 	position:relative;
 	z-index:1
 }
 .row-3 {
 	width:100%;
-	min-height:417px;
+	min-height:400px;
 	position:relative;
 	z-index:2
 }
@@ -240,15 +240,15 @@ h1 {
 	display:inline-block;
 	width:196px;
 	font-size:17px;
-	line-height:1.22em;
+	line-height: 1.22em;
 	padding:18px 0 36px;
-	margin-top:10px;
+	margin-top: 20px;
 	color:#fff;
 	background:#000;
 	text-align:center;
-	border-radius:5px 5px 0 0;
-	-moz-border-radius:5px 5px 0 0;
-	-webkit-border-radius:10px 10px 0 0
+	border-radius:18px 18px 0 0;
+	-moz-border-radius:18px 18px 0 0;
+	-webkit-border-radius:18px 18px 0 0
 }
 .menu li a.active, .menu li a:hover {
 	color:#0f0f0f;
@@ -261,7 +261,7 @@ h1 {
 	overflow:hidden;
 	width:984px;
 	position:absolute;
-	top:-10px;
+	top:-0px;
 	left:0;
 	background:#fff;
 	border-radius:0 18px 0 0;
@@ -344,7 +344,7 @@ h1 {
 /* content */
 #content {
 	width:100%;
-	padding:10px 0 40px;
+	padding:10px 0 10px;
 	background:#fff;
 	border-radius:18px 18px 0 0;
 	-moz-border-radius:18px 18px 0 0;
@@ -400,7 +400,7 @@ h6 {
 	background:url(../images/pic-1.gif) 0 bottom repeat-x
 }
 .box-bg {
-	padding:33px;
+	padding:20px;
 	background:#e4e4e4
 }
 .box {
@@ -473,8 +473,8 @@ h6 {
 }
 .button-2 {
 	display:inline-block;
-	font-size:19px;
-	line-height:1.21em;
+	font-size:15px;
+	line-height:.60em;
 	letter-spacing:-1px;
 	color:#fefefe;
 	padding:9px 20px 11px;
@@ -619,7 +619,7 @@ footer {
 }
 .row-top {
 	width:100%;
-	padding:33px 0 10px;
+	padding:10px 0;
 	background:#000
 }
 .row-padding {
@@ -748,7 +748,7 @@ footer {
     -moz-border-radius:3px 0 3px 3px;
     margin-top:-1px;
     background:#fff;
-    padding:6px;
+    padding:5px;
 }
 
 #loginForm fieldset {
@@ -760,9 +760,9 @@ footer {
 
 fieldset#body {
     background:#fff;
-    border-radius:3px;
+    border-radius:2px;
     -moz-border-radius:3px;
-    padding:4px 5px;
+    padding:2px 5px;
     margin:0;
 }
 
@@ -837,3 +837,30 @@ input:focus {
     outline:none;
 }
 
+
+/* Logout Button */
+	#LogoutButton { 
+	    display:inline-block;
+	    float:right;
+	    /*background:#003C78 url(../images/buttonbg.png) repeat-x; */
+	    background:#fff;
+	    border:1px solid #003C78; 
+	    border-radius:3px;
+	    -moz-border-radius:3px;
+	    position:relative;
+	    z-index:30;
+	    cursor:pointer;
+	    text-decoration: none;
+	}
+	
+	/* Logout Button Text */
+	#LogoutButton span {
+	    color:#445058; 
+	    font-size:14px; 
+	    font-weight:bold; 
+	    text-shadow:1px 1px #fff; 
+	    padding:5px 24px 9px 15px;
+	    /*background:url(../images/loginArrow.png) no-repeat 53px 7px;*/
+	    display:block
+	}
+	

@@ -15,7 +15,9 @@
               <h2>My archived projects</h2>              
               <div class="wrapper p2">
               </div>
-			  	<h3> FY 2012</h3>
+			  	
+			  	<h3 style="padding-bottom:10px;"> FY 2012 <span style="float:right;"><a class="button-2" href="projectList.do" >Back to my project list</a></span></h3>
+
 				<div id="accordion">
 				 <c:if test="${not empty projectList}">
 					<c:forEach items="${projectList}" var="map"> 
@@ -28,7 +30,7 @@
 							</c:if>
 						</c:forEach>	
 						<br />
-						<a href="#">| request to participate in this project | </a>
+						
 					</p>
 				  	</div>
 					</c:forEach>
@@ -38,7 +40,12 @@
 			  </div>
 			 </div>
          
-        </div>
-	</div>
-</section>
-<c:import url="template/footer.jsp" />
+          
+           
+             
+              
+		  </div>
+          
+	</section>
+	<c:import url="template/footer.jsp" />
+	

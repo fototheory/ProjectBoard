@@ -1,9 +1,16 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-
 <c:import url="template/header.jsp" />
+
+
+ <!-- include CSS & JS files -->
+ <!-- CSS file -->
+ <link rel="stylesheet" type="text/css" href="Selectyze.jquery.css" media="screen" />
+ <!-- jQuery files -->
+ <script type="text/javascript" src="jquery.js"></script>
+ <script type="text/javascript" src="Selectyze.jquery.min.js"></script>
+
 
     <!-- content -->
     <section id="content">
@@ -130,7 +137,7 @@
 		  </div>
           <div class="col-4">
             <div class="block-news">
-              <h3 class="color-4 p2">Archived Projects</h3>
+              <h3 class="color-4 p2">My Archived Projects</h3>
                <c:choose>
                <c:when test="${not empty archiveList}">
               	<ul class="list-2">	 
@@ -141,12 +148,14 @@
               	</c:when>
               	<c:otherwise>
               		<ul class="list-2">
-              		 <li>No Archived Project</li>
+              		 <li>No Archived Projects</li>
               		</ul>
               	</c:otherwise>
               </c:choose>
+              </br>
+               <a class="button-2" href="archivedProjects.do">Previous Years</a>
             </div>
-			 <a class="button-2" href="archivedProjects.do">Previous Years</a>
+			
 		  </div>
           </div>
        </div>
