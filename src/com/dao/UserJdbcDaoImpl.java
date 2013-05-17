@@ -1,20 +1,13 @@
 package com.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import com.beans.User;
 
 /**
@@ -176,41 +169,9 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		}
 		catch(Exception e) {
 			logger.info(e.toString());
-			throw e;
 		}
-		//return count;
-		if (count == 0) {
-			return 0;
-		}else{
-			return this.getLastUserId();
-		}
+		return count;
 	}
-/*	public int insert(final User user) {
-		final String query = "insert into user (user_email,user_password,user_fname,user_lname,role_id,discipline_id) " +
-				"values (?, ?, ?, ?, ?, ?)";
-
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-			
-		this.template.update(new PreparedStatementCreator() {           
-			@Override
-	        public PreparedStatement createPreparedStatement(Connection connection) 
-	        		throws SQLException, DataIntegrityViolationException {
-				PreparedStatement ps = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-					ps.setString(1, user.getEmail());
-					ps.setString(2, user.getPassword());
-					ps.setString(3, user.getFname());
-					ps.setString(4, user.getLname());
-					ps.setInt(5, user.getRoleId());
-					ps.setInt(6, user.getDisciplineId());
-
-	                return ps;
-	            }
-	        }, keyHolder);
-			
-			return keyHolder.getKey().intValue();
-	}	
-*/	
-	
 
 	/**
 	 * Get the user's lead faculty's id given their discipline id
@@ -311,10 +272,6 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		String query = "UPDATE user SET user_email=?,user_password=?,user_fname=?,user_lname=?," +
 				"user_isverified=?,user_hasprofile=?,role_id=?,profile_id=?,discipline_id=?," +
 				"group_id=? WHERE user_id=?";
-		
-		int p = (Integer) null;
-		System.out.println("p="+p);
-		
 		int count = 0;
 		try {
 			count = this.template.update(query, new Object[]{user.getEmail(), user.getPassword(),
