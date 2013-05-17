@@ -5,16 +5,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Capstone Portal @ NU</title>
+<title>The NU Capstone Project Board</title>
 <meta charset="utf-8">
-
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+
+ <!--Login script -->
 <title>jQuery Dropdown Login Freebie | The Finished Box</title>
 <link rel="stylesheet" href="css/style.css" />
 <script
 	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
 <script src="js/login.js"></script>
 
+ <!--CSS and js references -->
 <link rel="stylesheet" href="css/reset.css" type="text/css"	media="screen">
 <link rel="stylesheet" href="css/style.css" type="text/css"	media="screen">
 <link rel="stylesheet" href="css/layout.css" type="text/css" media="screen">
@@ -25,9 +28,9 @@
 <script src="js/Open_Sans_Light_300.font.js" type="text/javascript"></script>
 <script src="js/Open_Sans_Semibold_600.font.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/tms-0.3.js"></script>
-<script src="js/FF-cash.js" type="text/javascript"></script>
 <script type="text/javascript" src="js/tms_presets.js"></script>
 <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
+<script src="js/FF-cash.js" type="text/javascript"></script>
 
 <!--[if lt IE 9]>
 <script type="text/javascript" src="js/html5.js"></script>
@@ -36,14 +39,14 @@
 
 </head>
 
-<body id="page4">
-	<!-- header -->
+<!-- header -->
 	<div class="bg">
 		<div class="main">
 			<header>
 				<div id="bar">
 					<div id="container">
-						<!-- Login Starts Here -->
+						
+<!-- Login Starts Here -->
 						<c:if test="${not empty status}">
 							<font color="red">${status}</font>
 						</c:if>
@@ -65,21 +68,19 @@
 											<input type="submit" id="login" value="Sign in" />
 										</fieldset>
 										<span><a href="registrationform.html#">Sign up</a></span>
-										<span><a href="forgotpassword.html#">Forgot Password ?</a></span>
+										<span><a href="forgotpassword.html#">Forgot your password ?</a></span>
+										
 									</form:form>
 								</div>
 							</div>
 						</div>
-						
-						<!-- Login Ends Here -->
+<!-- Login Ends Here -->
 					</div>
 				</div>
 				<div class="row-1">
 					<h1>
-						<a class="logo" href="login.html">The Capstone Portal @ NU</a> <strong
+						<a class="logo" href="login.html">The NU Capstone Project Board</a> <strong
 							class="slog">Ideas into action</strong>
 					</h1>
 				</div>
-				
 			</header>
-</html>

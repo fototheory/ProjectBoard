@@ -10,7 +10,7 @@
 	form input[type=text], textarea { font: 13px Arial,Helvetica,sans-serif; width:300px; }
 	#due {width:150px;}
 	#dispError {padding-left:140px;}
-	.text-form { width:135px; text-align:right; margin-right:5px; }
+	.text-form { width:150px; text-align:right; margin-right:10px; }
 	</style>
 	<script>
  	$(document).ready(function(){
@@ -93,16 +93,18 @@
                 <form:hidden id="action" path="action" />
                 <fieldset>
                   <label><span class="text-form">Title:*</span></label>
-                    <form:input id="title" path="title" type="text" required="true" /> <c:if test="${not empty errors && errors.containsKey('title')}"><label class="error">${errors.get("title")}</label></c:if>                 
-	                  <div class="wrapper">
+                    <form:input id="title" path="title" type="text" required="true" /> <c:if test="${not empty errors && errors.containsKey('title')}"><label class="error">${errors.get("title")}</label></c:if>                
+	                
+	                  <div class="wrapper"> </br>
 	                    <label><span class="text-form">Project description:*</span></label>
 	                    <form:textarea id="desc" path="desc"></form:textarea> <c:if test="${not empty errors && errors.containsKey('desc')}"><label class="error">${errors.get("desc")}</label></c:if>   
 	                  </div>
-	                  <div class="wrapper">
+	                  
+	                  <div class="wrapper"> </br>
 	                  <label><span class="text-form">Due Date:*</span></label>
-                    	<form:input id="due" path="due" type="text" required="true" /> &nbsp;&nbsp;(mm/dd/yyyy) <span class="error" id="dueError"></span><c:if test="${not empty errors && errors.containsKey('due')}"><label class="error">${errors.get("due")}</label></c:if>
+                    	<form:input id="due" path="due" type="text" required="true" /> &nbsp;&nbsp; <span class="error" id="dueError"></span><c:if test="${not empty errors && errors.containsKey('due')}"><label class="error">${errors.get("due")}</label></c:if>
                       </div>
-                      <div class="wrapper">
+                      <div class="wrapper"> </br>
                       <label><span class="text-form">Discipline:*</span></label>
                       <!-- Display disciplines from the database -->
 						<c:forEach items="${disciplines}" var="discipline">
@@ -132,12 +134,7 @@
 							<p>Hi. You'll need to sign in as a sponsor to be able to post a project.</p>
 						</div>-->
           </div>
-		  <div class="col-4">         
-		  <div class="block-news">
-              
-            </div>
-			 
-          </div>
+		  
         </div>
         </div>
 	</section>

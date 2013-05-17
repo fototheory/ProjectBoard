@@ -5,7 +5,7 @@
 
 <html lang="en">
 <head>
-<title>The Capstone Portal @ NU</title>
+<title>The NU Capstone Project Board</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <link rel="stylesheet" href="../css/style.css" />

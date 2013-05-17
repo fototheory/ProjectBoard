@@ -4,6 +4,8 @@
 
 <c:import url="globalHeader.jsp"/>
 
+<body id="page2">
+
       <div class="row-2">
         <nav>
           <ul class="menu">
@@ -43,7 +45,7 @@
                   <li>-Department of Nursing</li>
                 </ul>
 				
-			    </div>
+			 </div>
           </div>
           <div class="col-4">
               <h3 class="color-4 p2">Presentations Coming up:</h3>
@@ -55,11 +57,9 @@
           </div>
         </div>
         
-      
     </section>
     <!-- footer -->
      <c:import url="globalFooter.jsp" />
 
-  </div>
-</div>
+
 </html>

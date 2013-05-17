@@ -20,7 +20,9 @@
     <section id="content">
       <div class="padding">
         <div class="indent">
-          <h2>Project Status</h2>
+          <h2>Project Progress</h2>
+          <h3 style="padding-bottom:10px;">  <span style="float:right;"><a class="button-2" href="projectList.do" >Back to my project list</a></span></h3>
+          
 					<p>
 				  <label for="amount">Tasks progress (25% increments per user):</label>
 				  <input type="text" id="amount" style="border: 0; color: #003C78; font-weight: bold;" />
@@ -156,5 +158,7 @@
           </div>		  
         </div>
       </div>
+      
     </section>
+    
 	<c:import url="template/footer.jsp" />

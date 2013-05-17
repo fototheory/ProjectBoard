@@ -12,7 +12,7 @@
 		<div class="wrapper margin-bot">
 			<div class="col-3">
 				<div class="indent">
-					<h2>Admin Page</h2>
+					<h2>System Administrator Page</h2>
 					<c:if test="${not empty status}">
 						<font color="red">${status}</font>
 					</c:if>

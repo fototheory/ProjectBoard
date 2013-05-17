@@ -137,7 +137,7 @@
 		  </div>
           <div class="col-4">
             <div class="block-news">
-              <h3 class="color-4 p2">Archived Projects</h3>
+              <h3 class="color-4 p2">My Archived Projects</h3>
                <c:choose>
                <c:when test="${not empty archiveList}">
               	<ul class="list-2">	 
@@ -148,12 +148,14 @@
               	</c:when>
               	<c:otherwise>
               		<ul class="list-2">
-              		 <li>No Archived Project</li>
+              		 <li>No Archived Projects</li>
               		</ul>
               	</c:otherwise>
               </c:choose>
+              </br>
+               <a class="button-2" href="archivedProjects.do">Previous Years</a>
             </div>
-			 <a class="button-2" href="archivedProjects.do">Previous Years</a>
+			
 		  </div>
           </div>
        </div>
