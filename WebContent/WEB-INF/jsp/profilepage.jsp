@@ -23,7 +23,7 @@
 							</tr>
 
 							<tr>
-								<td><form:input path="company" type="text" /></td>
+								<td><form:input path="company" type="text" required="true"/></td>
 							</tr>
 
 							<tr>
@@ -31,14 +31,14 @@
 								<FONT color="red"><form:errors path="phone" /></FONT></td>
 							</tr>
 							<tr>
-								<td><form:input path="phone" type="text" /></td>
+								<td><form:input path="phone" type="text" required="true"/></td>
 							</tr>
 							<tr>
 								<td>Skills:<br /> 
 								<FONT color="red"><form:errors path="skills" id="due"/></FONT></td>
 							</tr>
 							<tr>
-								<td><form:textarea path="skills" type="text" rows="5" cols="40"/></td>
+								<td><form:textarea path="skills" type="text" rows="5" cols="40" required="true"/></td>
 							</tr>
 							<tr>
 							<c:if test="${empty successMsg}">
