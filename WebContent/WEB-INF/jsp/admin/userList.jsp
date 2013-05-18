@@ -25,7 +25,36 @@
 						}
 					}
 				});
+				//clear error fields
+				$(".formClass").hide();
+				//display user form
+				$("#userForm").show();				
 			});
+		});
+		
+		$("#dialog-confirm").dialog({
+			resizable: false,
+		    height:210,
+		    width:440,
+		    modal: true,
+		    autoOpen: false,
+		    show: {
+		        effect: "blind",
+		        duration: 1000
+		    },
+		    hide: {
+		        effect: "explode",
+		        duration: 1000
+		    },
+		    buttons: {
+		    	"Delete": function() {
+		    		$( "#formAction" ).val( "delete" );
+		    		$("#userRecForm").submit();
+		    	},
+		        Cancel: function() {
+		        	$( this ).dialog( "close" );
+		        }
+		      }
 		});
 		
 		$("#profileAdd").change(function() {
@@ -37,25 +66,50 @@
 				$("#proFld").hide();
 			}
 		});
+		
+		$("#deleteSubmit").click(function(e) {
+			if($(this).val()=="Delete") {
+				$( "#dialog-confirm" ).dialog( "open" );
+				return false;
+			}
+			return true;
+		});
 	});
 </script>
+
+<div id="dialog-confirm" title="Delete User?">
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This user will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
+
 <!-- content -->
 <section id="content">
 	<div class="padding">
 		<div class="wrapper margin-bot">
 			<div class="indent">
-				<h2>System Administrator Page</h2>
+				<h2><span style="float:left;margin-top:-5px;">System Administrator Page</span><span style="float:right;margin-top:15px;margin-right:250px;"><a class="button-2" href="addUser.do" id="addUser">Add User</a></span></h2>
+				<div style="clear:both;"></div>
 				<c:if test="${not empty status}">
 					<font color="red">${status}</font>
 				</c:if>
-				<p id="inst">Edit User: </p><br />
-				<div style="float:left;">
-				<form:form method="Post" action="userList.do" commandName="user">
+				<p id="inst">Edit User: </p>
+				<c:choose>
+               		<c:when test="${not empty error && error eq 'true'}">
+               			<div id="userForm" style="float:left;">
+               		</c:when>
+               		<c:otherwise>
+               			<div id="userForm" style="float:left;display:none;">
+               		</c:otherwise>				
+				</c:choose>
+				<form:form method="Post" id="userRecForm" action="userList.do" commandName="user">
 					<form:input path="id" type="hidden" id="id" />
+					<form:input path="isverified" type="hidden" id="isverified" />
+					<form:input path="hasprofile" type="hidden" id="hasprofile" />
+					<form:input path="profile" type="hidden" id="profile" />
+					<input type="hidden" id="formAction" name="formAction" value="edit" />
 					<table>
 						<tr>
 							<td>First Name:<br /><FONT color="red">
-							<form:errors path="fname" id="fname" /></FONT></td>
+							<span class="formError"><form:errors path="fname" id="fname" /></span></FONT></td>
 						</tr>
 
 						<tr>
@@ -64,7 +118,7 @@
 
 						<tr>
 							<td>Last Name:<br /><FONT color="red">
-							<form:errors path="lname" /></FONT></td>
+							<span class="formError"><form:errors path="lname" /></span></FONT></td>
 						</tr>
 
 						<tr>
@@ -72,39 +126,54 @@
 						</tr>
 						<tr>
 							<td>Password:<br /><FONT color="red">
-							<form:errors path="password" /></FONT></td>
+							<span class="formError"><form:errors path="password" /></span></FONT></td>
 						</tr>
 						<tr>
 							<td><form:input path="password" type="password" required="true" /></td>
 						</tr>
 						<tr>
 							<td>Confirm Password:<br /><FONT color="red">
-							<form:errors path="confirmPassword" /></FONT></td>
+							<span class="formError"><form:errors path="confirmPassword" /></span></FONT></td>
 						</tr>
 						<tr>
 							<td><form:input path="confirmPassword" type="password" required="true" /></td>
 						</tr>
 						<tr>
 							<td>Email:<br /><FONT color="red">
-							<form:errors path="email" /></FONT></td>
+							<span class=formError><form:errors path="email" /></span></FONT></td>
 						</tr>
 						<tr>
 							<td><form:input path="email" type="text" required="true" /></td>
 						</tr>
 						<tr>
 							<td>
-								<span id="proQuestion" style="display:none;">
+							<c:choose>
+			               		<c:when test="${not empty error && error eq 'true' && not user.isHasprofile()}">
+			               			<span id="proQuestion">
+			               		</c:when>
+			               		<c:otherwise>
+			               			<span id="proQuestion" style="display:none;">
+			               		</c:otherwise>				
+							</c:choose>
 									Do you want to add profile for this user?<br />
-									<select id="profileAdd">
+									<select name="profileAdd" id="profileAdd">
 										<option value="yes">Yes</option>
 										<option value="no" selected>No</option>
 									</select> 
 								</span>
-								<div id="proFld" style="display:none;">
+								<c:choose>
+			               		<c:when test="${not empty error && error eq 'true' && not user.isHasprofile()}">
+			               			<div id="proFld" style="display:none;">
+			               		</c:when>
+			               		<c:otherwise>
+			               			<div id="proFld">
+			               		</c:otherwise>				
+							</c:choose>
+								
 									<br />
 									<p>Profile: </p>
 									<p>
-										Company: <br /><FONT color="red"><form:errors path="company" /></FONT>
+										Company: <br /><FONT color="red"><span class=formError><form:errors path="company" /></span></FONT>
 										<form:input path="company" type="text" />
 									</p>
 									<p>
@@ -121,7 +190,7 @@
 						<!-- This displays the various disciplines from the database. -->
 						<tr>
 							<td>Subject area:<br />
-							<FONT color="red"><form:errors path="discipline" required="true" /></FONT></td>
+							<FONT color="red"><span class=formError><form:errors path="discipline" required="true" /></span></FONT></td>
 						</tr>
 						<tr>
 							<td>
@@ -131,7 +200,7 @@
 						</tr>
 						<tr>
 							<td>You are a:<br />
-							<FONT color="red"><form:errors path="role" /></FONT></td>
+							<FONT color="red"><span class=formError><form:errors path="role" /></span></FONT></td>
 						</tr>
 						<tr>
 							<td>
@@ -140,15 +209,19 @@
 							</td>
 						</tr>
 						<tr>
-							<td><input class="button-2" type="Reset" value=" Clear" /></td>
-							<td><input class="button-2" type="submit" value="Submit" /></td>
+							<td>&nbsp;</td>
+						</tr>
+						<tr>
+							<td><input class="button-2" type="Reset" value="Clear" />&nbsp;&nbsp;
+							<input class="button-2" type="submit" name="action" value="Edit" />&nbsp;&nbsp;
+							<input class="button-2" type="submit" name="action"id="deleteSubmit" value="Delete" /></td>
 						</tr>
 					</table>
 				</form:form>
 				</div>
 				<div style="float:right; margin-right:30px;">
 				Select user from the list: <br />
-				<select id="userList" size="10" >
+				<select id="userList" size="10">
 					<c:forEach items="${allUsers}" var="user">
 						<option value="${user.getId()}">${user.getEmail()}</option><br />
 					</c:forEach>

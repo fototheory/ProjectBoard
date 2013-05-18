@@ -2,6 +2,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <c:import url="template/header.jsp" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		$("#dialog-confirm").dialog({
+			resizable: false,
+		    height:210,
+		    width:440,
+		    modal: true,
+		    autoOpen: false,
+		    show: {
+		        effect: "blind",
+		        duration: 1000
+		    },
+		    hide: {
+		        effect: "explode",
+		        duration: 1000
+		    },
+		    buttons: {
+		    	"Delete": function() {
+		    		href = $("#deleteSubmit").attr('href');
+		    		window.location.href = href;
+		    	},
+		        Cancel: function() {
+		        	$( this ).dialog( "close" );
+		        }
+		      }
+		});
+		
+		$("#deleteSubmit").click(function(e) {
+			$( "#dialog-confirm" ).dialog( "open" );
+			return false;
+		});
+	});
+</script>
+
+<div id="dialog-confirm" title="Delete Project?">
+  <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This project will be permanently deleted and cannot be recovered. Are you sure?</p>
+</div>
 
 <body id="page4">
     <!-- content -->
@@ -32,7 +69,7 @@
 						<br />
 						<c:if test="${map.get('Status') eq 'New'}">
 						<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:65px;"> | Edit project | </a>	
-						<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;"> | Delete project | </a>
+						<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;" id="deleteSubmit"> | Delete project | </a>
 						<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;"> | Archive project | </a>
 						<br />
 						<a href="projectList.do?action=progress&id=${map.get('ID')}" style="padding-left:75px;"> | View project progress | </a>

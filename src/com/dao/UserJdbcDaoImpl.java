@@ -268,16 +268,45 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 	 * @param user the user to be updated
 	 * @return returns the number of records affected by the update
 	 */
-	public int update(User user) {
-		String query = "UPDATE user SET user_email=?,user_password=?,user_fname=?,user_lname=?," +
-				"user_isverified=?,user_hasprofile=?,role_id=?,profile_id=?,discipline_id=?," +
-				"group_id=? WHERE user_id=?";
+	public int updateWithCond(User user, String type) {
 		int count = 0;
+		if(type.equalsIgnoreCase("noProfile")) {
+			String query = "UPDATE user SET user_email=?,user_password=?,user_fname=?,user_lname=?," +
+					"user_isverified=?,user_hasprofile=?,role_id=?,discipline_id=? WHERE user_id=?";			
+			try {
+				count = this.template.update(query, new Object[]{user.getEmail(), user.getPassword(),
+						user.getFname(), user.getLname(), user.getIsVerified(), user.getHasProfile(),
+						user.getRoleId(), user.getDisciplineId(), user.getId()});
+			}
+			catch(Exception e) { 
+				logger.info(e.toString());
+			}
+		}
+		else {
+			String query = "UPDATE user SET user_email=?,user_password=?,user_fname=?,user_lname=?," +
+					"user_isverified=?,user_hasprofile=?,role_id=?,profile_id=?,discipline_id=? " +
+					"WHERE user_id=?";
+			try {
+				count = this.template.update(query, new Object[]{user.getEmail(), user.getPassword(),
+						user.getFname(), user.getLname(), user.getIsVerified(), user.getHasProfile(),
+						user.getRoleId(), user.getProfileId(), user.getDisciplineId(), user.getId()});
+			}
+			catch(Exception e) { 
+				logger.info(e.toString());
+			}
+		}
+		return count;
+	}
+	
+	public int update(User user) {
+		int count = 0;
+		String query = "UPDATE user SET user_email=?,user_password=?,user_fname=?,user_lname=?," +
+				"user_isverified=?,user_hasprofile=?,role_id=?,profile_id=?,discipline_id=? " +
+				"WHERE user_id=?";
 		try {
 			count = this.template.update(query, new Object[]{user.getEmail(), user.getPassword(),
 					user.getFname(), user.getLname(), user.getIsVerified(), user.getHasProfile(),
-					user.getRoleId(), user.getProfileId(), user.getDisciplineId(), user.getGroupId(),
-					user.getId()});
+					user.getRoleId(), user.getProfileId(), user.getDisciplineId(), user.getId()});
 		}
 		catch(Exception e) { 
 			logger.info(e.toString());

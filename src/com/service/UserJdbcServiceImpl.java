@@ -113,6 +113,10 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 		return userJdbcDao.update(user);
 	}
 	
+	public int updateUserWithCond(User user, String type) {
+		return userJdbcDao.updateWithCond(user, type);
+	}
+	
 	/**
 	 * Delete a user record by their user_id
 	 * @param userId the user id of the user to be deleted
