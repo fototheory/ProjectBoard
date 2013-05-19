@@ -18,7 +18,7 @@ public class AdminUserFormValidation implements Validator {
 	private static final String EMAIL_PATTERN = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
 			+ "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-	private static final String PHONE_REGEX = "((\\(\\d{3}\\))|(\\d{3}-))\\d{3}-\\d{4}";
+	private static final String PHONE_REGEX = "\\d{10}";
 	public boolean supports(Class<?> klass) {
 		return AdminUserForm.class.isAssignableFrom(klass);
 	}
