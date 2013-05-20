@@ -15,6 +15,7 @@ public class ProfileJdbcServiceImpl implements SpringJdbcService<Profile> {
 	//instantiates ProfileJdbcDaoImpl profile related database transaction
 	ProfileJdbcDaoImpl profileJdbcDao = new ProfileJdbcDaoImpl();
 	//getter/setter for the attribute
+	
 	public ProfileJdbcDaoImpl getSpringJdbcDao() {
 		return profileJdbcDao;
 	}
@@ -22,11 +23,12 @@ public class ProfileJdbcServiceImpl implements SpringJdbcService<Profile> {
 	public void setSpringJdbcDao(ProfileJdbcDaoImpl springJdbcDao) {
 		this.profileJdbcDao = springJdbcDao;
 	}
-    /**
-	 * generic select by id
-	 * @param id profile_id of profile table
-	 * @return returns empty profile object if a profile hasn't logged in, 
-	 * otherwise, returns a profile in the list
+	
+	/**
+	 * Select a profile by its id
+	 * @param id a profile id
+	 * @return returns empty profile object if a profile_id doesn't have match in database, 
+	 * otherwise, returns a profile record
 	 */
 	@Override
 	public Profile selectById(int id) {
@@ -34,18 +36,37 @@ public class ProfileJdbcServiceImpl implements SpringJdbcService<Profile> {
 		return profileJdbcDao.selectById(id);
 	}
 	
+	/**
+	 * Insert a profile into the database
+	 * @param profile a user profile
+	 * @return the profile's id number
+	 */
 	public int insert(Profile profile) {
 		return profileJdbcDao.insert(profile);
 	}
 	
+	/**
+	 * Update a profile
+	 * @param profile the profile to be updated
+	 * @return returns the number of records affected by the update
+	 */
 	public int update(Profile profile) {
 		return profileJdbcDao.update(profile);
 	}
 	
-	public int delete(int projId) {
-		return profileJdbcDao.deleteById(projId);
+	/**
+	 * Delete a profile by its id
+	 * @param profileID the profile's id to be deleted
+	 * @return returns the number of records deleted
+	 */
+	public int delete(int profileID) {
+		return profileJdbcDao.deleteById(profileID);
 	}
 	
+	/**
+	 * Get the last profile's id from the database
+	 * @return returns the last profile's id
+	 */
 	public int getLastId() {
 		return profileJdbcDao.getLastProfileId();
 	}

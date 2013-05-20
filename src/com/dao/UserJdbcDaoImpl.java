@@ -405,7 +405,12 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 		}
 		return count;
 	}
-	
+
+	/**
+	 * Get a list of users by their role
+	 * @param roleName the name of the role
+	 * @return a list of users
+	 */
 	public List<User> getUsersByRole(String roleName) {
 		String query = "select * from user u, role r WHERE u.role_id=r.role_id AND r.role_name=?;";
 		List<User> users = this.template.query(query, new Object[]{roleName}, new RowMapper<User>(){

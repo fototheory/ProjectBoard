@@ -1,23 +1,11 @@
 package com.service;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.beans.Discipline;
 import com.beans.Profile;
 import com.beans.Project;
@@ -57,11 +45,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		this.projectJdbcDao = springJdbcDao;
 	}
 	
-    /**
-	 * generic select by id
-	 * @param id user_id of user table
-	 * @return returns empty user object if a user hasn't logged in, 
-	 * otherwise, returns a user in the list
+	/**
+	 * Select a project by its id
+	 * @param id a project id
+	 * @return returns empty project object if a project_id doesn't have match in database, 
+	 * otherwise, returns a project record
 	 */
 	@Override
 	public Project selectById(int id) {
@@ -69,12 +57,17 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectJdbcDao.selectById(id);
 	}
 	
+	/**
+	 * Add a project to the database
+	 * @param proj a project object
+	 * @return the project's id number
+	 */
 	public int add(Project proj) {
 		return projectJdbcDao.insert(proj);
 	}
 	
     /**
-	 * check user's authenticity
+	 * Check user's authenticity
 	 * @param email is passed from <code>LoginController</code> through login.jsp
 	 * @param password is passed from <code>LoginController</code> through login.jsp
 	 * @return returns empty user object if a user hasn't logged in, 
@@ -86,9 +79,10 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	}
 	
 	/**
-	 * check session user's authenticity 
-	 * @param id user_id of session variable
-	 * @return returns count of user found
+	 * Return the record project count base on the user's role
+	 * @param id the project's id
+	 * @param roleFld the role's database field name
+	 * @return record count
 	 */
 	public int countByRole(int id, int roleId) {
 		//get role name
@@ -98,9 +92,10 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	}
 	
 	/**
-	 * check session user's authenticity 
-	 * @param id user_id of session variable
-	 * @return returns count of user found
+	 * Get a collection of unarchived projects by the user's role 
+	 * @param id the project's id
+	 * @param roleFld the role's database field name
+	 * @return returns a collection of unarchived projects
 	 */
 	public Collection<Map<String, String>> selectByRole(int id, int roleId) {
 		//get role name
@@ -117,6 +112,12 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	/**
+	 * Get a collection of archived projects by the user's role 
+	 * @param id the project's id
+	 * @param roleFld the role's database field name
+	 * @return returns a collection of archived projects
+	 */
 	public Collection<Map<String, String>> selectArchivedByRole(int id, int roleId) {
 		//get role name
 		Role role = roleJdbcDao.selectById(roleId);
@@ -132,6 +133,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+
+	/**
+	 * Get a collection of all unarchived projects
+	 * @return a collection of all unarchived projects
+	 */
 	public Collection<Map<String, String>> selectAll() {
 		//get role name
 		List<Project> projList = projectJdbcDao.selectAll();
@@ -145,6 +151,10 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	/**
+	 * Get a collection of all archived projects
+	 * @return a collection of all archived projects
+	 */
 	public Collection<Map<String, String>> selectAllArchived() {
 		//get role name
 		List<Project> projList = projectJdbcDao.selectAllARchived();
@@ -158,11 +168,21 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return projectList;
 	}
 	
+	/**
+	 * Update a project
+	 * @param proj the project object to be updated
+	 * @return returns the number of records affected by the update
+	 */
 	public int updateProjectInfo(Project project) {
 		//get user with matching email and password
 		return projectJdbcDao.update(project);
 	}
 	
+	/**
+	 * Delete a project by its id
+	 * @param projId the project's id to be deleted
+	 * @return returns the number of records deleted
+	 */
 	public int delete(int projId) {
 		//delete project with matching project id
 		return projectJdbcDao.delete(projId);
@@ -171,6 +191,15 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	/*
 	 * updateProjectStatusLead - send email to all lead faculty
 	 *
+	 */
+	/**
+	 * Send email to all lead faculty and update the project's status
+	 * @param serverURL the projectboard's server URL
+	 * @param mailManager the MailManager
+	 * @param projId the project's id to be deleted
+	 * @param stat the status 
+	 * @param dispId the discipline id of the faculty member
+	 * @return returns 0 or 1; 0 for no update, 1 for project updated
 	 */
 	public int updateProjectStatusLead(String serverURL, MailManager mailManager, int projId, String stat, int dispId) {
 		int statId = 0; 
@@ -197,7 +226,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 					catch(Exception e) {
 						System.out.println(e.toString());
 					}
-					boolean res = mailManager.sendMail("webmaster.nuproactive@gmail.com",lead.getEmail(),subject,wholeMsg);					
+					boolean res = mailManager.sendMail("webmaster.nuproactive@gmail.com",lead.getEmail(),subject,wholeMsg);
+					
+					if (!res) {
+						System.out.println("Error sending email to "+lead.getEmail()+".");
+					}
 				}
 				//update status
 				return projectJdbcDao.updateStatus(projId, statId);
@@ -206,6 +239,12 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return 0;
 	}
 
+	/**
+	 * Update the project's negotiating faculty user
+	 * @param projId the project's id
+	 * @param negId the negotiating faculty user' id
+	 * @return returns 0 or 1; 0 for no update, 1 for project updated
+	 */	
 	public int assignNeg(int projId, int negId) {
 		int statId = 0; 
 		statId = fetchStatusId("Neg Assigned");
@@ -214,6 +253,13 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		}
 		return 0;
 	}
+	
+	/**
+	 * Create the email request message
+	 * @param projId the project's id
+	 * @param type the type of line break for the message
+	 * @return returns the formated email request message
+	 */	
 	public String[] createRequestMsg(int projId, String type) {
 		//get project information
 		Project submittedProj = projectJdbcDao.selectById(projId);
@@ -234,10 +280,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return messages;
 	}
 	
-	/*
-	 * decodeKey - retrieve project and lead information based on the email sent to faculty
-	 *
-	 */
+	/**
+	 * Retrieve project and lead information based on the email sent to faculty
+	 * @param key the key to be decoded
+	 * @return returns the decoded key
+	 */	
 	public String[] decodeKey(String key) {
 		try {
 			byte[] encodedBytes = Base64.decodeBase64(key.getBytes("UTF8"));
@@ -252,10 +299,22 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return new String[]{};
 	}
 	
+	/**
+	 * Utility function to separate a string based the separator "=-="
+	 * @param combined the string to be separated
+	 * @return returns a separated string array
+	 */	
 	protected String[] separateString(String combined) {
 		return combined.split(SEP);
 	}
-	
+
+	/**
+	 * Assign lead faculty to the project
+	 * @param leadId the lead faculty's user id
+	 * @param projId the project's id
+	 * @param statId the status' id
+	 * @return returns 0 or 1; 0 for no update, 1 for project updated
+	 */	
 	public int leadAcceptProj(int leadId, int projId, int statId) {
 		if(statId>0) {
 			if(leadId>0) {
@@ -265,10 +324,13 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return 0;
 	}
 	
-	/*
-	 * updateProjectStatusWithFac - assign lead faculty to the project
-	 *
-	 */
+	/**
+	 * Assign lead faculty to the project based on discipline id
+	 * @param projId the project's id
+	 * @param stat the status
+	 * @param dispId the discipline id
+	 * @return returns 0 or 1; 0 for no update, 1 for project updated
+	 */	
 	public int updateProjectStatusWithFac(int projId, String stat, int dispId) {
 		int statId = 0; 
 		statId = fetchStatusId(stat);
@@ -282,10 +344,21 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return 0;
 	}
 	
+	/**
+	 * Check to see if project is accepted by the lead faculty
+	 * @param projId the project's id
+	 * @param leadid the lead faculty's user id
+	 * @return returns 0 or 1; 0 for no, 1 for yes
+	 */	
 	public int checkProjAcceptedbyLead(int projId, int leadId) {
 		return projectJdbcDao.checkAcceptedbyLead(projId, leadId);
 	}
 	
+	/**
+	 * Retrieve the sponsor's company
+	 * @param projId the project's id
+	 * @return return the company name for the sponsor
+	 */	
 	public String getSponsorCompany(int projId) {
 		Project proj = projectJdbcDao.selectById(projId);
 		//instantiates UserJdbcDaoImpl user related database transaction
@@ -297,27 +370,53 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		return sponsorProfile.getCompany();
 	}
 	
+	/**
+	 * Archive a project
+	 * @param projId the project's id
+	 * @return returns the number of records affected by the update
+	 */
 	public int archiveProject(int projId) {
 		return projectJdbcDao.archiveProject(projId);
 	}
+
+	/**
+	 * Get the lead faculty's id based on their discipline
+	 * @param dispId the discipline for the lead faculty
+	 * @return returns the id number of the lead faculty for the given discipline
+	 */
 	protected int fetchLeadId(int dispId) {
 		//instantiates StatusJdbcDaoImpl user related database transaction
 		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
 		return userJdbcDao.getLeadId(dispId);
 	}
 	
+	/**
+	 * Get All the lead faculty members id based on their discipline
+	 * @param dispId the discipline for the lead faculty
+	 * @return returns the list of lead faculty members
+	 */
 	protected List<User> fetchAllLeads(int dispId) {
 		//instantiates StatusJdbcDaoImpl user related database transaction
 		UserJdbcDaoImpl userJdbcDao = new UserJdbcDaoImpl();
 		return userJdbcDao.getAllLeadsInDisp(dispId);
 	}
 	
+	/**
+	 * Get the status id by the status name
+	 * @param stat the status name
+	 * @return returns the id number for the status
+	 */
 	protected int fetchStatusId(String stat) {
 		//instantiates StatusJdbcDaoImpl user related database transaction
 		StatusJdbcDaoImpl statJdbcDao = new StatusJdbcDaoImpl();
 		return statJdbcDao.selectIdByName(stat);
 	}
 	
+	/**
+	 * Format the project item
+	 * @param proj the Project object
+	 * @return returns the project item
+	 */
 	protected Map<String, String> formatProjectItem(Project proj) {
 		Map<String, String> projItem = new LinkedHashMap<String, String>();
 		//set information required for any status
@@ -415,7 +514,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	}
 	
 	/**
-	 * fetch project field name based on role
+	 * Fetch project field name based on role
 	 * @param roleName of the user
 	 * @return returns count of user found
 	 */

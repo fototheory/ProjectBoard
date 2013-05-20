@@ -6,16 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
-
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import com.beans.Profile;
-import com.beans.Project;
 
 /**
  * <code>ProfileJdbcDaoImpl</code> implements <code>SpringJdbcDao</code>
@@ -30,6 +27,7 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 	private JdbcDataSource ds = new SpringJdbcDataSource();
 	//database connection
 	private JdbcTemplate template;
+	
     /**
 	 * default constructor
 	 * will create data source and <code>JdbcTemplate</code> for database connection
@@ -39,9 +37,10 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		ds.createDataSource();
 		template = ds.getJdbcTemplate();
 	}
+	
 	/**
-	 * generic select by id
-	 * @param id profile_id of profile table
+	 * Select a profile by its id
+	 * @param id a profile id
 	 * @return returns empty profile object if a profile_id doesn't have match in database, 
 	 * otherwise, returns a profile record
 	 */
@@ -63,6 +62,11 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		return this.fetchOneProfile(profileInfo);	
 	}
 
+	/**
+	 * Insert a profile into the database
+	 * @param profile a user profile
+	 * @return the profile's id number
+	 */
 	public int insert(final Profile profile) {
 		final String query = "insert into profile (profile_company_name,profile_phone,profile_skills) "+
 				"values (?, ?, ?)";
@@ -84,7 +88,7 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 	}	
 	
 	/**
-	 * from the list, fetch the first record
+	 * Fetch the first record from a profile list
 	 * @param profileInfo a list of records retrieved from database
 	 * @return returns empty profile object if the list is empty, otherwise, returns a profile in the list
 	 */
@@ -96,7 +100,12 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		//return empty profile if not profile found in database
 		return new Profile();
 	}
-	
+
+	/**
+	 * Delete a profile by its id
+	 * @param profileID the profile's id to be deleted
+	 * @return returns the number of records deleted
+	 */
 	public int deleteById(int profileID) {
 		String query = "DELETE FROM profile WHERE profile_id=? ";
 		int count = 0;
@@ -109,6 +118,10 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		return count;
 	}
 	
+	/**
+	 * Get the last profile's id from the database
+	 * @return returns the last profile's id
+	 */
 	public int getLastProfileId() {
 		String query = "select max(profile_id) from profile";
 		int count = 0;
@@ -121,6 +134,11 @@ public class ProfileJdbcDaoImpl implements SpringJdbcDao<Profile> {
 		return count;
 	}
 	
+	/**
+	 * Update a profile
+	 * @param profile the profile to be updated
+	 * @return returns the number of records affected by the update
+	 */
 	public int update(Profile profile) {
 		String query = "UPDATE profile SET profile_company_name=?, profile_phone=?, " +
 				"profile_skills=? WHERE profile_id=?";

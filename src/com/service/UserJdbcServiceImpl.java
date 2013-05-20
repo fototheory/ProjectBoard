@@ -151,6 +151,11 @@ public class UserJdbcServiceImpl implements SpringJdbcService<User> {
 		return userJdbcDao.verifyUser(user);
 	}
 	
+	/**
+	 * Get a list of users by their role
+	 * @param roleName the name of the role
+	 * @return a list of users
+	 */
 	public List<User> getUsersByRole(String roleName) {
 		return userJdbcDao.getUsersByRole(roleName);
 	}
