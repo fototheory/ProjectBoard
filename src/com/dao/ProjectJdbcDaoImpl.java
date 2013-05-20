@@ -13,9 +13,7 @@ import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-
 import com.beans.Project;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 
 /**
  * <code>ProjectJdbcDaoImpl</code> implements <code>SpringJdbcDao</code>
@@ -30,6 +28,7 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	private JdbcDataSource ds = new SpringJdbcDataSource();
 	//database connection
 	private JdbcTemplate template;
+	
     /**
 	 * default constructor
 	 * will create data source and <code>JdbcTemplate</code> for database connection
@@ -39,11 +38,12 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		ds.createDataSource();
 		template = ds.getJdbcTemplate();
 	}
+	
 	/**
-	 * generic select by id
-	 * @param id user_id of user table
-	 * @return returns empty user object if a user_id doesn't have match in database, 
-	 * otherwise, returns a user record
+	 * Select a project by its id
+	 * @param id a project id
+	 * @return returns empty project object if a project_id doesn't have match in database, 
+	 * otherwise, returns a project record
 	 */
 	@Override
 	public Project selectById(int id) {
@@ -75,6 +75,11 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		return this.fetchOneProject(projInfo);	
 	}
 	
+	/**
+	 * Insert a project into the database
+	 * @param proj a project object
+	 * @return the project's id number
+	 */
 	public int insert(final Project proj) {
 		final String query = "insert into project (project_title,project_description,project_date_due," +
 				"project_date_created,status_id,discipline_id,project_sponsor) " +
@@ -103,13 +108,25 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		return 0;
 	}
 	
+	/**
+	 * Delete a project by its id
+	 * @param projId the project's id to be deleted
+	 * @return returns the number of records deleted
+	 */
 	public int delete(int projId) {
 		String query = "DELETE FROM project WHERE project_id=? ";
-		return this.template.update(query,new Object[]{projId});
+		int count = 0;
+		try {
+			count = this.template.update(query,new Object[]{projId});
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
 	/**
-	 * select by email and password
+	 * Select by email and password
 	 * @param email is passed from <code>ProjectJdbcServiceImpl</code>
 	 * @param password is passed from <code>ProjectJdbcServiceImpl</code>
 	 * @return returns empty user object if a user_id doesn't have match in database, 
@@ -136,19 +153,28 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	}
 	
 	/**
-	 * return the record count of the user found in database (select by id)
-	 * @param id user_id of user table
+	 * Return the record project count base on the user's role
+	 * @param id the project's id
+	 * @param roleFld the role's database field name
 	 * @return record count
 	 */
 	public int countByRole(int id, String roleFld) {
 		String query = "SELECT COUNT(project_id) FROM project WHERE "+roleFld+"=?";
-		return this.template.queryForInt(query, new Object[]{id});
+		int count = 0;
+		try {
+			count = this.template.queryForInt(query, new Object[]{id}); 
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
 	/**
-	 * return the record count of the user found in database (select by id)
+	 * Get a list of unarchived projects by the user's role
 	 * @param id user_id of user table
-	 * @return record count
+	 * @param roleFld the role's database field name 
+	 * @return a list of unarchived projects
 	 */
 	public List<Project> selectByRole(int id, String roleFld) {
 		String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=0";
@@ -177,6 +203,12 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
         });
 	}
 	
+	/**
+	 * Select an archived project by the user's role
+	 * @param id user_id of user table
+	 * @param roleFld the role's database field name 
+	 * @return a list of archived projects
+	 */
 	public List<Project> selectArchivedByRole(int id, String roleFld) {
 		String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=1";
 		return this.template.query(query, new Object[]{id},
@@ -204,6 +236,10 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
         });
 	}
 	
+	/**
+	 * Get all unarchived projects in the database
+	 * @return a list of all unarchived projects
+	 */
 	public List<Project> selectAll() {
 		String query = "SELECT * FROM project WHERE project_isarchived=0";
 		return this.template.query(query, new Object[]{},
@@ -231,6 +267,10 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
         });
 	}
 	
+	/**
+	 * Get all archived projects in the database
+	 * @return a list of all archived projects
+	 */
 	public List<Project> selectAllARchived() {
 		String query = "SELECT * FROM project WHERE project_isarchived=1";
 		return this.template.query(query, new Object[]{},
@@ -258,6 +298,11 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
         });
 	}
 	
+	/**
+	 * Update a project
+	 * @param proj the project object to be updated
+	 * @return returns the number of records affected by the update
+	 */
 	public int update(Project proj) {
 		java.sql.Date sqlDate = null;
 		if(proj.getDue()!=null) {
@@ -265,29 +310,94 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 		}
 		String query = "UPDATE project SET project_title=?, project_description=?, " +
 				"project_date_due=? WHERE project_id=?";
-		return this.template.update(query, new Object[]{proj.getTitle(), proj.getDesc(), sqlDate, proj.getId()});
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{proj.getTitle(), proj.getDesc(), sqlDate, proj.getId()}); 
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
+	/**
+	 * Update the project's status
+	 * @param projId the project's id
+	 * @param statId the new status' id
+	 * @return returns the number of records affected by the update
+	 */
 	public int updateStatus(int projId, int statId) {
 		String query = "UPDATE project SET status_id=? WHERE project_id=?";
-		return this.template.update(query, new Object[]{statId, projId});
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{statId, projId});
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
+	/**
+	 * Archive a project
+	 * @param projId the project's id
+	 * @return returns the number of records affected by the update
+	 */
 	public int archiveProject(int projId) {
 		String query = "UPDATE project SET project_isarchived=1 WHERE project_id=?";
-		return this.template.update(query, new Object[]{projId});
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{projId}); 
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
+	/**
+	 * Update the project's status and faculty id
+	 * @param projId the project's id
+	 * @param statjId the status' id
+	 * @param facFld the faculty's database field name
+	 * @param facId the faculty user's id
+	 * @return returns the number of records affected by the update
+	 */
 	public int updateStatusWithFac(int projId, int statId, String facFld, int facId) {
 		String query = "UPDATE project SET status_id=?, "+ facFld+"=? WHERE project_id=?";
-		return this.template.update(query, new Object[]{statId, facId, projId});
+		int count = 0;
+		try {
+			count = this.template.update(query, new Object[]{statId, facId, projId}); 
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
+	/**
+	 * Check to see if project was accepted by the lead faculty user
+	 * @param projId the project's id
+	 * @param leadId the lead faculty user's id
+	 * @return returns 0 for no and 1 yes that the project was accepted
+	 */
 	public int checkAcceptedbyLead(int projId, int leadId) {
 		String query = "SELECT COUNT(project_id) FROM project WHERE project_id=? AND project_lead_faculty=?";
-		return this.template.queryForInt(query, new Object[]{projId, leadId});
+		int count = 0;
+		try {
+			count = this.template.queryForInt(query, new Object[]{projId, leadId}); 
+		}
+		catch(Exception e) {
+			System.out.println(e.toString());
+		}
+		return count;
 	}
 	
+	/**
+	 * Change the Date object to sql formatted date
+	 * @param date the date to be formatted
+	 * @return returns sql formatted date
+	 */
 	protected java.sql.Date changetoSqlDate(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy");
 		String formattedDate = sdf.format(date);
@@ -302,7 +412,7 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	}
 	
 	/**
-	 * from the list, fetch the first record
+	 * Fetch the first record from a project list
 	 * @param userInfo a list of records retrieved from database
 	 * @return returns empty user object if the list is empty, otherwise, returns a user in the list
 	 */
