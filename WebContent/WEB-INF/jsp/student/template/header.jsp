@@ -1,25 +1,27 @@
-<!DOCTYPE html>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<!--SOurces: http://jqueryui.com/accordion/#no-auto-height -->
- 
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<title>The Capstone Portal @ NU | Projects</title>
+<title>The NU Capstone Project Board</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<link rel="stylesheet" href="../css/style.css" />
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>	
-<link rel="stylesheet" href="../css/reset.css" type="text/css" media="screen">
-<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen">
+
+ <!--CSS and js references -->
+<link rel="stylesheet" href="../css/reset.css" type="text/css"	media="screen">
+<link rel="stylesheet" href="../css/style.css" type="text/css"	media="screen">
 <link rel="stylesheet" href="../css/layout.css" type="text/css" media="screen">
-<script type="text/javascript" src="../js/jquery-1.6.min.js"></script>
-<script src="../js/cufon-yui.js" type="text/javascript"></script>
-<script src="../js/cufon-replace.js" type="text/javascript"></script>
-<script src="../js/Open_Sans_400.font.js" type="text/javascript"></script>
-<script src="../js/Open_Sans_Light_300.font.js" type="text/javascript"></script>
-<script src="../js/Open_Sans_Semibold_600.font.js" type="text/javascript"></script>
-<script src="../js/FF-cash.js" type="text/javascript"></script>
-  <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
+
+<!--Login out script -->
+<title>jQuery Dropdown Login Freebie | The Finished Box</title>
+<link rel="stylesheet" href="css/style.css" />
+<script
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
+<script src="js/login.js"></script>
+
   <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
   <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
   <!-- <link rel="stylesheet" href="/resources/demos/style.css" /> -->
@@ -30,7 +32,8 @@
     });
   });
   </script>
-  <style>
+ 
+<style>
   	/* Logout Button */
 	#LogoutButton { 
 	    display:inline-block;
@@ -63,36 +66,39 @@
 <link rel="stylesheet" href="css/ie.css" type="text/css" media="screen">
 <![endif]-->
 </head>
-<body id="page4">
+
 <!-- header -->
-<div class="bg">
-  <div class="main">
-    <header>	
-	<div id="bar">
-        <div id="container">
-			<!-- Login Starts Here -->
+	<div class="bg">
+		<div class="main">
+			<header>
+				<div id="bar">
+					<div id="container">
+					
+			
+			<!-- Logout Starts Here -->
 			<div id="loginContainer">
 				<a href="../sponsor.do?logout=yes" id="LogoutButton"><span>Logout</span><em></em></a>
 				<div style="clear: both"></div>			
 			</div>
-			<!-- Login Ends Here -->
+			<!-- Logout Ends Here -->
+			
         </div>
         <c:if test="${not empty sessionUserInfo}">
-			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} ${sessionUserInfo.getLname()}</font></b>
+			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} &nbsp  ${sessionUserInfo.getLname()}...</font></b>
 		</c:if>
     </div>
 	
       <div class="row-1">
-        <h1> <a class="logo" href="login.html">The Capstone Portal @ NU</a> <strong class="slog">Ideas into action</strong> </h1>
+        <h1> <a class="logo" href="login.html">The NU Capstone Project Board</a> <strong class="slog">Ideas into action</strong> </h1>
       </div>
       <div class="row-2">
         <nav>
           <ul class="menu">
-            <li><a href="login.html">Home</a></li>
-            <li><a href="services.html">Services</a></li>
-            <li><a href="resources.html">Resources</a></li>
+            <li><a href="../login.html">Home</a></li>
+            <li><a href="../services.html">Services</a></li>
+            <li><a href="../resources.html">Resources</a></li>
             <li><a class="active" href="projectList.do">Projects</a></li>
-            <li class="last-item"><a href="contactus.html">Contact Us</a></li>
+            <li class="last-item"><a href="../contactus.html">Contact Us</a></li>
           </ul>
         </nav>
       </div>
