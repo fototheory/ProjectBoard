@@ -110,6 +110,7 @@
 							</form:form>
 						</table>
 						<br />
+						<input class="button-2" type="button" value="Cancel" onclick="location.href='index.do'"/>
 						<input class="button-2" type="submit" value="Verify User"/>
 						<input class="button-2" type="submit" formmethod="get" value="Refresh List"/>
 					</form:form>

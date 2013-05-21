@@ -93,7 +93,7 @@
             <li><a href="login.html">Home</a></li>
             <li><a href="services.html">Services</a></li>
             <li><a href="resources.html">Resources</a></li>
-            <li><a href="projectList.do">Projects</a></li>
+            <li><a href="projectList.do" id="projectlist">Projects</a></li>
             <li class="last-item"><a href="contactus.html">Contact Us</a></li>
           </ul>
         </nav>

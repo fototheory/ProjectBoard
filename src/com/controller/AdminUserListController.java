@@ -3,9 +3,7 @@ package com.controller;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 import com.beans.Discipline;
 import com.beans.Profile;
 import com.beans.Role;
 import com.beans.User;
 import com.form.AdminUserForm;
-import com.form.ProjectInfo;
-import com.form.Registration;
 import com.mail.MailManager;
 import com.service.DisciplineJdbcServiceImpl;
 import com.service.ProfileJdbcServiceImpl;
@@ -52,6 +47,9 @@ public class AdminUserListController {
 	//autowire the mail manager
 	@Autowired
 	private MailManager mailManager;
+
+	//From email address
+	private static final String from = "webmaster.nuproactive@gmail.com";
 
 	public void setAdminUserFormValidation(
 			AdminUserFormValidation adminUserFormValidation) {
@@ -210,7 +208,17 @@ public class AdminUserListController {
 								isVerified,HasProfile,userData.getRole(),
 								userData.getProfile(),userData.getDiscipline(),userData.getGroup());
 						if(sessionService.updateUserWithCond(upUser, "noProfile")>0) {
-							mav.addObject("status", "User record updated successfully.");
+							
+							//Send Email
+							boolean mailResult = this.emailUser(upUser);
+							if (mailResult) {//Email sent successfully
+								mav.addObject("status", "User record update successful\n" + 
+										"(A courtesy email has been sent to the user.)");
+							}
+							else {//Problem sending email
+								mav.addObject("status", "User record update successful\n" +
+										"(Error sending courtesy email.  Possibly an error with the mail server.");
+							}
 						}
 						else {
 							mav.addObject("status", "User record update failed.");
@@ -222,7 +230,14 @@ public class AdminUserListController {
 						mav.addObject("status", "User record deleted successfully.");
 					}
 					else {
-						mav.addObject("status", "User record deletion failed.");
+						String roleName = roleService.getRoleName(userData.getRole());
+						//If deletion failed and user was a sponsor, the likely cause is the sponsor has a project
+						if (roleName.equals("Sponsor")) {
+							mav.addObject("status", "Deletion failed. Cannot delete a sponsor that has a project.");
+						}
+						else {
+							mav.addObject("status", "User record deletion failed.");
+						}
 					}
 				}
 				User sessionUserInfo = sessionScopeUserData.getUserInfo();
@@ -281,5 +296,22 @@ public class AdminUserListController {
 			}				
 		}
 		return false;
+	}
+	
+	//Send account acknowledgment email
+	protected boolean emailUser(User tempUser){
+		//Send Email Acknowledgment
+		String to = tempUser.getEmail();
+		String subject = "Project Board Account Updated";
+		String message = tempUser.getFname() + " " + tempUser.getLname() +
+				",\n\nYour NU Captstone Project Board account has been updated by the System Administrator.\n\n" +
+				"Account Details:\nUsername: " + tempUser.getEmail() + "\nPassword: (on file)" +
+				"\nDiscipline: " + disciplineService.getDisciplineName(tempUser.getDisciplineId()) + 
+				"\nRole: " + roleService.getRoleName(tempUser.getRoleId()) + 
+				"\n\nIf you don't know the password, Please logon to the Project Board and click the forgot " +
+				"password link.\n\nThank you,\nProject Board Administrator";
+		
+		//Send the email
+		return mailManager.sendMail(from, to, subject, message);
 	}
 }

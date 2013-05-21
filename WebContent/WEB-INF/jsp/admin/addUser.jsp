@@ -28,7 +28,13 @@
 	<div class="padding">
 		<div class="wrapper margin-bot">
 			<div class="indent">
-				<h2><span style="float:left;margin-top:-5px;">Admin Page</span><span style="float:right;margin-top:15px;margin-right:250px;"><a class="button-2" href="userList.do" id="addUser">User List</a></span></h2>
+				<h2>
+					<span style="float:left;margin-top:-5px;">Admin Page</span>
+					<span style="float:right;margin-top:15px;margin-right:190px;">
+						<a class="button-2" href="index.do" id="cancel">Cancel</a>
+						<a class="button-2" href="userList.do" id="addUser">User List</a>
+					</span>
+				</h2>
 				<div style="clear:both;"></div>
 				<c:if test="${not empty status}">
 					<font color="red">${status}</font>

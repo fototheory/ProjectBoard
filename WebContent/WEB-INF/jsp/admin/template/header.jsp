@@ -86,7 +86,7 @@
     </div>
 	
       <div class="row-1">
-        <h1> <a class="logo" href="login.html">The Capstone Portal @ NU</a> <strong class="slog">Ideas into action</strong> </h1>
+        <h1> <a class="logo" href="/ProjectBoard/login.html">The Capstone Portal @ NU</a> <strong class="slog">Ideas into action</strong> </h1>
       </div>
       <div class="row-2">
         </nav>
