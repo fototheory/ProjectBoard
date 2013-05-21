@@ -5,6 +5,15 @@
 
 <c:import url="template/header.jsp" />
 
+<script>
+ 	$(document).ready(function(){
+ 		$("#projectlist").click(function(e) {
+ 			e.preventDefault();
+ 	 		alert('Please complete your profile before going\nto the projects tab.');
+ 		});
+ 	});
+</script>
+
 <!-- content -->
 <section id="content">
 	<div class="padding">
@@ -18,7 +27,7 @@
 					<form:form method="Post" action="profilepage.do" commandName="profile">
 						<table>
 							<tr>
-								<td>Company:<br /> 
+								<td>Company or University Name:<br /> 
 								<FONT color="red"><form:errors path="company" /></FONT></td>
 							</tr>
 
@@ -42,7 +51,7 @@
 							</tr>
 							<tr>
 							<c:if test="${empty successMsg}">
-								<td><input class="button-2" type="submit" onclick ="alert('Please double check all the entry before you submit !')" value="Submit" /></td>
+								<td><input class="button-2" type="submit" value="Submit" /></td>
 							</c:if>
 							</tr>
 						</table>

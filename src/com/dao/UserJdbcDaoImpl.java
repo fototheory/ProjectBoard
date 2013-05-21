@@ -158,14 +158,13 @@ public class UserJdbcDaoImpl implements SpringJdbcDao<User> {
 	 * @return returns the number of records inserted into the database
 	 */
 	public int insert(User user) {
-		String query = "insert into user (user_email,user_password,user_fname,user_lname,role_id,discipline_id) " +
-				"values (?, ?, ?, ?, ?, ?)";
+		String query = "insert into user (user_email,user_password,user_fname,user_lname,user_isverified," +
+				"role_id,discipline_id) values (?, ?, ?, ?, ?, ?, ?)";
 
 		int count = 0;
 		try {
-			count = this.template.update(query,user.getEmail(),user.getPassword(),
-					user.getFname(),user.getLname(),
-					user.getRoleId(),user.getDisciplineId());
+			count = this.template.update(query,user.getEmail(),user.getPassword(),user.getFname(),user.getLname(),
+					user.getIsVerified(),user.getRoleId(),user.getDisciplineId());
 		}
 		catch(Exception e) {
 			logger.info(e.toString());

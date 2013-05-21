@@ -3,9 +3,7 @@ package com.controller;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
-
 import com.beans.Discipline;
 import com.beans.Profile;
 import com.beans.Role;
@@ -31,7 +28,7 @@ import com.session.SessionScopeData;
 @Controller
 @RequestMapping(value = "/admin/addUser")
 public class AdminAddUserController {
-	//instantiates UserJdbcServiceImpl for user related activities
+		//instantiates UserJdbcServiceImpl for user related activities
 		UserJdbcServiceImpl sessionService = new UserJdbcServiceImpl();
 		//instantiates UserJdbcServiceImpl for user related activities
 		ProfileJdbcServiceImpl profileService = new ProfileJdbcServiceImpl();
@@ -48,6 +45,9 @@ public class AdminAddUserController {
 		//autowire the mail manager
 		@Autowired
 		private MailManager mailManager;
+
+		//From email address
+		private static final String from = "webmaster.nuproactive@gmail.com";
 
 		public void setAdminUserFormValidation(
 				AdminUserFormValidation adminUserFormValidation) {
@@ -130,7 +130,8 @@ public class AdminAddUserController {
 					//insert success
 					userData.setProfile(newProfId);
 					userData.setHasprofile(true);	
-					int isVerified = (userData.isIsverified())?1:0;
+					//int isVerified = (userData.isIsverified())?1:0;
+					int isVerified = 1; //User is verified by sysad
 					int HasProfile = (userData.isHasprofile())?1:0;
 					User newUser = new User(userData.getId(),userData.getFname(),
 							userData.getLname(),userData.getEmail(),userData.getPassword(),
@@ -141,7 +142,17 @@ public class AdminAddUserController {
 						if(sessionService.updateUserWithCond(newUser,"")>0) {
 							AdminUserForm user = new AdminUserForm();
 							mav.addObject("user", user);
-							mav.addObject("status", "User record insertion successfully.");
+							
+							//email user
+							boolean mailResult = this.emailUser(newUser);
+							if (mailResult) {//Email sent successfully
+								mav.addObject("status", "User record insertion successful\n" + 
+										"(A courtesy email has been sent to the user.)");
+							}
+							else {//Problem sending email
+								mav.addObject("status", "User record insertion successful\n" +
+										"(Error sending courtesy email.  Possibly an error with the mail server.");
+							}
 						}
 						else {
 							profileService.delete(newUser.getProfileId());
@@ -156,7 +167,8 @@ public class AdminAddUserController {
 				}
 				else {
 					//only add user
-					int isVerified = (userData.isIsverified())?1:0;
+					//int isVerified = (userData.isIsverified())?1:0;
+					int isVerified = 1; //User is verified by sysad
 					int HasProfile = (userData.isHasprofile())?1:0;
 					User newUser = new User(userData.getId(),userData.getFname(),
 							userData.getLname(),userData.getEmail(),userData.getPassword(),
@@ -165,7 +177,17 @@ public class AdminAddUserController {
 					if(sessionService.addNewUser(newUser)>0) {
 						AdminUserForm user = new AdminUserForm();
 						mav.addObject("user", user);
-						mav.addObject("status", "User record insertion successfully.");
+						
+						//email user
+						boolean mailResult = this.emailUser(newUser);
+						if (mailResult) {//Email sent successfully
+							mav.addObject("status", "User record insertion successful\n" + 
+									"(A courtesy email has been sent to the user.)");
+						}
+						else {//Problem sending email
+							mav.addObject("status", "User record insertion successful\n" +
+									"(Error sending courtesy email.  Possibly an error with the mail server.");
+						}
 					}
 					else {
 						mav.addObject("status", "User record insertion failed.");
@@ -185,5 +207,22 @@ public class AdminAddUserController {
 				}				
 			}
 			return false;
+		}
+		
+		//Send account acknowledgment email
+		protected boolean emailUser(User tempUser){
+			//Send Email Acknowledgment
+			String to = tempUser.getEmail();
+			String subject = "Project Board Account Acknowledgment";
+			String message = tempUser.getFname() + " " + tempUser.getLname() +
+					",\n\nAn account has been created for you on the NU Capstone Project Board.\n\n" +
+					"Account Details:\nUsername: " + tempUser.getEmail() + "\nPassword: (on file)" +
+					"\nDiscipline: " + disciplineService.getDisciplineName(tempUser.getDisciplineId()) + 
+					"\nRole: " + roleService.getRoleName(tempUser.getRoleId()) + 
+					"\n\nPlease logon to the Project Board and click the forgot password link to retrieve " +
+					"your password.\n\nThank you,\nProject Board Administrator";
+			
+			//Send the email
+			return mailManager.sendMail(from, to, subject, message);
 		}
 }
