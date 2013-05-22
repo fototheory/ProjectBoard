@@ -14,16 +14,10 @@
 <link rel="stylesheet" href="../css/style.css" type="text/css"	media="screen">
 <link rel="stylesheet" href="../css/layout.css" type="text/css" media="screen">
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-
-<!--Login out script -->
-<title>jQuery Dropdown Login Freebie | The Finished Box</title>
-<link rel="stylesheet" href="css/style.css" />
-<script
-	src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
-<script src="js/login.js"></script>
-
-  <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js?ver=1.4.2"></script>
+<script src="../js/login.js"></script>
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
   <!-- <link rel="stylesheet" href="/resources/demos/style.css" /> -->
   <script>
   $(function() {
@@ -84,7 +78,7 @@
 			
         </div>
         <c:if test="${not empty sessionUserInfo}">
-			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} &nbsp  ${sessionUserInfo.getLname()}...</font></b>
+			<b><font color="#003c78">Welcome, ${sessionUserInfo.getFname()} ${sessionUserInfo.getLname()}...</font></b>
 		</c:if>
     </div>
 	

@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +55,8 @@ public class SponsorDefaultController {
 	}
 	
 	@RequestMapping(value = "/projectList", method = RequestMethod.GET)
-	public ModelAndView projectList(@RequestParam(value = "status", required=false) String stat) {
+	public ModelAndView projectList(@RequestParam(value = "status", required=false) String stat, 
+				@RequestParam(value = "selectedId", required=false) String selectedId) {
 		ModelAndView mav = new ModelAndView("/sponsor/projectList");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
@@ -68,6 +70,14 @@ public class SponsorDefaultController {
 			//send session variable to view 
 			mav.addObject("archiveList", archiveList);	
 			mav.addObject("status", stat);
+			if(selectedId !=null && selectedId.length()>0) {
+				//check selectedId is number
+				try { 
+					mav.addObject("selectedId", getSelectedProject(Integer.parseInt(selectedId), projList));
+			    } catch(NumberFormatException e) { 
+			    	System.out.println(e.toString());
+			    }				
+			}
 			return mav;
 		}
 		else {
@@ -76,18 +86,65 @@ public class SponsorDefaultController {
 		}
 	}
 	
+	protected int getSelectedProject(int selectedId, Collection<Map<String, String>> projList) {
+		//loop each project
+		int counter = 0;
+		for (Map<String, String> proj: projList) {
+			if(selectedId==Integer.parseInt(proj.get("ID"))) {
+				return counter;
+			}
+			counter++;
+
+	    }
+		return 0;
+	}
+	
 	@RequestMapping(value = "/archivedProjects", method = RequestMethod.GET)
-	public ModelAndView projectArchivedList(@RequestParam(value = "status", required=false) String stat) {
+	public ModelAndView projectArchivedList(@RequestParam(value = "status", required=false) String stat, 
+			@RequestParam(value = "id", required=false) String selectedId) {
 		ModelAndView mav = new ModelAndView("/sponsor/archivedProjects");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
+			//check sponsor has an archived project already
+			//check id exists
+			boolean idExist = false;
+			int id = 0;
+			Collection<Map<String, String>> projList = new HashSet<Map<String, String>>();
 			//check sponsor has a project already
-			Collection<Map<String, String>> projList = projectService.selectArchivedByRole(user.getId(), user.getRoleId());	
+			if(selectedId !=null && selectedId.length()>0) {
+				try { 
+					id = Integer.parseInt(selectedId);
+					idExist = true;
+			    } catch(NumberFormatException e) { 
+			    	System.out.println(e.toString());
+			    }	
+				
+				if(idExist) {
+					Project project = projectService.selectById(id);
+					projList.add(projectService.formatProjectItem(project));
+				}
+				else {
+					
+				}
+			}
+			
+			if(!idExist) {
+				projList = projectService.selectArchivedByRole(user.getId(), user.getRoleId());	
+			}
+			
 			//send session variable to view 
 			mav.addObject("sessionUserInfo", user);	
 			//send session variable to view 
 			mav.addObject("projectList", projList);	
 			mav.addObject("status", stat);
+			if(selectedId !=null && selectedId.length()>0) {
+				//check selectedId is number
+				try { 
+					mav.addObject("selectedId", getSelectedProject(Integer.parseInt(selectedId), projList));
+			    } catch(NumberFormatException e) { 
+			    	System.out.println(e.toString());
+			    }				
+			}
 			return mav;
 		}
 		else {
@@ -99,6 +156,20 @@ public class SponsorDefaultController {
 	@RequestMapping(value = "/projectprogress", method = RequestMethod.GET)
 	public ModelAndView projectProgress(@RequestParam(value = "status", required=false) String stat) {
 		ModelAndView mav = new ModelAndView("/sponsor/projectprogress");
+		if(this.sessionCheck(sessionScopeUserData)) {
+			User user = sessionScopeUserData.getUserInfo();	
+			mav.addObject("sessionUserInfo", user);
+			return mav;
+		}
+		else {
+			//user hasn't logged in
+			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
+		}
+	}
+	
+	@RequestMapping(value = "/communication", method = RequestMethod.GET)
+	public ModelAndView communication(@RequestParam(value = "status", required=false) String stat) {
+		ModelAndView mav = new ModelAndView("/sponsor/communication");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
 			mav.addObject("sessionUserInfo", user);

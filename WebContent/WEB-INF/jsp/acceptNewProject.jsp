@@ -38,7 +38,7 @@
 		              	<input type="hidden" name="statId" value="<c:if test='${not empty statId}'>${statId}</c:if>" />
 		              	<input type="hidden" name="leadId" value="<c:if test='${not empty leadId}'>${leadId}</c:if>" />
 		              	<input type="hidden" name="acptVal" id="acptVal" value="">
-					 	<a class="button-2" href="#" id="acceptProj">Accept</a>
+					 	<a class="button-2" href="#" id="acceptProj">Acknowledge</a>
 					 	<a class="button-2" href="#" id="denyProj">Deny</a>
 					  </form>
 					 </c:otherwise>
@@ -46,33 +46,6 @@
 			 <br />
 			 </div>
 		  </div>
-          <div class="col-4">
-            <div class="block-news">
-              <h3 class="color-4 p2">Archived Projects</h3>
-               <c:choose>
-               <c:when test="${not empty archiveList}">
-              	<ul class="list-2">	             
-	                <li><a href="#">Project Title 1 </a></li>
-	                <li><a href="#">Project Title 2</a></li>
-	                <li><a href="#">Project Title 3</a></li>
-	                <li><a href="#">Project Title 4</a></li>
-	                <li><a href="#">Project Title 5</a></li>
-	                <li><a href="#">Project Title 6</a></li>
-	                <li><a href="#">Project Title 7</a></li>
-	                <li><a href="#">Project Title 8</a></li>
-	                <li><a href="#">Project Title 9</a></li>	             
-              	</ul>
-              	</c:when>
-              	<c:otherwise>
-              		<ul class="list-2">
-              		 <li>No Archived Project</li>
-              		</ul>
-              	</c:otherwise>
-              </c:choose>
-            </div>
-			 <a class="button-2" href="#">Previous Years</a>
-		  </div>
-          </div>
        </div>
 	</section>
 	<c:import url="template/footer.jsp" />

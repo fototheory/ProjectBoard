@@ -1,6 +1,7 @@
 package com.controller;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.beans.Discipline;
 import com.beans.Project;
 import com.beans.User;
+import com.service.DisciplineJdbcServiceImpl;
 import com.service.ProjectJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
 import com.session.SessionScopeData;
@@ -30,6 +33,7 @@ public class NegDefaultController {
 	UserJdbcServiceImpl  sessionService = new UserJdbcServiceImpl();
 	//instantiates ProjectJdbcServiceImpl for user related activities
 	ProjectJdbcServiceImpl  projectService = new ProjectJdbcServiceImpl();
+	DisciplineJdbcServiceImpl dispService  = new DisciplineJdbcServiceImpl();
 	//autowire session variable User
 	@Autowired
     private SessionScopeData sessionScopeUserData;
@@ -66,6 +70,13 @@ public class NegDefaultController {
 			//send session variable to view 
 			mav.addObject("archiveList", archiveList);	
 			mav.addObject("status", stat);
+			//get all disciplines
+			List<Discipline> disciplinesData = dispService.selectAllDisciplines();
+			Map<String,String> disciplines = new LinkedHashMap<String,String>();
+			for(int i=0; i<disciplinesData.size(); i++) {
+				disciplines.put(Integer.toString(disciplinesData.get(i).getId()), disciplinesData.get(i).getName());
+			}
+			mav.addObject("disciplines",disciplines);
 			return mav;
 		}
 		else {

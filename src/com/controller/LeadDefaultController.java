@@ -2,6 +2,7 @@ package com.controller;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.beans.Discipline;
 import com.beans.Project;
 import com.beans.User;
+import com.service.DisciplineJdbcServiceImpl;
 import com.service.ProfileJdbcServiceImpl;
 import com.service.ProjectJdbcServiceImpl;
 import com.service.UserJdbcServiceImpl;
@@ -38,6 +41,7 @@ public class LeadDefaultController {
 	UserJdbcServiceImpl  sessionService = new UserJdbcServiceImpl();
 	//instantiates ProjectJdbcServiceImpl for user related activities
 	ProjectJdbcServiceImpl  projectService = new ProjectJdbcServiceImpl();
+	DisciplineJdbcServiceImpl dispService  = new DisciplineJdbcServiceImpl();
 	//autowire session variable User
 	@Autowired
     private SessionScopeData sessionScopeUserData;
@@ -73,6 +77,13 @@ public class LeadDefaultController {
 				Map<String, String> proj = (Map<String, String>) iter.next();
 				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
 			}
+			//get all disciplines
+			List<Discipline> disciplinesData = dispService.selectAllDisciplines();
+			Map<String,String> disciplines = new LinkedHashMap<String,String>();
+			for(int i=0; i<disciplinesData.size(); i++) {
+				disciplines.put(Integer.toString(disciplinesData.get(i).getId()), disciplinesData.get(i).getName());
+			}
+			mav.addObject("disciplines",disciplines);
 			//get all faculty members for assign as neg faculty
 			List<User> facUsers = sessionService.getUsersByRole("Negotiating faculty");
 			//send session variable to view 
@@ -102,7 +113,13 @@ public class LeadDefaultController {
 				Map<String, String> proj = (Map<String, String>) iter.next();
 				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
 			}
-			
+			//get all disciplines
+			List<Discipline> disciplinesData = dispService.selectAllDisciplines();
+			Map<String,String> disciplines = new LinkedHashMap<String,String>();
+			for(int i=0; i<disciplinesData.size(); i++) {
+				disciplines.put(Integer.toString(disciplinesData.get(i).getId()), disciplinesData.get(i).getName());
+			}
+			mav.addObject("disciplines",disciplines);
 			List<User> facUsers = new LinkedList<User>();
 			if(request.getParameter("neg").length()>0) {
 				int negId = Integer.parseInt(request.getParameter("neg"));

@@ -863,4 +863,8 @@ input:focus {
 	    /*background:url(../images/loginArrow.png) no-repeat 53px 7px;*/
 	    display:block
 	}
-	
+
+
+.indent p {
+	color:black;
+}

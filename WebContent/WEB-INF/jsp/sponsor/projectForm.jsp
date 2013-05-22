@@ -14,15 +14,31 @@
 	</style>
 	<script>
  	$(document).ready(function(){
+ 		var datePattern = /^(0[1-9]|1[012])[- //.](0[1-9]|[12][0-9]|3[01])[- //.](19|20)\d\d$/;
  		$(function() {
  		    $( "#due" ).datepicker();
  		 });
  		
  		$.validator.addMethod("DateFormat", function(value,element) {
- 	        return value.match(/^(0[1-9]|1[012])[- //.](0[1-9]|[12][0-9]|3[01])[- //.](19|20)\d\d$/);
+ 	        		return value.match(datePattern);
  	            },
  	                "Please enter a date in the format mm/dd/yyyy"
  	    );
+ 		
+       	$.validator.addMethod("dateCheck", function(value,element) {
+ 	        		if(value.match(datePattern)) 
+ 	        		{
+	 	        		var dueDate = new Date(value);
+	 	        		var todayDate = new Date();
+	 	        		if (dueDate > todayDate) {
+	 	        		  return true;
+	 	        		}
+ 	        		}
+ 	        		return false;
+ 	            },
+ 	                "Due date is less than current date"
+ 	    );
+ 	       
  		$("#linkSubmit").click(function() {
  			$("#projectForm").validate({
  				rules: {
@@ -30,7 +46,8 @@
  					desc: "required",
 					due: {
 		                required: true,
-		                DateFormat: true
+		                DateFormat: true,
+		                dateCheck: true
 		            },
 		            disp: "required"
  				},

@@ -23,7 +23,7 @@
     <section id="content">
       <div class="padding">
         <div class="wrapper margin-bot">
-          <div class="col-3">
+          <div class="col-3" style="width:680px;">
             <div class="indent">
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>
@@ -38,16 +38,14 @@
 						<p>	
 						<form action="projectList.do" method="post">
 						<input type="hidden" name="projId" value="${map.get('ID')}" />
-						<h5>Company:</h5> ${map.get("company")}<br />	
-						<h5>Project sponsor:</h5> ${map.get("Sponsor")}<br />
+						<h5>Company: </h5>${map.get("company")}<br />	
+						<h5>Project sponsor: </h5>${map.get("Sponsor")}<br />
 						<h5>Project description:</h5> ${map.get("Description")}<br />
+						<h5>Status:</h5> ${map.get("Status")}<br />
 						<br />
 						Append discipline's academic requirements for this project :<br/>
-					 	<select name="my_select" class="selectyze">
-							<option value="value1" selected="selected"> </option>
-							<option value="value2">Applied Engineering</option>
-							<option value="value2">Computer Science, Information and Media Systems</option>
-						</select>
+						<!-- Display disciplines from the database -->	
+						<form:select path="disciplines" items="${disciplines}" />	
 						<br/>
 						<br/> Additional team member ratio: <br/>
 						 <select name="my_select" class="selectyze">
@@ -79,9 +77,11 @@
 							 <option value="value2">50</option>
 						 </select>
 						 <br/>
-						 <!-- Basic / Normal HTML Select element -->
-						 <br/> Assign a Negotiating faculty member: <br/>	
-						 
+						 <br/> 
+						<c:choose>
+               			<c:when test="${map.get('Status') eq 'Submitted'}">
+               			 <!-- Basic / Normal HTML Select element -->
+						 Assign a Negotiating faculty member: <br/>	
 						 <select name="neg" class="selectyze">
 							 <option value="" selected="selected"> List of Potential Negotiating Faculty Members</option>
 							 <c:if test="${not empty facUsers}">
@@ -90,27 +90,33 @@
 	   							 </c:forEach>
 							 </c:if>
 						 </select>
- 						 <br/> <br/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 
-						 <a href="#">| Edit project |</a> &nbsp;  &nbsp; &nbsp; &nbsp; 
-						 <a href="projectprogress.html#">| view project progress | </a> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-						 <a href="#" id="negSubmit">| Route this project to the selected negotiating faculty member | </a>
+						 </c:when>
+						 <c:otherwise>
+						 		<h5>Negotiating Faculty:</h5> ${map.get('Negotiating Faculty')}
+						 </c:otherwise>
+						 </c:choose>
+ 						 <br/><br/>
+						 <a href="projectprogress.html#" style="padding-left:150px;"> | view project progress | </a><br />
+               			 <c:if test="${map.get('Status') eq 'Submitted'}">
+						 <a href="#" id="negSubmit" style="margin-top:20px;">| Route this project to the selected negotiating faculty member | </a>
+						 </c:if>
 						 </form>
 					</div>
 					</c:if>
 					</c:forEach>
 				</c:if>
 				</div>			   
-			 <br />
+			 	<br />
 			 </div>
 		  </div>
-          <div class="col-4">
+           <div class="col-4">
             <div class="block-news">
-              <h3 class="color-4 p2">My Archived Projects</h3>
+              <h3 class="color-4 p2">My Archived<br />Projects</h3>
                <c:choose>
                <c:when test="${not empty archiveList}">
               	<ul class="list-2">	 
               		<c:forEach items="${archiveList}" var="map">             
-	                <li><a href="#">${map.get("Title")}</a></li>
+	                <li><a href="archivedProjects.do?id=${map.get('ID')}">${map.get("Title")}</a></li>
 	                </c:forEach>          
               	</ul>
               	</c:when>
@@ -120,7 +126,7 @@
               		</ul>
               	</c:otherwise>
               </c:choose>
-              </br>
+              <br />
                <a class="button-2" href="archivedProjects.do">Previous Years</a>
             </div>
 			

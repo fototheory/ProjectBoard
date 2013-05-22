@@ -99,6 +99,7 @@ public class SponsorProjectFormController {
 			String status = "";
 			Map<String, String> errors = new HashMap<String, String>();
 			Project proj = new Project();
+			int selectedId = 0;
 			//check project title is not empty
 			if(ProjData.getTitle().length()>0) {
 				proj.setTitle(ProjData.getTitle());
@@ -138,6 +139,7 @@ public class SponsorProjectFormController {
 				if(ProjData.getAction().equals("edit")) {
 					proj.setId(ProjData.getProjectId());
 					if(projService.updateProjectInfo(proj)>0) {
+						selectedId = proj.getId();
 						status="project successfully updated";
 					}
 					else {
@@ -150,7 +152,9 @@ public class SponsorProjectFormController {
 					proj.setDispId(sessionScopeUserData.getUserInfo().getDisciplineId());
 					//get status 'new'
 					proj.setStatusId(statService.selectIdByName("New"));
-					if(projService.add(proj)>0) {
+					int newId = projService.add(proj);
+					if(newId > 0) {
+						selectedId = newId;
 						status="project successfully added";
 					}
 					else {
@@ -164,8 +168,10 @@ public class SponsorProjectFormController {
 				mav.addObject("errors", errors);
 				return mav;
 			}
-					
-			return new ModelAndView(new RedirectView("projectList.do"),"status",status);
+			ModelAndView mav = new ModelAndView("redirect:projectList.do");
+			mav.addObject("selectedId", selectedId);
+			mav.addObject("status", status);
+			return mav;
 		}
 		return new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
 	}	

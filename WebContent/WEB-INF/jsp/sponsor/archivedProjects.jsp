@@ -3,6 +3,14 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <c:import url="template/header.jsp" />
+<script type="text/javascript">
+	$(document).ready(function(){
+		<c:if test="${not empty selectedId}">
+		// this will make the second tab by default opened (index starts from 0)
+        $('#accordion').accordion({active: <c:out value="${selectedId}"/>}); 
+		</c:if>
+	});
+</script>
     <!-- content -->
     <section id="content">
       <div class="padding">
@@ -15,11 +23,10 @@
               <h2>My archived projects</h2>              
               <div class="wrapper p2">
               </div>
-			  	
-			  	<h3 style="padding-bottom:10px;"> FY 2012 <span style="float:right;"><a class="button-2" href="projectList.do" >Back to my project list</a></span></h3>
-
-				<div id="accordion">
-				 <c:if test="${not empty projectList}">
+			  	<h3 style="padding-bottom:10px;"> FY 2013 <span style="float:right;"><a class="button-2" href="projectList.do" >Back to my project list</a></span></h3>
+				 <c:choose>
+               		<c:when test="${not empty projectList}">
+               		<div id="accordion">
 					<c:forEach items="${projectList}" var="map"> 
 					<p>${map.get("Sponsor")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
 					<div>
@@ -34,11 +41,16 @@
 					</p>
 				  	</div>
 					</c:forEach>
-				</c:if>
-				</div>  
+					</div>  
+					</c:when>
+					<c:otherwise>
+						<br /><p>There is no archived project.</p><br />
+					</c:otherwise>
+				</c:choose>				
 				<br />
 			  </div>
 			 </div>
+		 </div>
          
           
            

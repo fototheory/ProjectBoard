@@ -31,20 +31,151 @@ public class ProjectsController {
 	//autowire session variable User
 	@Autowired
     private SessionScopeData sessionscopehellodata;
+
+	//this method is processed when projectList.html is accessed
+	@RequestMapping(value = "/projectList", method = RequestMethod.GET)
+	public ModelAndView projectList(@RequestParam(value="status", required=false) String  status) {
+		//define view page to display: login.jsp
+		ModelAndView mav = new ModelAndView("projects");
+		if(sessionscopehellodata!=null) {
+			if(LoginService.sessionCheck(sessionscopehellodata.getUserInfo().getId())>0) {
+				//get role name
+				Role rl = RoleService.selectById(sessionscopehellodata.getUserInfo().getRoleId());
+            	String roleName = rl.getName();
+            	switch (roleName) {
+            	case "Admin":
+            		System.out.println("User is an admin.");
+            		mav.setViewName("redirect:/admin/index.do");
+            		break;
+            	case "Student":
+					//redirect a user to student/index.jsp
+					//mav = new ModelAndView(new RedirectView("student/index.do"));
+            		mav.setViewName("redirect:/student/projectList.do");
+					break;
+            	case "Sponsor":
+            		System.out.println("User is a sponsor.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/sponsor/projectList.do");
+					break;
+            	case "Lead faculty":
+            		System.out.println("User is a Lead faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/leadFac/projectList.do");
+            		break;
+            	case "Capstone faculty":
+            		System.out.println("User is a Capstone faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/capFac/projectList.do");
+            		break;
+            	case "Negotiating faculty":
+            		System.out.println("User is a Negotiating faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/negFac/projectList.do");
+            		break;
+            	default:
+            		System.out.println("User is a Negotiating faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/student/projectList.do");
+					break;
+            	}
+            	
+			}	
+			else {
+				//creates empty user
+				User userbean = new User();
+				//add user object to the view
+				mav.addObject("loginUser", userbean);
+				//check if there is an error message passed by GET
+				if(status != null) {
+					//message if there is an error
+					mav.addObject("status", status);
+				}
+			}
+		}
+		else {
+			//creates empty user
+			User userbean = new User();
+			//add user object to the view
+			mav.addObject("loginUser", userbean);
+			//check if there is an error message passed by GET
+			if(status != null) {
+				//message if there is an error
+				mav.addObject("status", status);
+			}
+		}
+		return mav;
+	}
 	
-	//this method is processed when login.jsp is accessed
+	//this method is processed when projects.html is accessed
 	@RequestMapping(value = "/projects", method = RequestMethod.GET)
 	public ModelAndView loginDetails(@RequestParam(value="status", required=false) String  status) {
 		//define view page to display: login.jsp
 		ModelAndView mav = new ModelAndView("projects");
-		//creates empty user
-		User userbean = new User();
-		//add user object to the view
-		mav.addObject("loginUser", userbean);
-		//check if there is an error message passed by GET
-		if(status != null) {
-			//message if there is an error
-			mav.addObject("status", status);
+		if(sessionscopehellodata!=null) {
+			if(LoginService.sessionCheck(sessionscopehellodata.getUserInfo().getId())>0) {
+				//get role name
+				Role rl = RoleService.selectById(sessionscopehellodata.getUserInfo().getRoleId());
+            	String roleName = rl.getName();
+            	switch (roleName) {
+            	case "Admin":
+            		System.out.println("User is an admin.");
+            		mav.setViewName("redirect:/admin/index.do");
+            		break;
+            	case "Student":
+					//redirect a user to student/index.jsp
+					//mav = new ModelAndView(new RedirectView("student/index.do"));
+            		mav.setViewName("redirect:/student/projectList.do");
+					break;
+            	case "Sponsor":
+            		System.out.println("User is a sponsor.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/sponsor/projectList.do");
+					break;
+            	case "Lead faculty":
+            		System.out.println("User is a Lead faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/leadFac/projectList.do");
+            		break;
+            	case "Capstone faculty":
+            		System.out.println("User is a Capstone faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/capFac/projectList.do");
+            		break;
+            	case "Negotiating faculty":
+            		System.out.println("User is a Negotiating faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/negFac/projectList.do");
+            		break;
+            	default:
+            		System.out.println("User is a Negotiating faculty.");
+					//redirect a user to sponsor/index.jsp
+					mav = new ModelAndView("redirect:/student/projectList.do");
+					break;
+            	}
+            	
+			}		
+			else {
+				//creates empty user
+				User userbean = new User();
+				//add user object to the view
+				mav.addObject("loginUser", userbean);
+				//check if there is an error message passed by GET
+				if(status != null) {
+					//message if there is an error
+					mav.addObject("status", status);
+				}
+			}
+		}
+		else {
+			//creates empty user
+			User userbean = new User();
+			//add user object to the view
+			mav.addObject("loginUser", userbean);
+			//check if there is an error message passed by GET
+			if(status != null) {
+				//message if there is an error
+				mav.addObject("status", status);
+			}
 		}
 		return mav;
 	}

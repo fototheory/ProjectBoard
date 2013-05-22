@@ -210,7 +210,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 			if(leads.size()>0) {
 				String[] messages = this.createRequestMsg(projId, "email");
 				String subject = messages[0];
-				messages[1] += "\n\nIf you are willing to accept this project, please click on following link: ";
+				messages[1] += "\n\nIf you are willing to acknowledge this project, please click on following link: ";
 				//send email to each lead
 				for(User lead : leads){
 					String leadName = lead.getFname()+" "+lead.getLname()+"\n\r";
@@ -270,13 +270,13 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		//decide line break for email or html
 		String lineBreak = (type.equals("html"))?"<br />":"\n";
 		String messages[] = new String[2];
-		messages[0] = "NU Capstone Project Board - Accept Project: " + submittedProj.getTitle();
+		messages[0] = "NU Capstone Project Board - Acknowledge Project: " + submittedProj.getTitle();
 		messages[1] = "Sponsor: "+ sponsor.getFname() +" " + sponsor.getLname()
 				+ " has submitted new project: "+ lineBreak + 
 				"Title: "+ submittedProj.getTitle() + lineBreak + 
 				"Description: "+ submittedProj.getDesc()+ lineBreak + 
 				"Due Date: "+ submittedProj.getDue()+ lineBreak + 
-				"Are you willing to accept this project?";
+				"Are you willing to acknowledge this project?";
 		return messages;
 	}
 	
@@ -417,7 +417,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	 * @param proj the Project object
 	 * @return returns the project item
 	 */
-	protected Map<String, String> formatProjectItem(Project proj) {
+	public Map<String, String> formatProjectItem(Project proj) {
 		Map<String, String> projItem = new LinkedHashMap<String, String>();
 		//set information required for any status
 		projItem.put("ID",Integer.toString(proj.getId()));
@@ -461,7 +461,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 			projItem.put("Date Started",proj.getDateStarted().toString());
 		}
 		if(proiority > 1) {
-			//project posted
+			//project posted or assinged to neg
 			if(proj.getCapId()>0) {
 				User capstone = userJdbcDao.selectById(proj.getCapId());
 				projItem.put("Capstone Faculty",capstone.getFname()+" "+capstone.getLname());
@@ -502,6 +502,9 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 	        	priority = 3;
 	        	break;
 	        case "Posted": 
+	        	priority = 2;
+	        	break;
+	        case "Neg Assigned": 
 	        	priority = 2;
 	        	break;
 	        case "Submitted": 
