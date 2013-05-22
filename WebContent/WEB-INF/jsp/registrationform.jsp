@@ -13,7 +13,7 @@
 								<c:if test="${not empty status}">
 									<font color="red">${status}</font>
 								</c:if>
-								<form:form method="Post" action="registrationform.do"
+								<form:form method="Post" action="registrationform.do" id="registrationform"
 									commandName="registration">
 									<table>
 										<tr>
@@ -85,8 +85,14 @@
 											</td>
 										</tr>
 										<tr>
-											<td><input class="button-2" type="Reset" value=" Clear" /></td>
-											<td><input class="button-2" type="submit" onclick ="alert('Please double check all the entry before you submit !')" value="Submit" /></td>
+											<td>
+												<br />
+												<input class="button-2" type="button" value="Cancel" 
+													onclick="location.href='login.do'"/>
+												<input class="button-2" type="button" value="Clear " 
+													onclick="location.href='registrationform.do'"/>
+												<input class="button-2" type="submit" value="Submit" />
+											</td>
 										</tr>
 									</table>
 								</form:form>
