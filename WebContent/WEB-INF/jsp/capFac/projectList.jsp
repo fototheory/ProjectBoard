@@ -16,16 +16,16 @@
     <section id="content">
       <div class="padding">
         <div class="wrapper margin-bot">
-          <div class="col-3">
+          <div class="col-3" style="width:680px;">
             <div class="indent">
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>
 			  </c:if>
-              <h2>Projects</h2>
+              <h2>My project list</h2>
               <p class="color-4">Each year organizations from the private, government, and non-profit sectors come to NU to assist them in turning ideas into action. Highly talented students work in accordance to the organization’s business and technical requirements while also following strict academic requirements..</p>
               <div class="wrapper p2">
               </div>
-			  	<h3 style="padding-bottom:10px;"> Available Projects <span style="float:right;"><a class="button-2" href="projectForm.do?action=add&id=0" id="addProj">Add Project</a></span></h3>
+			  	<h3 style="padding-bottom:10px;"> Available Projects <span style="float:right;"></span></h3>
 			  	<div id="accordion">
 			  	<c:if test="${not empty projectList}">
 					<c:forEach items="${projectList}" var="map"> 
@@ -127,9 +127,10 @@
 						 <option value="value2">Jonathan Smith</option>
 					 </select>						
 						
-						<c:if test="${map.get('Status') eq 'New'}">
+						<c:if test="${map.get('Status') eq 'Neg Assigned'}">
+						<br />
 						<a href="#" style="padding-left:65px;"> | Publish project | </a>	
-						<a href="#" style="padding-left:20px;"> | Assign project to student | </a>
+						<a href="#" style="padding-left:20px;"> | Assign project to student | </a><br />
 						<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;"> | Archive project | </a>
 						<a href="#" style="padding-left:20px;"> | Create a student group| </a>						
 						<br /><br />
@@ -144,9 +145,9 @@
 			 <br />
 			 </div>
 		  </div>
-         <div class="col-4">
+         <div class="col-4" style="margin-left:10px;">
             <div class="block-news">
-              <h3 class="color-4 p2">My Archived Projects</h3>
+              <h3 class="color-4 p2">My Archived<br />Projects</h3>
                <c:choose>
                <c:when test="${not empty archiveList}">
               	<ul class="list-2">	 
@@ -157,7 +158,7 @@
               	</c:when>
               	<c:otherwise>
               		<ul class="list-2">
-              		 <li>No Archived Projects</li>
+              		 <li>No ArchivedProjects</li>
               		</ul>
               	</c:otherwise>
               </c:choose>
@@ -185,3 +186,5 @@ effectClose:'slide'
 
 
 	<c:import url="template/footer.jsp" />
+</body>
+</html>
