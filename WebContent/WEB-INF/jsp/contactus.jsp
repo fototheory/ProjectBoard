@@ -29,6 +29,11 @@
               
               <p class="text-1">There is a lot more we can do together<br>
                Let's partner with other universities to create diverse multidisciplinary teams nationally and internationally. </p>
+               
+               
+			
+               
+               
             </div>
           </div>
 		  <div class="col-4">

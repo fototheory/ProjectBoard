@@ -42,7 +42,7 @@
 							</tr>
 							<tr>
 							<c:if test="${empty successMsg}">
-								<td><input class="button-2" type="submit" onclick ="alert('Please double check all the entry before you submit !')" value="Submit" /></td>
+								<td><input class="button-2" type="submit"  value="Submit" /></td>
 							</c:if>
 							</tr>
 						</table>

@@ -1,8 +1,11 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 
-<c:import url="globalHeader.jsp" />
+<c:import url="globalHeader.jsp"/>
+
+<body id="page5">
 
       <div class="row-2">
         <nav>
@@ -25,8 +28,9 @@
               <h2 class="p0">Let's keep in touch</h2>
               
               <p class="text-1">There is a lot more we can do together<br>
-               Let's partner with other universities to create diverse multidisciplinary teams nationally and internationally. </p> </br>
-               </br>
+               Let's partner with other universities to create diverse multidisciplinary teams nationally and internationally. </p>
+            </br>
+         
                 <c:if test="${not empty msg}">
 					<font color="red">${msg}</font><br />
 				</c:if>
@@ -35,16 +39,10 @@
                	<form:form method="Post" action="MessageForm.do" commandName="sendMessage">
                	
                	<table border ="3" width="80" >
-               	<tr>
-               		<td>To: </td>
-               		<td><form:input path="recipientAddress" type="text"  size ="65" required="true" />
-               		<FONT color="red"><form:errors path="recipientAddress" /></FONT></td>
-               		
-               		 </tr>
+               	
                		
                		
-               		
-               		<tr>
+               		               		<tr>
                		<td>Subject: </td>
                		
                		<td><form:input path="subject" type="text"   size ="65" required="true" />
@@ -66,27 +64,27 @@
               
                		</tr>
                		
+        
+               	</table>
                	
-               		
-               		
+               		</br>
                	
-               		<tr>
-               		
-               		<td>
-               		<input class="button-2" type="submit"  onclick ="alert('Are you sure you want to submit this message ?')"   value="Submit" /></td>
+               		<input class="button-2" type="submit"    value="Submit" />
               
-               
+              
             
-               		<td> <input class="button-2" type="Reset" value="Reset" /></td>
+               		<input class="button-2" type="Reset" value="Clear" />
                		
-               		</tr>
-               		</table>
+               		
+               	
                		
 				</form:form>
-				
-				
+			
+           
             </div>
-          </div>
+          
+        </div>
+        
 		  <div class="col-4">
             <div class="block-news">
               <h3 class="color-4 indent-bot2">Contact Info</h3>
@@ -106,8 +104,9 @@
         </div>
       </div>
     </section>
-   
- 	<c:import url="globalFooter.jsp" />
+
+<!-- footer -->
+ 	<c:import url="globalFooter.jsp"/>
  	
  	</div>
 </div>
