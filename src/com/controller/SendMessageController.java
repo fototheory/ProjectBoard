@@ -25,7 +25,7 @@ import org.springframework.mail.MailSender;
 @RequestMapping("/MessageForm")
 public class SendMessageController {
 	//From email address
-	private static final String from = "webmaster.nuproactive@gmail.com";
+	private static String from ="webmaster.nuproactive@gmail.com";
 	@Autowired
 	private MailManager mailManager;	
 	@Autowired
@@ -63,7 +63,7 @@ public class SendMessageController {
          
         // creates a simple e-mail object
         if(mailManager.sendMail(from, sendMessage.getRecipientAddress(), sendMessage.getSubject(), sendMessage.getMessage())) {
-        	model.addAttribute("msg", "(A courtesy email of this page has been emailed to the email address below.)");
+        	model.addAttribute("msg", " Your message has been sent successfully. We thank you.");
         }
         else {
         	model.addAttribute("msg", "Error");

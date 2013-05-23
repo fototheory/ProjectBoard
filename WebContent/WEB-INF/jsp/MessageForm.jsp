@@ -14,7 +14,7 @@
             <li><a href="services.html">Services</a></li>
             <li><a href="resources.html">Resources</a></li>
             <li><a href="projects.html">Projects</a></li>
-            <li class="last-item"><a class="active" href="contactus.html">Contact Us</a></li>
+            <li class="last-item"><a class="active" href="MessageForm.html">Contact Us</a></li>
           </ul>
         </nav>
       </div>
@@ -27,9 +27,11 @@
             <div class="indent">
               <h2 class="p0">Let's keep in touch</h2>
               
-              <p class="text-1">There is a lot more we can do together<br>
-               Let's partner with other universities to create diverse multidisciplinary teams nationally and internationally. </p>
-            </br>
+              <p class="text-1">There is a lot more we can do together.
+               Let's partner with other universities to create diverse multidisciplinary 
+               teams nationally and internationally. </p>
+           
+            <br/> <br/>
          
                 <c:if test="${not empty msg}">
 					<font color="red">${msg}</font><br />
@@ -40,9 +42,20 @@
                	
                	<table border ="3" width="80" >
                	
+               		<tr>
+               		<td>From:</td>
                		
                		
-               		               		<tr>
+             
+         
+               		<td><form:input path="senderAddress" type="text"  placeholder="Please enter your email address here" size ="65" required="true" />
+               	<FONT color="red"><form:errors path="senderAddress" /></FONT></td>
+               		</tr>   
+               		
+               		
+               	
+               		
+               		<tr>
                		<td>Subject: </td>
                		
                		<td><form:input path="subject" type="text"   size ="65" required="true" />
@@ -69,9 +82,11 @@
                	
                		</br>
                	
-               		<input class="button-2" type="submit"    value="Submit" />
+           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;    	&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;	
+           
+           <input class="button-2" type="submit"    value="Submit" />
               
-              
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
             
                		<input class="button-2" type="Reset" value="Clear" />
                		

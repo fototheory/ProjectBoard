@@ -6,7 +6,6 @@
 <c:import url="template/header.jsp" />
 
 
-
 <section id="content">
 	<div class="padding">
 		<div class="wrapper margin-bot">
@@ -41,20 +40,18 @@
 										
 									
 										
-										<br>
+										<br/><br/>
 										
-										
+					
 								
 									<input class="button-2" type="reset" value=" Clear " /> <br>
 								
-
+										<br/>  
 
 									<a class="button-2" a href="login.do"/> Cancel </a>
 
 							
-							
-						
-
+					
 					
 				</div>
 			</div>

@@ -50,7 +50,7 @@
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>
 			  </c:if>
-              <h2>My projects list</h2>
+              <h2>My Projects List</h2>
               <p class="color-4">Each year organizations from the private, government, and non-profit sectors come to NU to assist them in turning ideas into action. Highly talented students work in accordance to the organizations business and technical requirements while also following strict academic requirements..</p>
               <div class="wrapper p2">
               </div>
