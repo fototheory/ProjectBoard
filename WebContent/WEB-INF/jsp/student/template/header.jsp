@@ -98,7 +98,7 @@
             <li><a href="../services.html">Services</a></li>
             <li><a href="../resources.html">Resources</a></li>
             <li><a class="active" href="projectList.do">Projects</a></li>
-            <li class="last-item"><a href="../contactus.html">Contact Us</a></li>
+            <li class="last-item"><a href="MessageForm.html">Contact Us</a></li>
           </ul>
         </nav>
       </div>

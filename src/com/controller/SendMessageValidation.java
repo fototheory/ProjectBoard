@@ -28,6 +28,9 @@ public class SendMessageValidation implements Validator {
 		
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "recipientAddress",
 				"NotEmpty.sendmessage.recipientAddress", "Recipent Address must not be empty.");
+		
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "senderAddress",
+				"NotEmpty.sendmessage.senderAddress", "Sender Address must not be empty.");
 
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "subject",
 				"NotEmpty.sendmessage.subject", "Subject must not be empty.");
@@ -35,24 +38,15 @@ public class SendMessageValidation implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "message",
 				"NotEmpty.sendmessage.message", "Message must not be empty.");	
 		
-		String recipientAddress = sendmessage.getRecipientAddress();
 		
-		if (recipientAddress.length() > 0) {
-			if (!validateEmail(recipientAddress)) {
-				errors.rejectValue("recipientAddress","NotValid.sendmessage.recipientAddress",
-						"Not a valid email address.");
-			}
-			
-			if (recipientAddress.length() > 40) {
-				errors.rejectValue("recipientAddress","NotValid.sendmessage.recipientAddress",
-						"Email address cannot be longer than 40 characters.");
-			}
+		String senderAddress= sendmessage.getsenderAddress();
+		
 		}
-	}		
+			
 	
-	public boolean validateEmail(final String recipientAddress){
+	public boolean validateEmail(final String senderAddress){
 		Pattern pattern = Pattern.compile(EMAIL_PATTERN);
-		Matcher matcher = pattern.matcher(recipientAddress);
+		Matcher matcher = pattern.matcher(senderAddress);
 		
 		return matcher.matches();
 	}	

@@ -10,7 +10,9 @@ public class SendMessage {
 	private String subject;
 	private String message;
 	//@Email
-	private String recipientAddress;
+	private String recipientAddress= "webmaster.nuproactive@gmail.com" ;  
+	   
+	private String senderAddress; 
 	
 	public String getSubject() {
 		return subject;
@@ -30,4 +32,22 @@ public class SendMessage {
 	public void setRecipientAddress(String recipientAddress) {
 		this.recipientAddress = recipientAddress;
 	}	
-}
+	
+	public String getsenderAddress() {
+		return senderAddress;
+	}
+	
+	
+	public void setsenderAddress(String senderAddress) {
+		this.senderAddress = senderAddress;
+	}	
+	
+	
+	
+	
+	}	
+	
+	
+	
+	
+	

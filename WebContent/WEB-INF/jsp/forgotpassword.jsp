@@ -1,11 +1,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
 <c:import url="template/header.jsp" />
-
-
 
 
 <section id="content">
@@ -19,34 +17,42 @@
 					<h2 class="p0">Password Retrieval Form</h2>
 
 
-<h4>
-					<form:form method="Post" action="forgotpassword.do"
-						commandName="forgotpassword">
-						
-						<table >
+					<h4>
+						<form:form method="Post" action="forgotpassword.do"
+							commandName="forgotpassword">
+
 							
-								<td><font color="grey">Your e-mail Address:</font></td> &nbsp
+
+								<font color="grey">Your e-mail Address:</font> &nbsp
+
 								
-								<td> <input type="email" name="email" placeholder="Please enter your email address here"  size ="40"> </td>
-  
-							</tr>
+								
+								<input type="email" name="email"
+									placeholder="Please enter your email address here" size="40"/>
 							
+</form:form>
 							
-							<tr>
-								<td><input class="button-2" type="submit"
-									value="Recover My Password" /></td>
-			</tr>
-							<tr>
-							<td><input class="button-2" type="reset"
-									value=" Clear " /></td>
-							
-							
-							</tr>
+</h4>
+
+								
+								<input class="button-2" type="submit"
+										value="Recover My Password" />
+										
 									
-						</table>
-					</form:form>
+										
+										<br/><br/>
+										
 					
-					</h4>
+								
+									<input class="button-2" type="reset" value=" Clear " /> <br>
+								
+										<br/>  
+
+									<a class="button-2" a href="login.do"/> Cancel </a>
+
+							
+					
+					
 				</div>
 			</div>
 		</div>
@@ -56,4 +62,4 @@
 
 
 
-<c:import url="globalFooter.jsp"/>
+<c:import url="globalFooter.jsp" />
