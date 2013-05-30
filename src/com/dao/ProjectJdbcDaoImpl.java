@@ -177,30 +177,61 @@ public class ProjectJdbcDaoImpl implements SpringJdbcDao<Project> {
 	 * @return a list of unarchived projects
 	 */
 	public List<Project> selectByRole(int id, String roleFld) {
-		String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=0";
-		return this.template.query(query, new Object[]{id},
-				new RowMapper<Project>() {
-            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
-        	   	Project temp = new Project();
-        	   	temp.setId(rs.getInt("project_id"));
-        	   	temp.setTitle(rs.getString("project_title"));
-            	temp.setDesc(rs.getString("project_description"));
-            	temp.setArchived(rs.getInt("project_isarchived"));
-            	temp.setManHours(rs.getInt("project_manhours"));
-            	temp.setDue(rs.getDate("project_date_due"));
-            	temp.setDateStarted(rs.getDate("project_date_started"));
-            	temp.setDateCompleted(rs.getDate("project_date_completed"));
-            	temp.setDateCreated(rs.getDate("project_date_created"));
-            	temp.setStatusId(rs.getInt("status_id"));
-            	temp.setDispId(rs.getInt("discipline_id"));
-            	temp.setGroupId(rs.getInt("group_id"));
-            	temp.setSponsorId(rs.getInt("project_sponsor"));
-            	temp.setLeadId(rs.getInt("project_lead_faculty"));
-            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
-            	temp.setCapId(rs.getInt("project_capstone_faculty"));
-                return temp;
-            }
-        });
+		//if role is lead, retrieve project which are submitted, but not assigned (not yet acknowledged)
+		if(roleFld.equalsIgnoreCase("project_lead_faculty")) {
+			String query = "SELECT p.* FROM project p INNER JOIN `status` s ON p.status_id=s.status_id " +
+					"WHERE (p."+roleFld+"=? AND p.project_isarchived=0) " +
+					"OR (p."+roleFld+" IS NULL AND LOWER(s.status_name)='submitted' AND p.project_isarchived=0)";
+			return this.template.query(query, new Object[]{id},
+					new RowMapper<Project>() {
+	            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
+	        	   	Project temp = new Project();
+	        	   	temp.setId(rs.getInt("project_id"));
+	        	   	temp.setTitle(rs.getString("project_title"));
+	            	temp.setDesc(rs.getString("project_description"));
+	            	temp.setArchived(rs.getInt("project_isarchived"));
+	            	temp.setManHours(rs.getInt("project_manhours"));
+	            	temp.setDue(rs.getDate("project_date_due"));
+	            	temp.setDateStarted(rs.getDate("project_date_started"));
+	            	temp.setDateCompleted(rs.getDate("project_date_completed"));
+	            	temp.setDateCreated(rs.getDate("project_date_created"));
+	            	temp.setStatusId(rs.getInt("status_id"));
+	            	temp.setDispId(rs.getInt("discipline_id"));
+	            	temp.setGroupId(rs.getInt("group_id"));
+	            	temp.setSponsorId(rs.getInt("project_sponsor"));
+	            	temp.setLeadId(rs.getInt("project_lead_faculty"));
+	            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+	            	temp.setCapId(rs.getInt("project_capstone_faculty"));
+	                return temp;
+	            }
+	        });
+		}
+		else {
+			String query = "SELECT * FROM project WHERE "+roleFld+"=? AND project_isarchived=0";
+			return this.template.query(query, new Object[]{id},
+					new RowMapper<Project>() {
+	            public Project mapRow(ResultSet rs, int rowNum) throws SQLException {
+	        	   	Project temp = new Project();
+	        	   	temp.setId(rs.getInt("project_id"));
+	        	   	temp.setTitle(rs.getString("project_title"));
+	            	temp.setDesc(rs.getString("project_description"));
+	            	temp.setArchived(rs.getInt("project_isarchived"));
+	            	temp.setManHours(rs.getInt("project_manhours"));
+	            	temp.setDue(rs.getDate("project_date_due"));
+	            	temp.setDateStarted(rs.getDate("project_date_started"));
+	            	temp.setDateCompleted(rs.getDate("project_date_completed"));
+	            	temp.setDateCreated(rs.getDate("project_date_created"));
+	            	temp.setStatusId(rs.getInt("status_id"));
+	            	temp.setDispId(rs.getInt("discipline_id"));
+	            	temp.setGroupId(rs.getInt("group_id"));
+	            	temp.setSponsorId(rs.getInt("project_sponsor"));
+	            	temp.setLeadId(rs.getInt("project_lead_faculty"));
+	            	temp.setNegId(rs.getInt("project_negotiating_faculty"));
+	            	temp.setCapId(rs.getInt("project_capstone_faculty"));
+	                return temp;
+	            }
+	        });
+		}
 	}
 	
 	/**

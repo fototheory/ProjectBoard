@@ -4,7 +4,7 @@
 
 <c:import url="globalHeader.jsp"/>
 
-<body id="page1">
+<body id="page5">
 <div class="row-2">
 					<nav>
 						<ul class="menu">
@@ -22,18 +22,18 @@
 						<div class="slider">
 							<ul class="items">
 								<li><img src="images/slider-img1.jpg" alt=""> 
-									<strong	class="banner"> <strong class="b2">Qualcomm</strong> 
-									<strong class="b1">Mobile Data Traffic Management </strong> 
+									<strong	class="banner" style="margin-top:-60px;"><strong class="b2" style="font-size:75px;">Project Qualcomm</strong> 
+									<strong class="b1" style="margin-top:-15px;">Mobile Data Traffic Management </strong> 
 									<strong	class="b3">There is a real need for intelligent system selection and effective use of offload between 3G/LTE and Wi-Fi.<br>	</strong>
 								</strong>
 								</li>
 								<li><img src="images/slider-img3.jpg" alt=""> <strong
-									class="banner"> <strong class="b2">IMATIS </strong> <strong class="b1">Mobile Nurse Call </strong> <strong
+									class="banner" style="margin-top:-60px;"> <strong class="b2" style="font-size:75px;">Project IMATIS </strong> <strong class="b1" style="margin-top:-15px;">Mobile Nurse Call </strong> <strong
 										class="b3"> Nurses receive notifications to their IP phones with IMATIS Mobile Nurse Call.<br>
 									</strong>
 								</strong></li>
 								<li><img src="images/slider-img1.jpg" alt=""> <strong
-									class="banner"> <strong class="b2">TopView</strong> <strong class="b1">TopView Mobile Web App. </strong> <strong
+									class="banner" style="margin-top:-60px;"> <strong class="b2" style="font-size:75px;">Project TopView</strong> <strong class="b1" style="margin-top:-15px;">TopView Mobile Web App. </strong> <strong
 										class="b3">Provides access to TopView alarms and all monitored data values from mobile devices.<br>
 									</strong>
 								</strong></li>
@@ -46,7 +46,7 @@
 			<!-- content -->
 			<section id="content">
 				<div class="padding">
-					<div class="box-bg margin-bot">
+					<div class="box-bg margin-bot" style="margin-top:-25px;">
 						<div class="wrapper">
 							<div class="col-1">
 								<div class="box first">
@@ -108,7 +108,7 @@
 						</div>
 					</div>
 					<div class="wrapper">
-						<div class="col-3">
+						<div class="col-3" style="width:590px;">
 							<div class="indent">
 								<h2>About us</h2>
 										<p class="color-4 p1">The NU Capstone Project Board is a web-based application that will streamline and enhance the current capability and process of Masters levels capstone projects by allowing the faculty to define academic, business and technical requirements. The board will facilitate the interactions between the project sponsor, National University (NU) faculty members, and students. The board will also serve as a platform to allows any student group grab a defined project and to archive finalized projects to give students exposure during and after a project completion.</p>

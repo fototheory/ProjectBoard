@@ -55,4 +55,11 @@ public class StudentController {
 		return mav;
 	}
 	
+	@RequestMapping(value = "/student/projectList", method = RequestMethod.GET)
+	public ModelAndView projectListDef() {
+		ModelAndView mav = new ModelAndView("/student/projectList");
+		//mav.addObject("status", "success");
+		return mav;
+	}
+	
 }

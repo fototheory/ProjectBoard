@@ -210,10 +210,10 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 			if(leads.size()>0) {
 				String[] messages = this.createRequestMsg(projId, "email");
 				String subject = messages[0];
-				messages[1] += "\n\nIf you are willing to acknowledge this project, please click on following link: ";
+				messages[1] += "\nIf you are willing to acknowledge this project, please click on following link: ";
 				//send email to each lead
 				for(User lead : leads){
-					String leadName = lead.getFname()+" "+lead.getLname()+"\n\r";
+					String leadName = lead.getFname()+" "+lead.getLname()+"\n\n";
 					String link = serverURL + "/acceptNewProject.do?key=";
 					String key = projId+SEP+lead.getId();
 					URLEncryption newEnc = new URLEncryption();
@@ -221,7 +221,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 					try {
 						byte[] encodedBytes = newEnc.encodeURL(key);
 					    String encodedURL = new String(Base64.encodeBase64(encodedBytes));
-					    wholeMsg = leadName+messages[1]+link+encodedURL;
+					    wholeMsg = leadName+messages[1]+link+encodedURL+"\n\nThank you,\nProject Board Administrator";
 					}	
 					catch(Exception e) {
 						System.out.println(e.toString());
@@ -272,11 +272,11 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		String messages[] = new String[2];
 		messages[0] = "NU Capstone Project Board - Acknowledge Project: " + submittedProj.getTitle();
 		messages[1] = "Sponsor: "+ sponsor.getFname() +" " + sponsor.getLname()
-				+ " has submitted new project: "+ lineBreak + 
+				+ " has submitted new project."+ lineBreak + lineBreak + 
 				"Title: "+ submittedProj.getTitle() + lineBreak + 
 				"Description: "+ submittedProj.getDesc()+ lineBreak + 
-				"Due Date: "+ submittedProj.getDue()+ lineBreak + 
-				"Are you willing to acknowledge this project?";
+				"Due Date: "+ submittedProj.getDue()+ lineBreak;
+		
 		return messages;
 	}
 	
@@ -441,6 +441,7 @@ public class ProjectJdbcServiceImpl implements SpringJdbcService<Project> {
 		//check status
 		//instantiates StatusJdbcDaoImpl status related database transaction
 		StatusJdbcDaoImpl statusJdbcDao = new StatusJdbcDaoImpl();
+		projItem.put("statId",Integer.toString(proj.getStatusId()));
 		Status stat = statusJdbcDao.selectById(proj.getStatusId());
 		projItem.put("Status",stat.getName());
 		int proiority = proiorityStatus(stat.getName());

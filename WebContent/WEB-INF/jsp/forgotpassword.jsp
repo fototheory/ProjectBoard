@@ -48,7 +48,7 @@
 								
 										<br/>  
 
-									<a class="button-2" a href="login.do"/> Cancel </a>
+									<a class="button-2" href="login.do"> Cancel </a>
 
 							
 					

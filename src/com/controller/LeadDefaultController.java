@@ -76,6 +76,7 @@ public class LeadDefaultController {
 			for (Iterator<Map<String, String>> iter = projList.iterator(); iter.hasNext();) {
 				Map<String, String> proj = (Map<String, String>) iter.next();
 				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
+				proj.put("leadId", Integer.toString(user.getId()));
 			}
 			//get all disciplines
 			List<Discipline> disciplinesData = dispService.selectAllDisciplines();
@@ -104,6 +105,69 @@ public class LeadDefaultController {
 		ModelAndView mav = new ModelAndView("/leadFac/projectList");
 		if(this.sessionCheck(sessionScopeUserData)) {
 			User user = sessionScopeUserData.getUserInfo();	
+			List<User> facUsers = new LinkedList<User>();
+			int projId;
+			if(request.getParameter("projId").length()>0) {				
+				String acptVal = request.getParameter("acptVal");
+				projId = Integer.parseInt(request.getParameter("projId"));
+				if(acptVal!=null && !acptVal.isEmpty() && acptVal.equalsIgnoreCase("true")) {
+					int leadId = Integer.parseInt(request.getParameter("leadId"));
+					int statId = Integer.parseInt(request.getParameter("statId"));
+					if(projectService.leadAcceptProj(leadId, projId, statId)>0) {
+						mav.addObject("result", "You successfully acknowledged the request.");
+					}
+					else {
+						mav.addObject("result", "There was an error acknowledging the project.");
+					}
+					//get all the projects under lead
+					Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
+					//send session variable to view 
+					mav.addObject("sessionUserInfo", user);	
+					//get sponsor company name
+					for (Iterator<Map<String, String>> iter = projList.iterator(); iter.hasNext();) {
+						Map<String, String> proj = (Map<String, String>) iter.next();
+						proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
+						proj.put("leadId", Integer.toString(user.getId()));
+					}
+					//get all disciplines
+					List<Discipline> disciplinesData = dispService.selectAllDisciplines();
+					Map<String,String> disciplines = new LinkedHashMap<String,String>();
+					for(int i=0; i<disciplinesData.size(); i++) {
+						disciplines.put(Integer.toString(disciplinesData.get(i).getId()), disciplinesData.get(i).getName());
+					}
+					mav.addObject("disciplines",disciplines);
+					//get all faculty members for assign as neg faculty
+					facUsers = sessionService.getUsersByRole("Negotiating faculty");
+					mav.addObject("projectList", projList);	
+					mav.addObject("facUsers", facUsers);
+					
+				}
+				else {
+					if(request.getParameter("neg").length()>0) {
+						int negId = Integer.parseInt(request.getParameter("neg"));
+						//get all faculty members for assign as neg faculty
+						User facUser = sessionService.selectById(negId);
+						facUsers.add(facUser);
+						if(projectService.assignNeg(projId, negId)>0) {
+							mav.addObject("status", "Negotiating faculty successfully assigned.");
+						}
+						else {
+							mav.addObject("status", "Negotiating faculty assignment failed.");
+						}
+					}
+					else {
+						//negotiating faculty not selected, display error
+						mav.addObject("negError", "true");
+						mav.addObject("status", "Negotiating faculty is not selected.");
+						//get all faculty members for assign as neg faculty
+						facUsers = sessionService.getUsersByRole("Negotiating faculty");
+					}
+				}
+			}
+			else {
+				//no project id
+				projId = 0;
+			}
 			//get all the projects under lead
 			Collection<Map<String, String>> projList = projectService.selectByRole(user.getId(), user.getRoleId());	
 			//send session variable to view 
@@ -112,6 +176,7 @@ public class LeadDefaultController {
 			for (Iterator<Map<String, String>> iter = projList.iterator(); iter.hasNext();) {
 				Map<String, String> proj = (Map<String, String>) iter.next();
 				proj.put("company", projectService.getSponsorCompany(Integer.parseInt(proj.get("ID"))));
+				proj.put("leadId", Integer.toString(user.getId()));
 			}
 			//get all disciplines
 			List<Discipline> disciplinesData = dispService.selectAllDisciplines();
@@ -119,25 +184,11 @@ public class LeadDefaultController {
 			for(int i=0; i<disciplinesData.size(); i++) {
 				disciplines.put(Integer.toString(disciplinesData.get(i).getId()), disciplinesData.get(i).getName());
 			}
+			if(projId > 0) {
+				mav.addObject("selectedId", projId);
+				mav.addObject("selectedOrderedId", getSelectedProject(projId, projList));
+			}
 			mav.addObject("disciplines",disciplines);
-			List<User> facUsers = new LinkedList<User>();
-			if(request.getParameter("neg").length()>0) {
-				int negId = Integer.parseInt(request.getParameter("neg"));
-				int projId = Integer.parseInt(request.getParameter("projId"));
-				//get all faculty members for assign as neg faculty
-				User facUser = sessionService.selectById(negId);
-				facUsers.add(facUser);
-				if(projectService.assignNeg(projId, negId)>0) {
-					mav.addObject("status", "Negotiating faculty successfully assigned.");
-				}
-				else {
-					mav.addObject("status", "Negotiating faculty assignment failed.");
-				}
-			}
-			else {
-				//negotiating faculty not selected, display error
-			}
-			
 			//send session variable to view 
 			mav.addObject("projectList", projList);	
 			mav.addObject("facUsers", facUsers);
@@ -146,6 +197,7 @@ public class LeadDefaultController {
 			//user hasn't logged in
 			return  new ModelAndView(new RedirectView("../login.do"), "status", "Please login first");
 		}
+	
 		return mav;
 	}
 
@@ -207,6 +259,19 @@ public class LeadDefaultController {
 			mav = new ModelAndView("redirect:/leadFac.do");
 		}
 		return mav;
+	}
+	
+	protected int getSelectedProject(int selectedId, Collection<Map<String, String>> projList) {
+		//loop each project
+		int counter = 0;
+		for (Map<String, String> proj: projList) {
+			if(selectedId==Integer.parseInt(proj.get("ID"))) {
+				return counter;
+			}
+			counter++;
+
+	    }
+		return 0;
 	}
 	
 	protected boolean sessionCheck(SessionScopeData sessionData) {		

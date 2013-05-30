@@ -82,9 +82,6 @@
 						 <option value="value2">50</option>
 					 </select>
 						<br/>
-				
-						<!-- Basic / Normal HTML Select element -->
-					<br /><h5>Negotiating Faculty:</h5> ${map.get('Negotiating Faculty')}<br />
 									
 						<!-- Basic / Normal HTML Select element -->
 					<br/> Assign a Capstone faculty member: <br/>	

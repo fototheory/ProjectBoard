@@ -8,65 +8,6 @@
 		// this will make the second tab by default opened (index starts from 0)
         $('#accordion').accordion({active: <c:out value="${selectedId}"/>}); 
 		</c:if>
-		
-		$("#dialog-confirm").dialog({
-			resizable: false,
-		    height:210,
-		    width:440,
-		    modal: true,
-		    autoOpen: false,
-		    show: {
-		        effect: "blind",
-		        duration: 1000
-		    },
-		    hide: {
-		        effect: "explode",
-		        duration: 1000
-		    },
-		    buttons: {
-		    	"Delete": function() {
-		    		href = $("#deleteSubmit").attr('href');
-		    		window.location.href = href;
-		    	},
-		        Cancel: function() {
-		        	$( this ).dialog( "close" );
-		        }
-		      }
-		});
-		
-		$("#dialog-archive-confirm").dialog({
-			resizable: false,
-		    height:210,
-		    width:440,
-		    modal: true,
-		    autoOpen: false,
-		    show: {
-		        effect: "blind",
-		        duration: 1000
-		    },
-		    hide: {
-		        effect: "explode",
-		        duration: 1000
-		    },
-		    buttons: {
-		    	"Archive": function() {
-		    		href = $("#archiveSubmit").attr('href');
-		    		window.location.href = href;
-		    	},
-		        Cancel: function() {
-		        	$( this ).dialog( "close" );
-		        }
-		      }
-		});
-		
-		$("#deleteSubmit").click(function(e) {
-			$( "#dialog-confirm" ).dialog( "open" );
-			return false;
-		});
-		$("#archiveSubmit").click(function(e) {
-			$( "#dialog-archive-confirm" ).dialog( "open" );
-			return false;
-		});
 	});
 </script>
 
@@ -74,7 +15,7 @@
   <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This project will be permanently deleted and cannot be recovered. Are you sure?</p>
 </div>
 
-<div id="dialog-archive-confirm" title="Delete Project?">
+<div id="dialog-archive-confirm" title="Archive Project?">
   <p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span>This project will be permanently archived and cannot be recovered. Are you sure?</p>
 </div>
 
@@ -95,12 +36,14 @@
 			  	<h3 style="padding-bottom:10px;"> Available Projects <span style="float:right;"><a class="button-2" href="projectForm.do?action=add&id=0" id="addProj">Add a Project</a></span></h3>
 			  	<div id="accordion">
 			  	<c:if test="${not empty projectList}">
+			  		<c:set var="delCount" value="0" scope="page" />
+			  		<c:set var="arcCount" value="0" scope="page" />
 					<c:forEach items="${projectList}" var="map"> 
 					<p>${map.get("Sponsor")} ~ ${map.get("Title")} ~ ${map.get("Due Date")}</p>
 					<div>
 						<p>						
 						<c:forEach items="${map}" var="entry"> 
-							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date'&& entry.key != 'DispID'}">
+							<c:if test="${entry.key != 'Sponsor' && entry.key != 'Title' && entry.key != 'Due Date' && entry.key != 'DispID' && entry.key != 'statId'}">
 							${entry.key}: ${entry.value}<br />
 							</c:if>
 						</c:forEach>	
@@ -108,18 +51,21 @@
 						<c:choose>
                			<c:when test="${map.get('Status') eq 'New'}">
 							<a href="projectList.do?action=edit&id=${map.get('ID')}" style="padding-left:65px;"> | Edit project | </a>	
-							<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;" id="deleteSubmit"> | Delete project | </a>
-							<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;" id="archiveSubmit"> | Archive project | </a>
+							<a href="projectList.do?action=delete&id=${map.get('ID')}" style="padding-left:20px;" id="deleteSubmit${delCount}"> | Delete project | </a>
+							<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;" id="archiveSubmit${arcCount}"> | Archive project | </a>
 							<br />
 							<a href="projectList.do?action=progress&id=${map.get('ID')}" style="padding-left:75px;"> | View project progress | </a>
 							<a href="communication.do" style="padding-left:10px;"> | Discussion Board | </a>						
 							<br /><br />
 							<a href="projectList.do?action=submit&id=${map.get('ID')}&dispID=${map.get('DispID')}" style="padding-left:130px;"> | Submit this project to Lead Faculty | </a>
+							<c:set var="delCount" value="${delCount + 1}" scope="page"/>
+							<c:set var="arcCount" value="${arcCount + 1}" scope="page"/>
 						</c:when>	
 						<c:otherwise>
-							<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;" id="archiveSubmit"> | Archive project | </a>
+							<a href="projectList.do?action=archive&id=${map.get('ID')}" style="padding-left:20px;" id="archiveSubmit${arcCount}"> | Archive project | </a>
 							<a href="projectList.do?action=progress&id=${map.get('ID')}" style="padding-left:20px;"> | View project progress | </a>
-							<a href="communication.do" style="padding-left:10px;"> | Discussion Board | </a>						
+							<a href="communication.do" style="padding-left:10px;"> | Discussion Board | </a>
+							<c:set var="arcCount" value="${arcCount + 1}" scope="page"/>						
 						</c:otherwise>
 						</c:choose>			
 						</p>
@@ -155,4 +101,79 @@
           </div>
        </div>
 	</section>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$("#dialog-confirm").dialog({
+			resizable: false,
+		    height:210,
+		    width:440,
+		    modal: true,
+		    autoOpen: false,
+		    show: {
+		        effect: "blind",
+		        duration: 1000
+		    },
+		    hide: {
+		        effect: "explode",
+		        duration: 1000
+		    },
+		    buttons: {
+		    	"Delete": function() {
+		    		href = $(this).data('link').href;
+		    		//alert(href);
+		    		window.location.href = href;
+		    	},
+		        Cancel: function() {
+		        	$( this ).dialog( "close" );
+		        }
+		      }
+		});
+		
+		$("#dialog-archive-confirm").dialog({
+			resizable: false,
+		    height:210,
+		    width:440,
+		    modal: true,
+		    autoOpen: false,
+		    show: {
+		        effect: "blind",
+		        duration: 1000
+		    },
+		    hide: {
+		        effect: "explode",
+		        duration: 1000
+		    },
+		    buttons: {
+		    	"Archive": function() {
+		    		href = $(this).data('link').href;
+		    		//alert(href);
+		    		window.location.href = href;
+		    	},
+		        Cancel: function() {
+		        	$( this ).dialog( "close" );
+		        }
+		      }
+		});
+		<c:if test="${not empty delCount}">
+		for(var i=0; i< <c:out value="${delCount}"/>; i++) {
+			$("#deleteSubmit"+i).on("click", function(event){
+				$( "#dialog-confirm" )
+				.data('link', this) 
+				.dialog( "open" );
+				return false;
+			});
+		}
+		</c:if>
+		<c:if test="${not empty arcCount}">
+		for(var i=0; i< <c:out value="${arcCount}"/>; i++) {
+			$("#archiveSubmit"+i).on("click", function(event){
+				$( "#dialog-archive-confirm" )
+				.data('link', this) 
+				.dialog( "open" );
+				return false;
+			});
+		}
+		</c:if>
+	});
+</script>
 	<c:import url="template/footer.jsp" />

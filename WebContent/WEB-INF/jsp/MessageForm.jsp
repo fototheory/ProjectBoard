@@ -100,9 +100,9 @@
           
         </div>
         
-		  <div class="col-4">
+		  <div class="col-4" style="margin-left:-40px;width:300px;">
             <div class="block-news">
-              <h3 class="color-4 indent-bot2">Contact Info</h3>
+              <h3 class="color-4 indent-bot2" style="w">Contact Info</h3>
               <dl class="contact p3">
                 <dd><span>Address:</span>11255 North Torrey Pines Road</dd>
                 <dd><span>City:</span>La Jolla</dd>

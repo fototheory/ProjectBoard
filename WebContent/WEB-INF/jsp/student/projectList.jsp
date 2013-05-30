@@ -16,7 +16,7 @@
     <section id="content">
       <div class="padding">
         <div class="wrapper margin-bot">
-          <div class="col-3">
+          <div class="col-3" style="width:680px;">
             <div class="indent">
               <c:if test="${not empty status}">
 				<font color="red">${status}</font>

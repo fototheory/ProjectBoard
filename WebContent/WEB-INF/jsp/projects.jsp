@@ -39,8 +39,8 @@
 					</p> </div>
           
            <div class="wrapper">
-                <figure class="img-indent4"><img src="images/ProjManagement.png" alt="" /></figure>
-                <div ><h6>
+                <figure class="img-indent4"><img src="images/ProjManagement.jpg" alt="" /></figure>
+                <div >
               
               <p class="text-1"><br>
                <h6>  </br></br> </br>  </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
@@ -70,7 +70,7 @@
               <h3 class="color-4 indent-bot2">Sounds Promising?</h3>
               <dl class="contact p3">
                 <dd><span>Signup for an account now. Just click on the Login button above and sign up</span></dd>
-               
+               </dl>
           </div>
         </div>
       </div>

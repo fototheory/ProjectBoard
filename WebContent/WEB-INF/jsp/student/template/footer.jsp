@@ -11,9 +11,7 @@
       
       <div class="row-bot">
         <div class="aligncenter">
-          <p class="p0">Copyright &copy; <a href="#">Domain Name</a> All Rights Reserved</p>
-          
-        
+          <p class="p0">Copyright &copy; 2013 The NU Proactive Grads All Rights Reserved</p>
         </div>
       </div>
     </footer>

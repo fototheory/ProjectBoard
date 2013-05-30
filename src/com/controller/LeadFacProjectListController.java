@@ -38,7 +38,7 @@ public class LeadFacProjectListController {
 	//autowire session variable User
 	@Autowired
 	private SessionScopeData sessionScopeUserData;
-		
+	
 	@RequestMapping(params = {"action", "id", "dispID"})
 	public ModelAndView projectSubmit(@RequestParam(value = "action") String actionVal, @RequestParam(value = "id") int projId, 
 				@RequestParam(value = "dispID", required=false) int dispId, HttpServletRequest request) {
