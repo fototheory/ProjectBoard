@@ -30,9 +30,6 @@
 								<input type="email" name="email"
 									placeholder="Please enter your email address here" size="40"/>
 							
-</form:form>
-							
-</h4>
 
 								
 								<input class="button-2" type="submit"
@@ -49,7 +46,9 @@
 										<br/>  
 
 									<a class="button-2" href="login.do"> Cancel </a>
-
+</form:form>
+							
+</h4>
 							
 					
 					
